@@ -6,13 +6,12 @@
 */
 html, body{background:url(../images/cdbg_1010.png) repeat center;background-size: 15px;}
 
-.index-sec{background-color: #159957;background-image: linear-gradient(120deg, #155799, #159957);}
-.navbar{margin: 0;}
+.index-sec{background-color: #155799;background-image: linear-gradient(120deg, #155799, #159957);}
+.navbar{margin: 0;padding: 0; border: 0;border-radius: 0;}
 
-.footer-index{_height: 100%; min-height: 100%;  background: #abc;  background: -moz-linear-gradient(top, #373737, #abc);  background: -webkit-linear-gradient(top, #373737, #cba);  background: -ms-linear-gradient(top, #373737, #abc);  background: -o-linear-gradient(top, #373737, #cba);  background: linear-gradient(top, #373737, #abc);}
+.footer-index{_height: 100%; min-height: 100%;}
 .footer-container{bottom: 0;position: absolute;}
 
 @media(min-width: 768px){
-    .navbar, .index-sec, .footer-index{padding:0 20%;}
-    .navbar{padding: 0;}
+    .index-sec, .footer-index{margin: 0 auto;max-width: 1000px;}
 }
