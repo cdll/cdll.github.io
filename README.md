@@ -7,7 +7,7 @@
 
 <br>
 **苏州联康**
-[2014/10/29~至今]('http://www.lkhealth.cn')
+[2014/10~至今]('http://www.lkhealth.cn')
 `WEB前端工程师`
 ```
 完成官网首页项目；
@@ -16,7 +16,7 @@
 ```
 
 **上海伽蓝集团**
-[2014/07/14~2014/10/15]('http://sandbox.runjs.cn/show/ivi1fe19')
+[2014/07~2014/10]('http://sandbox.runjs.cn/show/ivi1fe19')
 `UED前端工程师`
 ```
 商品CRM系统前端开发；
