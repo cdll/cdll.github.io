@@ -4,9 +4,10 @@
 >**所在：**上海`徐汇`<br>
 >**毕业院校：**沈阳建筑大学（计算机科学与技术）`2014届 本科`<br>
 >**技术分享：**[CDLL](http://cdll.sinaapp.com/ 'CDLL的主页')<br>
+
 <br>
 ##技术概要##
->**photoshop:** 精通图像切割及图像优化，熟悉gif图像制作，了解sprite精灵图开发方式<br>
+>**photoshop:** 精通图像切割、及图像优化，熟悉gif图像制作，了解sprite精灵图开发方式<br>
 >**html5:** 精通html5开发、语义化标签，熟悉移动设备定位geolocation、画布canvas、浏览器前端数据存储web storage 等<br>
 >**css3:** 精通选择器/选择器优先级、伪类/伪元素应用，熟悉animation动画、transform变换 等<br>
 >**bs:** 精通样式重置、栅格系统、清除浮动，<br>
