@@ -8,8 +8,8 @@
 
 <br>
 ##技术概要
->**photoshop:** 精通图像切割、及图像优化，熟悉gif图像制作，了解sprite精灵图开发方式<br>
-**html5:** 熟悉html5开发、语义化标签，熟悉移动设备定位geolocation、画布canvas、UA探测、浏览器前端数据存储web storage 等<br>
+>**photoshop:** 精通切图处理及图像优化，熟悉gif图像制作，了解sprite精灵图开发方式<br>
+**html5:** 熟悉html5开发、语义化标签，熟悉移动设备定位geolocation、画布canvas、UA探测、浏览器前端数据存储web storage、history前端路由机制 等<br>
 **css3:** 精通选择器/选择器优先级、伪类/伪元素应用，熟悉媒体查询、animation动画、transform变换 等<br>
 **bs:** 熟悉样式重置、栅格系统、清除浮动，<br>
 **js:** 熟悉基础dom操作、function封装，熟悉原型链、面向对象开发，熟悉json对象、ajax及jsonp/script跨域处理机制<br>
