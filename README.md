@@ -34,7 +34,7 @@
 ```
 
 **上海伽蓝集团**
-[2014/07~2014/10](http://www.jala.com.cn/ 'http://www.jala.com.cn/')
+[2014/07~2014/09](http://www.jala.com.cn/ 'http://www.jala.com.cn/')
 `UED前端工程师`
 ```
 商品CRM系统前端开发；(css, javascript, bootstrap)
