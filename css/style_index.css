@@ -13,5 +13,5 @@ html, body{background:url(../img/cdbg_1010.png) repeat center;background-size: 1
 .footer-container{bottom: 0;position: absolute;width: 100%;}
 
 @media(min-width: 768px){
-  .index-sec, .footer-index{margin: 0 auto;max-width: 1000px;}
+    .index-sec, .footer-index{margin: 0 auto;max-width: 1000px;}
 }
