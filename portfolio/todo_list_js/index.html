@@ -1,0 +1,33 @@
+<style>
+  .todo{margin: 0 auto;display: block;}
+  .list{text-align: center;list-style-type: amharic;}
+  .list>li{max-width: 50%;}
+</style>
+
+<input class="todo" type='text' />
+<ol id="list" class="list">
+  <li class=""></li>
+  <li class=""></li>
+  <li class=""></li>
+  <li class=""></li>
+</ol>
+
+<script>
+  var _todo= document.getElementsByTagName('input')[0]
+  _todo.addEventListener('keyup', function(e){
+    if(e.which== 13){
+      postTodo(this.value)
+      //clear input value
+      this.value= ''
+    }
+  })
+  function postTodo(){
+    if(arguments[0].trim()){
+      console.info(arguments[0])
+      var _todo= {content: arguments[0], checked: false}
+    }
+  }
+  function pushLsit(obj){
+    var _list= document.getElementById('list')
+  }
+</script>
