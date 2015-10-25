@@ -1,11 +1,13 @@
 <meta charset="utf-8" />
+<meta name='viewport' content="user-scalable=0, initial-scale=1, width=device-width," />
 
 <title>TodoList of vanilla JS</title>
 
 <style>
-  .todo{margin: 0 auto;display: block;padding:.5em 1em;width: 47.5%;}
-  .list{text-align: center;list-style-type: none;}
-  .list>li{max-width: 50%;margin: 0 auto; text-align: left;display: block;}
+  body{max-width: 640px;margin: 0 auto;}
+  .todo{margin: 1em auto;display: block;padding:.5em 1em;min-width: 90%;}
+  .list{text-align: center;list-style-type: none;-webkit-padding-start: 0;}
+  .list>li{max-width: 100%;margin: .5em auto auto; text-align: left;display: block;}
   .list input{display: inline-block;opacity: 1;vertical-align: text-top;}
   .list input:after{content; ' ';width: 1.5em;height: 1.5em;background: none;border: 1px solid lightgray;border-radius: 50%;display: inline-block;opacity: 1;}
   .list input:checked{content; ' ';color: white;background: darkblue;}
@@ -66,6 +68,7 @@
     var _li= document.createElement('li')
     _li.appendChild(_label)
     _li.appendChild(_right)
+    //delete event binding
     _right.addEventListener('click', function(){
       _li.parentNode.removeChild(_li)
     })
