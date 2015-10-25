@@ -1,15 +1,23 @@
 <style>
-  .todo{margin: 0 auto;display: block;}
-  .list{text-align: center;list-style-type: amharic;}
-  .list>li{max-width: 50%;}
+  .todo{margin: 0 auto;display: block;padding:.5em 1em;}
+  .list{text-align: center;list-style-type: none;}
+  .list>li{max-width: 50%;margin: 0 auto; text-align: left;}
+  .list input{display: inline-block;opacity: 1;vertical-align: text-top;}
+  .list input:after{content; ' ';width: 1.5em;height: 1.5em;background: none;border: 1px solid lightgray;border-radius: 50%;display: inline-block;opacity: 1;}
+  .list input:checked{content; ' ';color: white;background: darkblue;}
+  .list input:checked+span{text-decoration: line-through;color: gray;}
+  .list>li>right{float: right;content: 'X';color: orangered;transform: scaleX(1.5);font-family: cursive;cursor: pointer;}
 </style>
 
 <input class="todo" type='text' />
 <ol id="list" class="list">
-  <li class=""></li>
-  <li class=""></li>
-  <li class=""></li>
-  <li class=""></li>
+  <li class="">
+    <label class="">
+      <input class="" type="checkbox" />
+      <span>Bello</span>
+    </label>
+    <right>X</right>
+  </li>
 </ol>
 
 <script>
@@ -25,9 +33,18 @@
     if(arguments[0].trim()){
       console.info(arguments[0])
       var _todo= {content: arguments[0], checked: false}
+      pushLsit(_todo)
     }
   }
   function pushLsit(obj){
     var _list= document.getElementById('list')
+    console.log('push')
+    document.getElementById('list').appendChild(createItem(obj))
+  }
+  function createItem(obj){
+    var _item= document.createElement('li')
+    _item.setAttribute('data-checked', obj.checked)
+    _item.innerHTML= obj.content
+    return _item
   }
 </script>
