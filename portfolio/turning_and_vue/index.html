@@ -33,7 +33,8 @@
     <ol class="news-ol">
       <li class="" v-repeat='result.list'>
         <p class=''>
-          【<span class="" v-text='source'></span>】<big class="" v-text='article'></big>
+          <span class="" v-text='"【"+source+"】"'></span>
+          <big class="" v-text='article'></big>
         </p>
         <img class="" v-src='icon' width='1.25em' height="1.25em" />
         <a class="a text-blue" v-attr-href='detailurl' v-text='detailurl'></a>
@@ -46,15 +47,13 @@
     <ol class="train-ol">
       <li class="" v-repeat='result.list'>
         <p class="">
-          [<span class="" v-text='trainnum'></span>]
-          <span class="" v-text='start'></span>
-          ~
+          <span class="" v-text='"["+trainnum+"]"'></span>
+          <span class="" v-text='start+"~"'></span>
           <span class="" v-text='terminal'></span>
         </p>
         <p class="">
           <img class="" v-src='icon' />
-          <span class="" v-text='starttime'></span>
-          ~
+          <span class="" v-text='starttime+"~"'></span>
           <span class="" v-text='endtime'></span>
         </p>
         <a class="a text-blue" v-attr-href='detailurl' v-text='detailurl'></a>
@@ -67,7 +66,7 @@
     <ol class="train-ol">
       <li class="" v-repeat='result.list'>
         <p class="">
-          【<left class='' v-text='name'></left>】
+          <left class='' v-text='"【"+name+"】"'></left>
           <span class="" v-text='info'></span>
         </p>
         <img class="" v-src='icon' width="1.25em" height="1.25em" />
