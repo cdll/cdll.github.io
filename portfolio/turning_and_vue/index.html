@@ -3,6 +3,7 @@
 
 <title>turning-robot of vue</title>
 
+<link rel="stylesheet" href="../../bower_components/material-design-lite/material.min.css" />
 <style>
   *{margin: 0;padding: 0;max-width: 100%;}
   .a{text-decoration: underline;cursor: pointer;}
@@ -14,9 +15,9 @@
   .news-ol>li{margin-top: .5em;}
 </style>
 
-<div class="robot">
+<div class="fieldset robot">
   <center class="">
-    <input class="search" type="text" v-model='input' v-on='keyup: enterSearch| key 13' placeholder="请输入要查找的东东，回车键发起搜索" autofocus />
+    <input class="search" type="search" v-model='input' v-on='keyup: enterSearch| key 13' placeholder="请输入要查找的东东，回车键发起搜索" autofocus />
   </center>
   
   <div class="" v-if='status== 100000'>

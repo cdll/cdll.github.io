@@ -5,14 +5,15 @@
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <meta name="description" content="CraigDavis : Its about me~">
-    <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=0.8,maximum-scale=1.0" />
+    <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0,maximum-scale=1.0" />
 
 <!--    <link rel="shortcut icon" href="/favicon.ico" mce_href="/favicon.ico" type="image/x-icon">-->
     <link rel="shortcut icon" href="img/cdbg_1010.png" mce_href="/favicon.ico" type="image/x-icon">
 
-    <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" media="screen" href="font-awesome-4.2.0/css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" media="screen" href="css/style_index.css">
+    <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="bower_components/material-design-lite/material.min.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="bower_components/font-awesome-4.2.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="css/style_index.css">
 
     <title>C.D.Leon</title>
   </head>
@@ -94,6 +95,7 @@
     <!-- FOOTER  -->
     <footer class="footer-index">
       <div class="footer-container container-fluid">
+        <hr>
         <div class="col-xs-12 col-sm-3">
           <div class='row'>
             <h4>友情链接：</h4>
@@ -107,7 +109,7 @@
               <p class=''><i>大菜FE</i></p>
             </a>
             <a class='center-block' href='http://www.cnblogs.com/rubylouvre/' target="_blank">
-              <p class=''><i>司徒先森</i></p>
+              <p class=''><i>司徒正美</i></p>
             </a>
           </div>
         </div>
@@ -150,14 +152,14 @@
       </div>
     </footer>
 
-  <!--  <script src="angular/angular.min.js"></script>-->
-    <script src="js/jquery.min.js"></script>
-    <script src="bootstrap/js/bootstrap.min.js"></script>
+<!--    <script src="bower_components/angular/angular.min.js"></script>-->
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/bootstrap/js/bootstrap.min.js"></script>
 <!--    <script src="js/sqlite_cdll.js"></script>-->
 
     <script>
       window.onload= function(){
-        console.log('look at me~');
+        console.assert($, 'look at me~');
       }
     </script>
 <!--    <script charset="Shift_JIS" src="http://chabudai.sakura.ne.jp/blogparts/honehoneclock/honehone_clock_tr.js"></script>-->
