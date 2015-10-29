@@ -6,65 +6,52 @@
 		<meta http-equiv="X-UA-Compatible" content="chrome=1">
 		<meta name="description" content="CraigDavis : Its about my darling~">
 		  
-		<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
-		<link rel="stylesheet" type="text/css" media="screen" href="../font-awesome-4.2.0/css/font-awesome.min.css">
+		<link href="../bower_components/Swiper/dist/css/swiper.min.css" rel="stylesheet">
+<!--		<link rel="stylesheet" type="text/css" media="screen" href="../bower_components/font-awesome-4.2.0/css/font-awesome.min.css">-->
 		<link rel="stylesheet" type="text/css" media="screen" href="css/style_darlingshow.css">
 
 		<title>亲爱的MyDarling</title>
 	</head>
 
-    <body >
+  <body >
 
 <!--    <div class="container-fluid">-->
-        <!-- HEADER -->
-        <header>
-        </header>
+      <!-- HEADER -->
+    <header>
+    </header>
 
-        <div id='darlingshow-carousel' class="row carousel slide" data-ride='carousel'>
-            <!--indicators-->
-            <ol class="carousel-indicators" style="bottom:0;position:absolute;">
-                <li data-target='#darlingshow-carousel' data-slide-to='0' class="active"></li>
-                <li data-target='#darlingshow-carousel' data-slide-to='1' class=""></li>
-                <li data-target='#darlingshow-carousel' data-slide-to='2' class=""></li>
-                <li data-target='#darlingshow-carousel' data-slide-to='3' class=""></li>
-                <li data-target='#darlingshow-carousel' data-slide-to='4' class=""></li>
-                <li data-target='#darlingshow-carousel' data-slide-to='5' class=""></li>
-                <li data-target='#darlingshow-carousel' data-slide-to='6' class=""></li>
-                <li data-target='#darlingshow-carousel' data-slide-to='7' class=""></li>
-                <li data-target='#darlingshow-carousel' data-slide-to='8' class=""></li>
-            </ol>
-            <!--slide items box-->
-            <div class="carousel-inner" role="listbox">
-                <div class="item active " style="background:url('img/show_item01.jpg') no-repeat center;background-size: cover;height:100%;"></div>
-                <div class="item " style="background:url('img/show_item02.jpg') no-repeat center;background-size: cover;height:100%;"></div>
-                <div class="item " style="background:url('img/show_item03.jpg') no-repeat center;background-size: cover;min-height:100%;"></div>
-                <div class="item " style="background:url('img/show_item04.jpg') no-repeat center;background-size: cover;min-height:100%;"></div>
-                <div class="item " style="background:url('img/show_item11.jpg') no-repeat center;background-size: cover;height:100%;"></div>
-                <div class="item " style="background:url('img/show_item12.jpg') no-repeat center;background-size: cover;height:100%;"></div>
-                <div class="item " style="background:url('img/show_item13.jpg') no-repeat center;background-size: cover;height:100%;"></div>
-                <div class="item " style="background:url('img/show_item14.jpg') no-repeat center;background-size: cover;height:100%;"></div>
-                <div class="item " style="background:url('img/show_item15.jpg') no-repeat center;background-size: cover;height:100%;"></div>
-            </div>
-        </div>
-        <!-- Controls -->
-        <a class="left carousel-control" href="#darlingshow-carousel" role="button" data-slide="prev">
-            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-        </a>
-        <a class="right carousel-control" href="#darlingshow-carousel" role="button" data-slide="next">
-            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-        </a>
-        
-        <!-- FOOTER  -->
-        <footer class="">
-        </footer>
+    <div id='darlingshow-carousel' class="swiper-container">
+        <!--slide items box-->
+      <div class="carousel-inner swiper-wrapper" role="listbox">
+        <div class="item swiper-slide" style="background:url(img/show_item01.jpg) no-repeat center;background-size: cover;height:100%;"></div>
+        <div class="item swiper-slide" style="background:url(img/show_item02.jpg) no-repeat center;background-size: cover;height:100%;"></div>
+        <div class="item swiper-slide" style="background:url(img/show_item03.jpg) no-repeat center;background-size: cover;min-height:100%;"></div>
+        <div class="item swiper-slide" style="background:url(img/show_item04.jpg) no-repeat center;background-size: cover;min-height:100%;"></div>
+        <div class="item swiper-slide" style="background:url(img/show_item11.jpg) no-repeat center;background-size: cover;height:100%;"></div>
+        <div class="item swiper-slide" style="background:url(img/show_item12.jpg) no-repeat center;background-size: cover;height:100%;"></div>
+        <div class="item swiper-slide" style="background:url(img/show_item13.jpg) no-repeat center;background-size: cover;height:100%;"></div>
+        <div class="item swiper-slide" style="background:url(img/show_item14.jpg) no-repeat center;background-size: cover;height:100%;"></div>
+        <div class="item swiper-slide" style="background:url(img/show_item15.jpg) no-repeat center;background-size: cover;height:100%;"></div>
+      </div>
+        <!--indicators-->
+      <ol class="swiper-indicators"></ol>
+    </div>
+    <!-- Controls -->
+    <a class="left carousel-control" href="#darlingshow-carousel" role="button" data-slide="prev">
+      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="right carousel-control" href="#darlingshow-carousel" role="button" data-slide="next">
+      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+
+    <!-- FOOTER  -->
+    <footer class="">
+    </footer>
 <!--    </div>-->
 
+    <script id="avalon" src="/bower_components/avalon/dist/avalon.min.js" data-main='js/darlingshow.js'></script>
 
-    <script src="../js/jquery.min.js"></script>
-    <script src="../bootstrap/js/bootstrap.min.js"></script>
-    <script src="js/darlingshow.js"></script>
-
-    </body>
+  </body>
 </html>
