@@ -25,6 +25,7 @@
     "material-design-lite": "~1.0.5",
     "Swiper": "swiper#~3.1.7",
     "jquery": "~2.1.4",
-    "vue": "~1.0.4"
+    "vue": "~1.0.4",
+    "polymer": "~1.2.3"
   }
 }
