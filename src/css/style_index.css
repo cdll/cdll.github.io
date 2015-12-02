@@ -1,0 +1,18 @@
+/*
+@font-face{
+    font-family:glyphicons;
+    src:url('http://cdn.bootcss.com/bootstrap/3.3.1/fonts/glyphicons-halflings-regular.eot'),url('http://cdn.bootcss.com/bootstrap/3.3.1/fonts/glyphicons-halflings-regular.svg'),url('http://cdn.bootcss.com/bootstrap/3.3.1/fonts/glyphicons-halflings-regular.ttf'),url('http://cdn.bootcss.com/bootstrap/3.3.1/fonts/glyphicons-halflings-regular.woff');
+}
+*/
+html, body{background:url(/img/cdbg_1010.png) repeat center;background-size: 15px;}
+::-webkit-scrollbar{width: 0;}
+
+.index-sec{background-color: #155799;background-image: -webkit-linear-gradient(330deg, #155799, #159957);background-image: linear-gradient(120deg, #155799, #159957);}
+.navbar{margin: 0;padding: 0; border: 0;border-radius: 0;}
+
+.footer-index{_height: 100%; min-height: 100%;}
+.footer-container{bottom: 0;position: absolute;width: 100%;background: -webkit-linear-gradient(gray, transparent);background: linear-gradient(gray,transparent);}
+
+@media(min-width: 768px){
+  .index-sec, .footer-index{margin: 0 auto;}
+}

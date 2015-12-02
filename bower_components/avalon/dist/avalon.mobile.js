@@ -5,7 +5,7 @@
  http://weibo.com/jslouvre/
  
  Released under the MIT license
- avalon.mobile.js 1.5.4 built in 2015.10.18
+ avalon.mobile.js 1.5.5 built in 2015.11.20
  mobile
  ==================================================*/
 (function(global, factory) {
@@ -61,11 +61,9 @@ function createMap() {
 
 var subscribers = "$" + expose
 
-var stopRepeatAssign = false
 var nullObject = {} //作用类似于noop，只用于代码防御，千万不要在它上面添加属性
 var rword = /[^, ]+/g //切割字符串为一个个小块，以空格或豆号分开它们，结合replace实现字符串的forEach
 var rw20g = /\w+/g
-var rcomplexType = /^(?:object|array)$/
 var rsvg = /^\[object SVG\w*Element\]$/
 var rwindow = /^\[object (?:Window|DOMWindow|global)\]$/
 var oproto = Object.prototype
@@ -249,7 +247,7 @@ function _number(a, len) { //用于模拟slice, splice的效果
 avalon.mix({
     rword: rword,
     subscribers: subscribers,
-    version: 1.54,
+    version: 1.55,
     ui: {},
     log: log,
     slice: function (nodes, start, end) {
@@ -691,10 +689,7 @@ kernel.maxRepeatSize = 100
 avalon.config = kernel
 function $watch(expr, binding) {
     var $events = this.$events || (this.$events = {})
-    if (this.$id.indexOf("$proxy$") === 0 && /^\w+\./.test(expr)) {
-        expr = expr.replace(/^\w+\./, "*.") //处理代理VM
-        this.$up && (this.$up.$ups[expr] = this)
-    }
+
     var queue = $events[expr] || ($events[expr] = [])
     if (typeof binding === "function") {
         var backup = binding
@@ -745,7 +740,7 @@ function $emit(key, args) {
         var arr = event[key]
         notifySubscribers(arr, args)
         var parent = this.$up
-        if (parent && !/\*\./.test(key)) {
+        if (parent) {
             if (this.$pathname) {
                 $emit.call(parent, this.$pathname + "." + key, args)//以确切的值往上冒泡
             }
@@ -754,15 +749,19 @@ function $emit(key, args) {
         }
     } else {
         parent = this.$up
+       
+        if(this.$ups ){
+            for(var i in this.$ups){
+                $emit.call(this.$ups[i], i+"."+key, args)//以确切的值往上冒泡
+            }
+            return
+        }
         if (parent) {
             var p = this.$pathname
             if (p === "")
                 p = "*"
             var path = p + "." + key
-            if (parent.$ups && parent.$ups[path]) {
-                parent = parent.$ups[path]
-            }
-            var arr = path.split(".")
+            arr = path.split(".")
             if (arr.indexOf("*") === -1) {
                 $emit.call(parent, path, args)//以确切的值往上冒泡
                 arr[1] = "*"
@@ -865,7 +864,7 @@ function Component() {
 }
 
 function observeObject(source, options) {
-    if (!source || (source.$id && source.$accessors)) {
+    if (!source || (source.$id && source.$accessors) || (source.nodeName && source.nodeType > 0)) {
         return source
     }
     //source为原对象,不能是元素节点或null
@@ -918,7 +917,7 @@ function observeObject(source, options) {
         var value = source[name]
         if (!$$skipArray[name])
             hasOwn[name] = true
-        if (typeof value === "function" || (value && value.nodeType) ||
+        if (typeof value === "function" || (value && value.nodeName && value.nodeType > 0) ||
                 (!force[name] && (name.charAt(0) === "$" || $$skipArray[name] || $skipArray[name]))) {
             skip.push(name)
         } else if (isComputed(value)) {
@@ -964,7 +963,7 @@ function observeObject(source, options) {
     })
 
     /* jshint ignore:start */
-    hideProperty($vmodel, "$ups", {})
+    hideProperty($vmodel, "$ups", null)
     hideProperty($vmodel, "$id", "anonymous")
     hideProperty($vmodel, "$up", old ? old.$up : null)
     hideProperty($vmodel, "$track", Object.keys(hasOwn))
@@ -992,12 +991,13 @@ function observeObject(source, options) {
 
     //必须设置了$active,$events
     simple.forEach(function (name) {
+        var oldVal = old && old[name]
         var val = $vmodel[name] = source[name]
         if (val && typeof val === "object") {
             val.$up = $vmodel
             val.$pathname = name
         }
-        $emit.call($vmodel, name)
+        $emit.call($vmodel, name,[val,oldVal])
     })
     for (name in computed) {
         value = $vmodel[name]
@@ -1068,7 +1068,7 @@ function observe(obj, old, hasReturn, watch) {
     if (Array.isArray(obj)) {
         return observeArray(obj, old, watch)
     } else if (avalon.isPlainObject(obj)) {
-        if (old) {
+        if (old && typeof old === 'object') {
             var keys = Object.keys(obj)
             var keys2 = Object.keys(old)
             if (keys.join(";") === keys2.join(";")) {
@@ -1100,7 +1100,6 @@ function observeArray(array, old, watch) {
         for (var i in newProto) {
             array[i] = newProto[i]
         }
-        hideProperty(array, "$ups", {})
         hideProperty(array, "$up", null)
         hideProperty(array, "$pathname", "")
         hideProperty(array, "$track", createTrack(array.length))
@@ -1679,7 +1678,7 @@ function camelize(target) {
 "add,remove".replace(rword, function (method) {
     avalon.fn[method + "Class"] = function (cls) {
         var el = this[0]
-            //https://developer.mozilla.org/zh-CN/docs/Mozilla/Firefox/Releases/26
+        //https://developer.mozilla.org/zh-CN/docs/Mozilla/Firefox/Releases/26
         if (cls && typeof cls === "string" && el && el.nodeType === 1) {
             cls.replace(/\S+/g, function (c) {
                 el.classList[method](c)
@@ -1715,24 +1714,24 @@ avalon.fn.mix({
     data: function (name, value) {
         name = "data-" + hyphen(name || "")
         switch (arguments.length) {
-        case 2:
-            this.attr(name, value)
-            return this
-        case 1:
-            var val = this.attr(name)
-            return parseData(val)
-        case 0:
-            var ret = {}
-            ap.forEach.call(this[0].attributes, function (attr) {
-                if (attr) {
-                    name = attr.name
-                    if (!name.indexOf("data-")) {
-                        name = camelize(name.slice(5))
-                        ret[name] = parseData(attr.value)
+            case 2:
+                this.attr(name, value)
+                return this
+            case 1:
+                var val = this.attr(name)
+                return parseData(val)
+            case 0:
+                var ret = {}
+                ap.forEach.call(this[0].attributes, function (attr) {
+                    if (attr) {
+                        name = attr.name
+                        if (!name.indexOf("data-")) {
+                            name = camelize(name.slice(5))
+                            ret[name] = parseData(attr.value)
+                        }
                     }
-                }
-            })
-            return ret
+                })
+                return ret
         }
     },
     removeData: function (name) {
@@ -1752,11 +1751,11 @@ avalon.fn.mix({
     },
     position: function () {
         var offsetParent, offset,
-            elem = this[0],
-            parentOffset = {
-                top: 0,
-                left: 0
-            };
+                elem = this[0],
+                parentOffset = {
+                    top: 0,
+                    left: 0
+                };
         if (!elem) {
             return
         }
@@ -1770,7 +1769,7 @@ avalon.fn.mix({
             }
             parentOffset.top += avalon.css(offsetParent[0], "borderTopWidth", true)
             parentOffset.left += avalon.css(offsetParent[0], "borderLeftWidth", true)
-                // Subtract offsetParent scroll positions
+            // Subtract offsetParent scroll positions
             parentOffset.top -= offsetParent.scrollTop()
             parentOffset.left -= offsetParent.scrollLeft()
         }
@@ -1820,18 +1819,18 @@ if (root.dataset) {
         name = name && camelize(name)
         var dataset = this[0].dataset
         switch (arguments.length) {
-        case 2:
-            dataset[name] = val
-            return this
-        case 1:
-            val = dataset[name]
-            return parseData(val)
-        case 0:
-            var ret = createMap()
-            for (name in dataset) {
-                ret[name] = parseData(dataset[name])
-            }
-            return ret
+            case 2:
+                dataset[name] = val
+                return this
+            case 1:
+                val = dataset[name]
+                return parseData(val)
+            case 0:
+                var ret = createMap()
+                for (name in dataset) {
+                    ret[name] = parseData(dataset[name])
+                }
+                return ret
         }
     }
 }
@@ -1843,19 +1842,28 @@ function parseData(data) {
         if (typeof data === "object")
             return data
         data = data === "true" ? true :
-            data === "false" ? false :
-            data === "null" ? null : +data + "" === data ? +data : rbrace.test(data) ? JSON.parse(data) : data
-    } catch (e) {}
+                data === "false" ? false :
+                data === "null" ? null : +data + "" === data ? +data : rbrace.test(data) ? JSON.parse(data) : data
+    } catch (e) {
+    }
     return data
 }
+
+avalon.fireDom = function (elem, type, opts) {
+    var hackEvent = DOC.createEvent("Events");
+    hackEvent.initEvent(type, true, true)
+    avalon.mix(hackEvent, opts)
+    elem.dispatchEvent(hackEvent)
+}
+
 avalon.each({
     scrollLeft: "pageXOffset",
     scrollTop: "pageYOffset"
 }, function (method, prop) {
     avalon.fn[method] = function (val) {
         var node = this[0] || {},
-            win = getWindow(node),
-            top = method === "scrollTop"
+                win = getWindow(node),
+                top = method === "scrollTop"
         if (!arguments.length) {
             return win ? win[prop] : node[method]
         } else {
@@ -1919,7 +1927,7 @@ cssHooks["opacity:get"] = function (node) {
     cssHooks[name + ":get"] = function (node) {
         var computed = cssHooks["@:get"](node, name)
         return /px$/.test(computed) ? computed :
-            avalon(node).position()[name] + "px"
+                avalon(node).position()[name] + "px"
     }
 })
 var cssShow = {
@@ -1952,9 +1960,9 @@ function showHidden(node, array) {
 
 "Width,Height".replace(rword, function (name) { //fix 481
     var method = name.toLowerCase(),
-        clientProp = "client" + name,
-        scrollProp = "scroll" + name,
-        offsetProp = "offset" + name
+            clientProp = "client" + name,
+            scrollProp = "scroll" + name,
+            offsetProp = "offset" + name
     cssHooks[method + ":get"] = function (node, which, override) {
         var boxSizing = -4
         if (typeof override === "number") {
@@ -1977,7 +1985,7 @@ function showHidden(node, array) {
         var hidden = [];
         showHidden(node, hidden);
         var val = cssHooks[method + ":get"](node)
-        for (var i = 0, obj; obj = hidden[i++];) {
+        for (var i = 0, obj; obj = hidden[i++]; ) {
             node = obj.node
             for (var n in obj) {
                 if (typeof obj[n] === "string") {
@@ -1995,9 +2003,9 @@ function showHidden(node, array) {
             }
             if (node.nodeType === 9) { //取得页面尺寸
                 var doc = node.documentElement
-                    //FF chrome    html.scrollHeight< body.scrollHeight
-                    //IE 标准模式 : html.scrollHeight> body.scrollHeight
-                    //IE 怪异模式 : html.scrollHeight 最大等于可视窗口多一点？
+                //FF chrome    html.scrollHeight< body.scrollHeight
+                //IE 标准模式 : html.scrollHeight> body.scrollHeight
+                //IE 怪异模式 : html.scrollHeight 最大等于可视窗口多一点？
                 return Math.max(node.body[scrollProp], doc[scrollProp], node.body[offsetProp], doc[offsetProp], doc[clientProp])
             }
             return cssHooks[method + "&get"](node)
@@ -2013,28 +2021,28 @@ function showHidden(node, array) {
     }
 })
 avalon.fn.offset = function () { //取得距离页面左右角的坐标
-        var node = this[0]
-        try {
-            var rect = node.getBoundingClientRect()
-                // Make sure element is not hidden (display: none) or disconnected
-                // https://github.com/jquery/jquery/pull/2043/files#r23981494
-            if (rect.width || rect.height || node.getClientRects().length) {
-                var doc = node.ownerDocument
-                var root = doc.documentElement
-                var win = doc.defaultView
-                return {
-                    top: rect.top + win.pageYOffset - root.clientTop,
-                    left: rect.left + win.pageXOffset - root.clientLeft
-                }
-            }
-        } catch (e) {
+    var node = this[0]
+    try {
+        var rect = node.getBoundingClientRect()
+        // Make sure element is not hidden (display: none) or disconnected
+        // https://github.com/jquery/jquery/pull/2043/files#r23981494
+        if (rect.width || rect.height || node.getClientRects().length) {
+            var doc = node.ownerDocument
+            var root = doc.documentElement
+            var win = doc.defaultView
             return {
-                left: 0,
-                top: 0
+                top: rect.top + win.pageYOffset - root.clientTop,
+                left: rect.left + win.pageXOffset - root.clientLeft
             }
         }
+    } catch (e) {
+        return {
+            left: 0,
+            top: 0
+        }
     }
-    //=============================val相关=======================
+}
+//=============================val相关=======================
 
 function getValType(elem) {
     var ret = elem.tagName.toLowerCase()
@@ -2043,16 +2051,16 @@ function getValType(elem) {
 var valHooks = {
     "select:get": function (node, value) {
         var option, options = node.options,
-            index = node.selectedIndex,
-            one = node.type === "select-one" || index < 0,
-            values = one ? null : [],
-            max = one ? index + 1 : options.length,
-            i = index < 0 ? max : one ? index : 0
+                index = node.selectedIndex,
+                one = node.type === "select-one" || index < 0,
+                values = one ? null : [],
+                max = one ? index + 1 : options.length,
+                i = index < 0 ? max : one ? index : 0
         for (; i < max; i++) {
             option = options[i]
-                //旧式IE在reset后不会改变selected，需要改用i === index判定
-                //我们过滤所有disabled的option元素，但在safari5下，如果设置select为disable，那么其所有孩子都disable
-                //因此当一个元素为disable，需要检测其是否显式设置了disable及其父节点的disable情况
+            //旧式IE在reset后不会改变selected，需要改用i === index判定
+            //我们过滤所有disabled的option元素，但在safari5下，如果设置select为disable，那么其所有孩子都disable
+            //因此当一个元素为disable，需要检测其是否显式设置了disable及其父节点的disable情况
             if ((option.selected || i === index) && !option.disabled) {
                 value = option.value
                 if (one) {
@@ -2066,7 +2074,7 @@ var valHooks = {
     },
     "select:set": function (node, values, optionSet) {
         values = [].concat(values) //强制转换为数组
-        for (var i = 0, el; el = node.options[i++];) {
+        for (var i = 0, el; el = node.options[i++]; ) {
             if ((el.selected = values.indexOf(el.value) > -1)) {
                 optionSet = true
             }
@@ -2310,7 +2318,7 @@ function parseExpr(expr, vmodels, binding) {
 }
 //========
 
-function stringifyExpr(code) {
+function normalizeExpr(code) {
     var hasExpr = rexpr.test(code) //比如ms-class="width{{w}}"的情况
     if (hasExpr) {
         var array = scanExpr(code)
@@ -2325,6 +2333,7 @@ function stringifyExpr(code) {
     }
 }
 
+avalon.normalizeExpr = normalizeExpr
 avalon.parseExprProxy = parseExpr
 
 var rthimRightParentheses = /\)\s*$/
@@ -2442,6 +2451,26 @@ function bindingSorter(a, b) {
     return a.priority - b.priority
 }
 
+
+var rnoCollect = /^(ms-\S+|data-\S+|on[a-z]+|id|style|class)$/
+var ronattr = /^on\-[\w-]+$/
+function getOptionsFromTag(elem, vmodels) {
+    var attributes = elem.attributes
+    var ret = {}
+    for (var i = 0, attr; attr = attributes[i++]; ) {
+        var name = attr.name
+        if (attr.specified && !rnoCollect.test(name)) {
+            var camelizeName = camelize(attr.name)
+            if (/^on\-[\w-]+$/.test(name)) {
+                ret[camelizeName] = getBindingCallback(elem, name, vmodels) 
+            } else {
+                ret[camelizeName] = parseData(attr.value)
+            }
+        }
+
+    }
+    return ret
+}
 function scanAttr(elem, vmodels, match) {
     var scanNode = true
     if (vmodels.length) {
@@ -2529,17 +2558,7 @@ function scanAttr(elem, vmodels, match) {
 var rnoscanAttrBinding = /^if|widget|repeat$/
 var rnoscanNodeBinding = /^each|with|html|include$/
 
-var rnoCollect = /^(ms-\S+|data-\S+|on[a-z]+|id|style|class|tabindex)$/
-function getOptionsFromTag(elem) {
-    var attributes = elem.attributes
-    var ret = {}
-    for (var i = 0, attr; attr = attributes[i++]; ) {
-        if (attr.specified && !rnoCollect.test(attr.name)) {
-            ret[camelize(attr.name)] = parseData(attr.value)
-        }
-    }
-    return ret
-}
+
 function scanNodeList(parent, vmodels) {
     var nodes = avalon.slice(parent.childNodes)
     scanNodeArray(nodes, vmodels)
@@ -2550,7 +2569,7 @@ function scanNodeArray(nodes, vmodels) {
     for (var i = 0, node; node = nodes[i++]; ) {
         switch (node.nodeType) {
             case 1:
-                var elem = node, fn
+                var elem = node
                 if (!elem.msResolved && elem.parentNode && elem.parentNode.nodeType === 1) {
                     var library = isWidget(elem)
                     if (library) {
@@ -2565,11 +2584,17 @@ function scanNodeArray(nodes, vmodels) {
                             name: "widget"
                         })
                         if (avalon.components[fullName]) {
-                            avalon.component(fullName)
+                            (function (name) {//确保所有ms-attr-name扫描完再处理
+                                setTimeout(function () {
+                                    avalon.component(name)
+                                })
+                            })(fullName)
                         }
                     }
                 }
-                 scanTag(node, vmodels) //扫描元素节点
+
+                scanTag(node, vmodels) //扫描元素节点
+
                 if (node.msHasEvent) {
                     avalon.fireDom(node, "datasetchanged", {
                         bubble: node.msHasEvent
@@ -2608,6 +2633,12 @@ function scanTag(elem, vmodels, node) {
         createSignalTower(elem, newVmodel)
     }
     scanAttr(elem, vmodels) //扫描特性节点
+
+    if (newVmodel) {
+        setTimeout(function () {
+            newVmodel.$fire("ms-scan-end", elem)
+        })
+    }
 }
 var rhasHtml = /\|\s*html(?:\b|$)/,
     r11a = /\|\|/g,
@@ -2754,15 +2785,24 @@ avalon.component = function (name, opts) {
             i--;
 
             (function (host, hooks, elem, widget) {
-
+                //如果elem已从Document里移除,直接返回
+                //issuse : https://github.com/RubyLouvre/avalon2/issues/40
+                if (!avalon.contains(DOC, elem)) {
+                    avalon.Array.remove(componentQueue, host)
+                    return
+                }
+                
                 var dependencies = 1
                 var library = host.library
                 var global = avalon.libraries[library] || componentHooks
 
                 //===========收集各种配置=======
-
-                var elemOpts = getOptionsFromTag(elem)
-                var vmOpts = getOptionsFromVM(host.vmodels, elemOpts.config || host.widget)
+                if (elem.getAttribute("ms-attr-identifier")) {
+                    //如果还没有解析完,就延迟一下 #1155
+                    return
+                }
+                var elemOpts = getOptionsFromTag(elem, host.vmodels)
+                var vmOpts = getOptionsFromVM(host.vmodels, elemOpts.config || host.fullName)
                 var $id = elemOpts.$id || elemOpts.identifier || generateID(widget)
                 delete elemOpts.config
                 delete elemOpts.$id
@@ -2782,7 +2822,7 @@ avalon.component = function (name, opts) {
                 componentDefinition.$id = $id
 
                 //==========构建VM=========
-                var keepSolt = componentDefinition.$slot
+                var keepSlot = componentDefinition.$slot
                 var keepReplace = componentDefinition.$replace
                 var keepContainer = componentDefinition.$container
                 var keepTemplate = componentDefinition.$template
@@ -2798,9 +2838,8 @@ avalon.component = function (name, opts) {
                 var nodes = elem.childNodes
                 //收集插入点
                 var slots = {}, snode
-
                 for (var s = 0, el; el = nodes[s++]; ) {
-                    var type = el.nodeType === 1 && el.getAttribute("slot") || keepSolt
+                    var type = el.nodeType === 1 && el.getAttribute("slot") || keepSlot
                     if (type) {
                         if (slots[type]) {
                             slots[type].push(el)
@@ -2829,12 +2868,17 @@ avalon.component = function (name, opts) {
                     }
                 }
                 slots = null
-                var child = elem.firstChild
+                var child = elem.children[0] || elem.firstChild
                 if (keepReplace) {
-                    child = elem.firstChild
                     elem.parentNode.replaceChild(child, elem)
                     child.msResolved = 1
+                    var cssText = elem.style.cssText
+                    var className = elem.className
                     elem = host.element = child
+                    elem.style.cssText = cssText
+                    if (className) {
+                        avalon(elem).addClass(className)
+                    }
                 }
                 if (keepContainer) {
                     keepContainer.appendChild(elem)
@@ -2857,7 +2901,7 @@ avalon.component = function (name, opts) {
                     if (dependencies === 0) {
                         var id1 = setTimeout(function () {
                             clearTimeout(id1)
-                            
+
                             vmodel.$ready(vmodel, elem, host.vmodels)
                             global.$ready(vmodel, elem, host.vmodels)
                         }, children ? Math.max(children * 17, 100) : 17)
@@ -2883,7 +2927,6 @@ avalon.component = function (name, opts) {
                 scanTag(elem, [vmodel].concat(host.vmodels))
 
                 avalon.vmodels[vmodel.$id] = vmodel
-                avalon.log("添加组件VM: "+vmodel.$id)
                 if (!elem.childNodes.length) {
                     avalon.fireDom(elem, "datasetchanged", {library: library, vm: vmodel, childReady: -1})
                 } else {
@@ -2898,20 +2941,6 @@ avalon.component = function (name, opts) {
 
 
         }
-    }
-}
-
-avalon.fireDom = function (elem, type, opts) {
-    if (DOC.createEvent) {
-        var hackEvent = DOC.createEvent("Events");
-        hackEvent.initEvent(type, true, true, opts)
-        avalon.mix(hackEvent, opts)
-
-        elem.dispatchEvent(hackEvent)
-    } else if (root.contains(elem)) {//IE6-8触发事件必须保证在DOM树中,否则报"SCRIPT16389: 未指明的错误"
-        hackEvent = DOC.createEventObject()
-        avalon.mix(hackEvent, opts)
-        elem.fireEvent("on" + type, hackEvent)
     }
 }
 
@@ -2945,18 +2974,18 @@ avalon.library = function (name, opts) {
 
 avalon.library("ms")
 /*
-broswer  nodeName  scopeName  localName
-IE9     ONI:BUTTON oni        button
-IE10    ONI:BUTTON undefined  oni:button
-IE8     button     oni        undefined
-chrome  ONI:BUTTON undefined  oni:button
-
-*/
+ broswer  nodeName  scopeName  localName
+ IE9     ONI:BUTTON oni        button
+ IE10    ONI:BUTTON undefined  oni:button
+ IE8     button     oni        undefined
+ chrome  ONI:BUTTON undefined  oni:button
+ 
+ */
 function isWidget(el) { //如果为自定义标签,返回UI库的名字
-    if(el.scopeName && el.scopeName !== "HTML" ){
+    if (el.scopeName && el.scopeName !== "HTML") {
         return el.scopeName
     }
-    var fullName = el.nodeName.toLowerCase() 
+    var fullName = el.nodeName.toLowerCase()
     var index = fullName.indexOf(":")
     if (index > 0) {
         return fullName.slice(0, index)
@@ -2998,7 +3027,7 @@ var attrDir = avalon.directive("attr", {
     init: function (binding) {
         //{{aaa}} --> aaa
         //{{aaa}}/bbb.html --> (aaa) + "/bbb.html"
-        binding.expr = stringifyExpr(binding.expr.trim())
+        binding.expr = normalizeExpr(binding.expr.trim())
         if (binding.type === "include") {
             var elem = binding.element
             effectBinding(elem, binding)
@@ -3210,7 +3239,7 @@ var duplexBinding = avalon.directive("duplex", {
                     "input"
         }
         //===================绑定事件======================
-        binding.bound = function (type, callback) {
+        var bound = binding.bound = function (type, callback) {
             elem.addEventListener(type, callback, false)
             var old = binding.rollback
             binding.rollback = function () {
@@ -3219,34 +3248,36 @@ var duplexBinding = avalon.directive("duplex", {
                 old && old()
             }
         }
-        var composing = false
+
         function callback(value) {
             binding.changed.call(this, value, binding)
         }
+        var composing = false
         function compositionStart() {
             composing = true
         }
         function compositionEnd() {
             composing = false
         }
-        var updateVModel = function () {
+        var updateVModel = function (e) {
             var val = elem.value //防止递归调用形成死循环
-            if (composing || val === binding.oldValue) //处理中文输入法在minlengh下引发的BUG
+            if (composing || val === binding.oldValue || binding.pipe === null) //处理中文输入法在minlengh下引发的BUG
                 return
             var lastValue = binding.pipe(val, binding, "get")
+            binding.oldValue = val
             binding.setter(lastValue)
             callback.call(elem, lastValue)
         }
         switch (binding.xtype) {
             case "radio":
-                binding.bound("click", function () {
+                bound("click", function () {
                     var lastValue = binding.pipe(elem.value, binding, "get")
                     binding.setter(lastValue)
                     callback.call(elem, lastValue)
                 })
                 break
             case "checkbox":
-                binding.bound("change", function () {
+                bound("change", function () {
                     var method = elem.checked ? "ensure" : "remove"
                     var array = binding.getter.apply(0, binding.vmodels)
                     if (!Array.isArray(array)) {
@@ -3259,25 +3290,19 @@ var duplexBinding = avalon.directive("duplex", {
                 })
                 break
             case "change":
-                binding.bound("change", updateVModel)
+                bound("change", updateVModel)
                 break
             case "input":
-                if (!IEVersion) { // W3C
-                    binding.bound("input", updateVModel)
-                    //非IE浏览器才用这个
-                    binding.bound("compositionstart", compositionStart)
-                    binding.bound("compositionend", compositionEnd)
-                    binding.bound("DOMAutoComplete", updateVModel)
-                } else { //onpropertychange事件无法区分是程序触发还是用户触发
-                    // IE下通过selectionchange事件监听IE9+点击input右边的X的清空行为，及粘贴，剪切，删除行为
-                    binding.bound("input", updateVModel) //IE9使用propertychange无法监听中文输入改动
-                    //http://www.cnblogs.com/rubylouvre/archive/2013/02/17/2914604.html
-                    //http://www.matts411.com/post/internet-explorer-9-oninput/
+                bound("input", updateVModel)
+                bound("keyup", updateVModel)
+                if (!IEVersion) {
+                    bound("compositionstart", compositionStart)
+                    bound("compositionend", compositionEnd)
+                    bound("DOMAutoComplete", updateVModel)
                 }
-
                 break
             case "select":
-                binding.bound("change", function () {
+                bound("change", function () {
                     var val = avalon(elem).val() //字符串或字符串数组
                     if (Array.isArray(val)) {
                         val = val.map(function (v) {
@@ -3287,34 +3312,37 @@ var duplexBinding = avalon.directive("duplex", {
                         val = binding.pipe(val, binding, "get")
                     }
                     if (val + "" !== binding.oldValue) {
-                        binding.setter(val)
-                        callback.call(elem, val)
+                        try {
+                            binding.setter(val)
+                        } catch (ex) {
+                            log(ex)
+                        }
                     }
                 })
-                binding.bound("datasetchanged", function (e) {
+                bound("datasetchanged", function (e) {
                     if (e.bubble === "selectDuplex") {
                         var value = binding._value
                         var curValue = Array.isArray(value) ? value.map(String) : value + ""
                         avalon(elem).val(curValue)
                         elem.oldValue = curValue + ""
-                        binding.changed.call(elem, curValue)
+                        callback.call(elem, curValue)
                     }
                 })
                 break
         }
         if (binding.xtype === "input" && !rnoduplexInput.test(elem.type)) {
             if (elem.type !== "hidden") {
-                binding.bound("focus", function () {
+                bound("focus", function () {
                     elem.msFocus = true
                 })
-                binding.bound("blur", function () {
+                bound("blur", function () {
                     elem.msFocus = false
                 })
             }
             elem.avalonSetter = updateVModel //#765
             watchValueInTimer(function () {
                 if (root.contains(elem)) {
-                    if (!elem.msFocus && binding.oldValue !== elem.value) {
+                    if (!elem.msFocus) {
                         updateVModel()
                     }
                 } else if (!elem.msRetain) {
@@ -3342,15 +3370,18 @@ var duplexBinding = avalon.directive("duplex", {
                 if (curValue !== this.oldValue) {
                     var fixCaret = false
                     if (elem.msFocus) {
-                        var start = elem.selectionStart
-                        var end = elem.selectionEnd
-                        if (start === end) {
-                            var pos = start
-                            fixCaret = true
+                        try {
+                            var start = elem.selectionStart
+                            var end = elem.selectionEnd
+                            if (start === end) {
+                                var pos = start
+                                fixCaret = true
+                            }
+                        } catch (e) {
                         }
                     }
                     elem.value = this.oldValue = curValue
-                    if (fixCaret) {
+                    if (fixCaret && !elem.readOnly) {
                         elem.selectionStart = elem.selectionEnd = pos
                     }
                 }
@@ -3367,18 +3398,15 @@ var duplexBinding = avalon.directive("duplex", {
             case "select":
                 //必须变成字符串后才能比较
                 binding._value = value
-                if(!elem.msHasEvent){
+                if (!elem.msHasEvent) {
                     elem.msHasEvent = "selectDuplex"
                     //必须等到其孩子准备好才触发
-                }else{
+                } else {
                     avalon.fireDom(elem, "datasetchanged", {
                         bubble: elem.msHasEvent
                     })
                 }
                 break
-        }
-        if (binding.xtype !== "select") {
-            binding.changed.call(elem, curValue)
         }
     }
 })
@@ -3505,7 +3533,7 @@ avalon.directive("effect", {
         if (!rexpr.test(text)) {
             className = quote(className)
         } else {
-            className = stringifyExpr(className)
+            className = normalizeExpr(className)
         }
         binding.expr = "[" + className + "," + rightExpr + "]"
     },
@@ -4266,12 +4294,16 @@ avalon.directive("repeat", {
             if (!proxy) {
                 
                 proxy = getProxyVM(this)
-                proxy.$up = value
+                proxy.$up = null
                 if (xtype === "array") {
                     action = "add"
                     proxy.$id = keyOrId
-
-                    proxy[param] = value[i] //index
+                    var valueItem = value[i]
+                    proxy[param] = valueItem //index
+                    if(Object(valueItem) === valueItem){
+                        valueItem.$ups = valueItem.$ups || {}
+                        valueItem.$ups[param] = proxy
+                    }
 
                 } else {
                     action = "append"
@@ -5751,8 +5783,10 @@ function iOSversion() {
 
 var deviceIsAndroid = ua.indexOf('android') > 0
 var deviceIsIOS = iOSversion()
-var gestureHooks = avalon.gestureHooks = {
+
+var Recognizer = avalon.gestureHooks = {
     pointers: {},
+    //以AOP切入touchstart, touchmove, touchend, touchcancel回调
     start: function (event, callback) {
       
         //touches是当前屏幕上所有触摸点的列表;
@@ -5761,12 +5795,12 @@ var gestureHooks = avalon.gestureHooks = {
         for (var i = 0; i < event.changedTouches.length; i++) {
             var touch = event.changedTouches[i]
             var pointer = {
-                startTouch: mixTouchAttr({}, touch),
+                startTouch: mixLocations({}, touch),
                 startTime: Date.now(),
                 status: 'tapping',
                 element: event.target
             }
-            gestureHooks.pointers[touch.identifier] = pointer;
+            Recognizer.pointers[touch.identifier] = pointer;
             callback(pointer, touch)
 
         }
@@ -5774,7 +5808,7 @@ var gestureHooks = avalon.gestureHooks = {
     move: function (event, callback) {
         for (var i = 0; i < event.changedTouches.length; i++) {
             var touch = event.changedTouches[i]
-            var pointer = gestureHooks.pointers[touch.identifier]
+            var pointer = Recognizer.pointers[touch.identifier]
             if (!pointer) {
                 return
             }
@@ -5799,7 +5833,7 @@ var gestureHooks = avalon.gestureHooks = {
 
 
                 pointer.duration += time;
-                pointer.lastTouch = mixTouchAttr({}, touch)
+                pointer.lastTouch = mixLocations({}, touch)
 
                 pointer.lastTime = Date.now()
 
@@ -5818,16 +5852,17 @@ var gestureHooks = avalon.gestureHooks = {
         for (var i = 0; i < event.changedTouches.length; i++) {
             var touch = event.changedTouches[i],
                     id = touch.identifier,
-                    pointer = gestureHooks.pointers[id]
+                    pointer = Recognizer.pointers[id]
 
             if (!pointer)
                 continue
 
             callback(pointer, touch)
 
-            delete gestureHooks.pointers[id]
+            delete Recognizer.pointers[id]
         }
     },
+    //人工触发合成事件
     fire: function (elem, type, props) {
         if (elem) {
             var event = document.createEvent('Events')
@@ -5836,13 +5871,14 @@ var gestureHooks = avalon.gestureHooks = {
             elem.dispatchEvent(event)
         }
     },
-    add: function (name, gesture) {
+    //添加各种识别器
+    add: function (name, recognizer) {
         function move(event) {
-            gesture.touchmove(event)
+            recognizer.touchmove(event)
         }
 
         function end(event) {
-            gesture.touchend(event)
+            recognizer.touchend(event)
 
             document.removeEventListener('touchmove', move)
 
@@ -5853,7 +5889,7 @@ var gestureHooks = avalon.gestureHooks = {
         }
 
         function cancel(event) {
-            gesture.touchcancel(event)
+            recognizer.touchcancel(event)
 
             document.removeEventListener('touchmove', move)
 
@@ -5863,13 +5899,13 @@ var gestureHooks = avalon.gestureHooks = {
 
         }
 
-        gesture.events.forEach(function (eventName) {
+        recognizer.events.forEach(function (eventName) {
             avalon.eventHooks[eventName] = {
                 fn: function (el, fn) {
                     if (!el['touch-' + name]) {
                         el['touch-' + name] = '1'
                         el.addEventListener('touchstart', function (event) {
-                            gesture.touchstart(event)
+                            recognizer.touchstart(event)
 
                             document.addEventListener('touchmove', move)
 
@@ -5888,12 +5924,12 @@ var gestureHooks = avalon.gestureHooks = {
 
 
 
-var touchkeys = ['screenX', 'screenY', 'clientX', 'clientY', 'pageX', 'pageY']
+var locations = ['screenX', 'screenY', 'clientX', 'clientY', 'pageX', 'pageY']
 
 // 复制 touch 对象上的有用属性到固定对象上
-function mixTouchAttr(target, source) {
+function mixLocations(target, source) {
     if (source) {
-        touchkeys.forEach(function (key) {
+        locations.forEach(function (key) {
             target[key] = source[key]
         })
     }
@@ -5907,7 +5943,7 @@ var supportPointer = !!navigator.pointerEnabled || !!navigator.msPointerEnabled
 if (supportPointer) { // 支持pointer的设备可用样式来取消click事件的300毫秒延迟
   root.style.msTouchAction = root.style.touchAction = 'none'
 }
-var tapGesture = {
+var tapRecognizer = {
   events: ['tap'],
   touchBoundary: 10,
   tapDelay: 200,
@@ -6018,9 +6054,9 @@ var tapGesture = {
   touchHasMoved: function(event) {
     // 判定是否发生移动,其阀值是10px
     var touch = event.changedTouches[0],
-      boundary = tapGesture.touchBoundary
-    return Math.abs(touch.pageX - tapGesture.touchStartX) > boundary ||
-      Math.abs(touch.pageY - tapGesture.touchStartY) > boundary
+      boundary = tapRecognizer.touchBoundary
+    return Math.abs(touch.pageX - tapRecognizer.touchStartX) > boundary ||
+      Math.abs(touch.pageY - tapRecognizer.touchStartY) > boundary
 
   },
 
@@ -6031,7 +6067,7 @@ var tapGesture = {
   },
   sendClick: function(targetElement, event) {
     // 在click之前触发tap事件
-    gestureHooks.fire(targetElement, 'tap', {
+    Recognizer.fire(targetElement, 'tap', {
       touchEvent: event
     })
     var clickEvent, touch
@@ -6044,7 +6080,7 @@ var tapGesture = {
       // 手动触发点击事件,此时必须使用document.createEvent('MouseEvents')来创建事件
       // 及使用initMouseEvent来初始化它
     clickEvent = document.createEvent('MouseEvents')
-    clickEvent.initMouseEvent(tapGesture.findType(targetElement), true, true, window, 1, touch.screenX,
+    clickEvent.initMouseEvent(tapRecognizer.findType(targetElement), true, true, window, 1, touch.screenX,
       touch.screenY, touch.clientX, touch.clientY, false, false, false, false, 0, null)
     clickEvent.touchEvent = event
     targetElement.dispatchEvent(clickEvent)
@@ -6055,7 +6091,7 @@ var tapGesture = {
       return true
     }
     //修正事件源对象
-    var targetElement = tapGesture.fixTarget(event.target)
+    var targetElement = tapRecognizer.fixTarget(event.target)
     var touch = event.targetTouches[0]
     if (deviceIsIOS) {
       // 判断是否是点击文字，进行选择等操作，如果是，不需要模拟click
@@ -6065,73 +6101,73 @@ var tapGesture = {
       }
       var id = touch.identifier
         //当 alert 或 confirm 时，点击其他地方，会触发touch事件，identifier相同，此事件应该被忽略
-      if (id && isFinite(tapGesture.lastTouchIdentifier) && tapGesture.lastTouchIdentifier === id) {
+      if (id && isFinite(tapRecognizer.lastTouchIdentifier) && tapRecognizer.lastTouchIdentifier === id) {
         event.preventDefault()
         return false
       }
 
-      tapGesture.lastTouchIdentifier = id
+      tapRecognizer.lastTouchIdentifier = id
 
-      tapGesture.updateScrollParent(targetElement)
+      tapRecognizer.updateScrollParent(targetElement)
     }
     //收集触摸点的信息
-    tapGesture.status = "tapping"
-    tapGesture.startTime = Date.now()
-    tapGesture.element = targetElement
-    tapGesture.pageX = touch.pageX
-    tapGesture.pageY = touch.pageY
+    tapRecognizer.status = "tapping"
+    tapRecognizer.startTime = Date.now()
+    tapRecognizer.element = targetElement
+    tapRecognizer.pageX = touch.pageX
+    tapRecognizer.pageY = touch.pageY
       // 如果点击太快,阻止双击带来的放大收缩行为
-    if ((tapGesture.startTime - tapGesture.lastTime) < tapGesture.tapDelay) {
+    if ((tapRecognizer.startTime - tapRecognizer.lastTime) < tapRecognizer.tapDelay) {
       event.preventDefault()
     }
   },
   touchmove: function(event) {
-    if (tapGesture.status !== "tapping") {
+    if (tapRecognizer.status !== "tapping") {
       return true
     }
     // 如果事件源元素发生改变,或者发生了移动,那么就取消触发点击事件
-    if (tapGesture.element !== tapGesture.fixTarget(event.target) ||
-      tapGesture.touchHasMoved(event)) {
-      tapGesture.status = tapGesture.element = 0
+    if (tapRecognizer.element !== tapRecognizer.fixTarget(event.target) ||
+      tapRecognizer.touchHasMoved(event)) {
+      tapRecognizer.status = tapRecognizer.element = 0
     }
 
   },
   touchend: function(event) {
-    var targetElement = tapGesture.element
+    var targetElement = tapRecognizer.element
     var now = Date.now()
       //如果是touchstart与touchend相隔太久,可以认为是长按,那么就直接返回
       //或者是在touchstart, touchmove阶段,判定其不该触发点击事件,也直接返回
-    if (!targetElement || now - tapGesture.startTime > tapGesture.tapDelay) {
+    if (!targetElement || now - tapRecognizer.startTime > tapRecognizer.tapDelay) {
       return true
     }
 
 
-    tapGesture.lastTime = now
+    tapRecognizer.lastTime = now
 
-    var startTime = tapGesture.startTime
-    tapGesture.status = tapGesture.startTime = 0
+    var startTime = tapRecognizer.startTime
+    tapRecognizer.status = tapRecognizer.startTime = 0
 
     targetTagName = targetElement.tagName.toLowerCase()
     if (targetTagName === 'label') {
       //尝试触发label上可能绑定的tap事件
-      gestureHooks.fire(targetElement, 'tap', {
+      Recognizer.fire(targetElement, 'tap', {
         touchEvent: event
       })
-      var forElement = tapGesture.findControl(targetElement)
+      var forElement = tapRecognizer.findControl(targetElement)
       if (forElement) {
-        tapGesture.focus(targetElement)
+        tapRecognizer.focus(targetElement)
         targetElement = forElement
       }
-    } else if (tapGesture.needFocus(targetElement)) {
+    } else if (tapRecognizer.needFocus(targetElement)) {
       //  如果元素从touchstart到touchend经历时间过长,那么不应该触发点击事
       //  或者此元素是iframe中的input元素,那么它也无法获点焦点
       if ((now - startTime) > 100 || (deviceIsIOS && window.top !== window && targetTagName === 'input')) {
-        tapGesture.element = 0
+        tapRecognizer.element = 0
         return false
       }
 
-      tapGesture.focus(targetElement)
-      deviceIsAndroid && tapGesture.sendClick(targetElement, event)
+      tapRecognizer.focus(targetElement)
+      deviceIsAndroid && tapRecognizer.sendClick(targetElement, event)
 
       return false
     }
@@ -6144,36 +6180,36 @@ var tapGesture = {
       }
     }
     //如果这不是一个需要使用原生click的元素，则屏蔽原生事件，避免触发两次click
-    if (!tapGesture.needClick(targetElement)) {
+    if (!tapRecognizer.needClick(targetElement)) {
       event.preventDefault()
         // 触发一次模拟的click
-      tapGesture.sendClick(targetElement, event)
+      tapRecognizer.sendClick(targetElement, event)
     }
   },
   touchcancel: function() {
-    tapGesture.startTime = tapGesture.element = 0
+    tapRecognizer.startTime = tapRecognizer.element = 0
   }
 }
 
-gestureHooks.add("tap", tapGesture)
+Recognizer.add("tap", tapRecognizer)
 
 
-var pressGesture = {
+var pressRecognizer = {
     events: ['longtap', 'doubletap'],
     cancelPress: function (pointer) {
         clearTimeout(pointer.pressingHandler)
         pointer.pressingHandler = null
     },
     touchstart: function (event) {
-        gestureHooks.start(event, function (pointer, touch) {
+        Recognizer.start(event, function (pointer, touch) {
             pointer.pressingHandler = setTimeout(function () {
                 if (pointer.status === 'tapping') {
-                    gestureHooks.fire(event.target, 'longtap', {
+                    Recognizer.fire(event.target, 'longtap', {
                         touch: touch,
                         touchEvent: event
                     })
                 }
-                pressGesture.cancelPress(pointer)
+                pressRecognizer.cancelPress(pointer)
             }, 500)
             if (event.changedTouches.length !== 1) {
                 pointer.status = 0
@@ -6182,9 +6218,9 @@ var pressGesture = {
 
     },
     touchmove: function (event) {
-        gestureHooks.move(event, function (pointer) {
+        Recognizer.move(event, function (pointer) {
             if (pointer.distance > 10 && pointer.pressingHandler) {
-                pressGesture.cancelPress(pointer)
+                pressRecognizer.cancelPress(pointer)
                 if (pointer.status === 'tapping') {
                     pointer.status = 'panning'
                 }
@@ -6192,62 +6228,58 @@ var pressGesture = {
         })
     },
     touchend: function (event) {
-        gestureHooks.end(event, function (pointer, touch) {
-            pressGesture.cancelPress(pointer)
+        Recognizer.end(event, function (pointer, touch) {
+            pressRecognizer.cancelPress(pointer)
             if (pointer.status === 'tapping') {
                 pointer.lastTime = Date.now()
-                if (pressGesture.lastTap && pointer.lastTime - pressGesture.lastTap.lastTime < 300) {
-                    gestureHooks.fire(pointer.element, 'doubletap', {
+                if (pressRecognizer.lastTap && pointer.lastTime - pressRecognizer.lastTap.lastTime < 300) {
+                    Recognizer.fire(pointer.element, 'doubletap', {
                         touch: touch,
                         touchEvent: event
                     })
                 }
 
-                pressGesture.lastTap = pointer
+                pressRecognizer.lastTap = pointer
             }
         })
 
     },
     touchcancel: function (event) {
-        gestureHooks.end(event, function (pointer) {
-            pressGesture.cancelPress(pointer)
+        Recognizer.end(event, function (pointer) {
+            pressRecognizer.cancelPress(pointer)
         })
     }
 }
-gestureHooks.add('press', pressGesture)
+Recognizer.add('press', pressRecognizer)
 
-var swipeGesture = {
+var swipeRecognizer = {
     events: ['swipe', 'swipeleft', 'swiperight', 'swipeup', 'swipedown'],
-    getAngle: function (x, y) {
-        var r = Math.atan2(y, x) //radians
-        var angle = Math.round(r * 180 / Math.PI) //degrees
-        return angle < 0 ? 360 - Math.abs(angle) : angle
+    getAngle: function (x, y ) {
+       return Math.atan2(y, x) * 180 / Math.PI
     },
     getDirection: function (x, y) {
-        var angle = swipeGesture.getAngle(x, y)
-        if ((angle <= 45) && (angle >= 0)) {
-            return "left"
-        } else if ((angle <= 360) && (angle >= 315)) {
-            return "left"
-        } else if ((angle >= 135) && (angle <= 225)) {
-            return "right"
-        } else if ((angle > 45) && (angle < 135)) {
-            return "down"
-        } else {
+        var angle = swipeRecognizer.getAngle(x, y)
+        if ((angle < -45) && (angle > -135)) {
             return "up"
+        } else if ((angle >= 45) && (angle < 315)) {
+            return "down"
+        } else if ((angle > -45) && (angle <= 45)) {
+            return "right"
+        } else{
+            return "left"
         }
     },
     touchstart: function (event) {
-        gestureHooks.start(event, noop)
+        Recognizer.start(event, noop)
     },
     touchmove: function (event) {
-        gestureHooks.move(event, noop)
+        Recognizer.move(event, noop)
     },
     touchend: function (event) {
         if(event.changedTouches.length !== 1){
             return
         }
-        gestureHooks.end(event, function (pointer, touch) {
+        Recognizer.end(event, function (pointer, touch) {
             var isflick = (pointer.distance > 30 && pointer.distance / pointer.duration > 0.65)
             if (isflick) {
                 var extra = {
@@ -6255,19 +6287,19 @@ var swipeGesture = {
                     deltaY: pointer.deltaY,
                     touch: touch,
                     touchEvent: event,
-                    direction:  swipeGesture.getDirection(pointer.deltaX, pointer.deltaY),
+                    direction:  swipeRecognizer.getDirection(pointer.deltaX, pointer.deltaY),
                     isVertical: pointer.isVertical
                 }
                 var target = pointer.element
-                gestureHooks.fire(target, 'swipe', extra)
-                gestureHooks.fire(target, 'swipe' + extra.direction, extra)
+                Recognizer.fire(target, 'swipe', extra)
+                Recognizer.fire(target, 'swipe' + extra.direction, extra)
             }
         })
     }
 }
 
-swipeGesture.touchcancel = swipeGesture.touchend
-gestureHooks.add('swipe', swipeGesture)
+swipeRecognizer.touchcancel = swipeRecognizer.touchend
+Recognizer.add('swipe', swipeRecognizer)
 
 
 

@@ -33,15 +33,14 @@
     "compiler.jar",
     "server.exe"
   ],
-  "version": "1.5.4",
-  "_release": "1.5.4",
+  "version": "1.5.5",
+  "_release": "1.5.5",
   "_resolution": {
     "type": "version",
-    "tag": "1.5.4",
-    "commit": "bee9dd0e59a50d2d6ea1a633a973451c16ab3977"
+    "tag": "1.5.5",
+    "commit": "cf26d8f01420e94de3d638edebc4fc0c7ac4949a"
   },
   "_source": "git://github.com/RubyLouvre/avalon.git",
   "_target": "~1.5.4",
-  "_originalSource": "avalon",
-  "_direct": true
+  "_originalSource": "avalon"
 }
