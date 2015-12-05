@@ -1,0 +1,37 @@
+<link rel='import' href='/bower_components/polymer/polymer.html'>
+
+<dom-module id='poly-attr'>
+  <template>
+    <p class="">
+      i am <b>{{author}}</b>.
+    </p>
+    <center class=''>
+      {{nua}}
+    </center>
+    <div class="" hidden="{{hide}}">im here~</div>
+  </template>
+</dom-module>
+
+<script>
+  Polymer({
+    is: 'poly-attr',
+    properties: {
+      author: {
+        type: String,
+        value: 'clld'
+      },
+      nua: {
+        value: navigator.userAgent
+      },
+      hide: {
+        value: true
+      }
+    },
+    ready: function(){
+      var self= this
+      setInterval(function(){
+        self.hide= !self.hide
+      }, 1000)
+    }
+  })
+</script>
