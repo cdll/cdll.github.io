@@ -1,0 +1,20 @@
+<link rel="import" href='/bower_components/polymer/polymer.html'>
+
+<dom-module id='poly-editable'>
+  <template>
+    <p class="">now is <em>{{name}}</em></p>
+    <input class="" is='user' bind-value='{{name}}' placeholder="name here" />
+  </template>
+</dom-module>
+
+<script>
+  Polymer({
+    is: 'poly-editable',
+    properties: {
+      name: {
+        type: String,
+        value: 'cdll'
+      }
+    }
+  })
+</script>
