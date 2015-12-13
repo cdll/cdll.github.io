@@ -1,7 +1,0 @@
-{
-    "jscodehints.detectedExclusions": [
-        "/Users/Jiliguala/github/cdll/bower_components/coffee-script/documentation/js/parallel_assignment.js",
-        "/Users/Jiliguala/github/cdll/bower_components/coffee-script/documentation/js/objects_reserved.js",
-        "/Users/Jiliguala/github/cdll/bower_components/coffee-script/documentation/js/overview.js"
-    ]
-}
