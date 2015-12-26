@@ -1,0 +1,14 @@
+{
+  "name": "surface",
+  "homepage": "https://github.com/mildrenben/surface",
+  "_release": "3a91aff2c9",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "3a91aff2c9b51c6adcdcbd09422a46c59b48ff3b"
+  },
+  "_source": "https://github.com/mildrenben/surface.git",
+  "_target": "*",
+  "_originalSource": "https://github.com/mildrenben/surface.git",
+  "_direct": true
+}
