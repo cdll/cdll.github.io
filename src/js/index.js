@@ -1,7 +1,7 @@
-require(['loaderConfig'], function(config){
+require(['/loaderConfig'], function(config){
   console.info(config)
   avalon.config(config)
-  console.clear()
+//  console.clear()
   
   require(['mock'], function(Mock){
     var data= Mock.mock({

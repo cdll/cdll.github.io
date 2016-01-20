@@ -1,0 +1,217 @@
+<!doctype html author='cdll@20150521'>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta http-equiv="pragma" content="no-cache"/>
+        <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache, must-revalidate, 0"/>
+        <META HTTP-EQUIV="Set-Cookie" CONTENT="0"/>
+        <META HTTP-EQUIV="Expires" CONTENT="0"/>
+
+        <title>找药</title>
+
+        <link rel="stylesheet" type="text/css" href="css/style.css"/>
+
+    </head>
+    
+    <body class="index">
+        <section class="shopper-information " ms-controller='seekdrug'>
+            <div class="zyo-box box-88">
+                <p class="p">想找肿瘤药、罕见病药、新药？掌药客服来帮您
+                </p>
+                <div class="col-4">
+                    <img class="col-11 center-block" src="img/seek_banner.png"/>
+                </div>
+                <div class="col-8">
+                    <p class="p">
+                        <small class="text-gray">客服在线时间：周一至周五09点~18点</small>
+                    </p>
+                    <button class="col-7 btn btn-zyo-info text-white text-center">
+                        <img class="col-2" src="img/btn_conversation_dial.png"/>
+                        点击咨询
+                    </button>
+                </div>
+                <div class="clear">
+                </div>
+            </div>
+            <p class="p box-88">
+                <small>客服不在线？上传信息帮您找药，48小时内给您答案。</small>
+            </p>
+            <form action="http://testapi.lkhealth.net/index.php?r=drug/findRareDrug" method="post">
+                <div class="zyo-box box-88">
+                    <div class='col-2'>地址</div>
+                    <div class='col-1 text-center'>
+                        <span class='text-warning'>*</span>
+                    </div>
+                    <div class='col-8'>
+                        <input type='text' class='full-width' id='user_location' placeholder='请输入详细地址' ms-attr-value='user_info.address'/>
+                    </div>
+                    <div class='col-1' ms-click=fuckMapwall(true)>
+                        <img class="col-6 pull-right" src="img/icon_locate.png"/>
+                    </div>
+                    <div class='clear'></div>
+                </div>
+                <div class="zyo-box zyo-box-last box-88">
+                    <div class='col-2'>电话</div>
+                    <div class='col-1 text-center'>
+                        <span class='text-warning'>*</span>
+                    </div>
+                    <div class='col-9'>
+                        <input type='text' class='full-width' id="shit" placeholder='掌药客服联系您的方式' ms-attr-value='user_info.tel'/>
+                    </div>
+                    <div class='clear'></div>
+                </div>
+                <p class="p text-center"><small>您当前的位置:<span id="geo">{{sessionStorage.user_lng}},{{sessionStorage.user_lat}}</span></small></p>
+                <dd>
+                    <dl ms-repeat='drug_list'>
+                        <div class="zyo-box box-88">
+                            <div class='col-2'>药品名</div>
+                            <div class='col-1 text-center'>
+                                <span class='text-warning'>*</span>
+                            </div>
+                            <div class='col-9'>
+                                <input type='text' class='full-width' id="shit" placeholder='输入要找的药品名称' ms-attr-value='el.drug_name'/>
+                            </div>
+                            <div class='clear'></div>
+                        </div>
+                        <div class="zyo-box zyo-box-last box-88">
+                            <div class='col-2'>规格</div>
+                            <div class='col-1 text-center'>
+                                <span class='text-warning'>*</span>
+                            </div>
+                            <div class='col-9'>
+                                <input type='text' class='full-width' id="shit" placeholder='输入要找的药品规格' ms-attr-value='el.format'/>
+                            </div>
+                            <div class='clear'></div>
+                        </div>
+                        <div class="zyo-box zyo-box-last box-88">
+                            <div class='col-2'>厂家</div>
+                            <div class='col-1 text-center'>
+                                <span class='text-warning'>*</span>
+                            </div>
+                            <div class='col-9'>
+                                <input type='text' class='full-width' id="shit" placeholder='输入要找的药品生产厂家' ms-attr-value='el.company'/>
+                            </div>
+                            <div class='clear'></div>
+                        </div>
+                    </dl>
+                    <div class="zyo-box zyo-box-last text-center" ms-if='drug_list.length<10'>
+                        <a ms-click="add_drug">
+    <!--                        <b><big>+</big></b>-->
+                            <img class="co-1" src='img/btn_add_yes.png' style='max-width:22px;'/>
+                            <span class="">点击添加药品</span>
+                        </a>
+                    </div>
+                </dd>
+                <div class="box-88">
+                    <button class="btn btn-block btn-zyo-yes text-white">提交（{{drug_list.length}}）</button>
+                </div>
+            </form>
+            <p class="p"><br></p>
+            <div class="blacksheepwall geo-menu geo-menu-map" ms-if=map_wall ms-click=fuckMapwall(false)>
+                <div id="allmap"></div>
+            </div>
+            <div class="blacksheepwall " ms-if=sheep_wall ms-click=fuckSheepwall(false)>
+            </div>
+        </section>
+        
+<!--        <script id="jqueryCore" type="text/javascript" src="js/jquery-1.9.1.min.js"></script>-->
+        <script src="js/zyo-api-url.js"></script>
+        <script id="avalonCore" src="js/avalon.min.js"></script>
+        <script id='bdMapAPI' src="http://api.map.baidu.com/api?v=2.0&ak=c19wNezZKguqlGLqUWDvGCI7"></script>
+
+        <script type="text/javascript">
+            avalon.config({
+                paths: {
+                    jquery: "/jquery-1.9.1.min.js",
+//                    bMap: "http://api.map.baidu.com/api?v=2.0&ak=c19wNezZKguqlGLqUWDvGCI7",
+//                    zyoAPI: '/zyo-api-url.js'
+                },
+                shim: {
+                    jquery: {
+                        exports: "jQuery"//这是原来jQuery库的命名空间，必须写上
+                    },
+                },
+                debug: false,
+            })
+            require(['jquery'], function($){
+//                $.getScript("http://api.map.baidu.com/api?v=2.0&ak=c19wNezZKguqlGLqUWDvGCI7", function(){})
+//                avalon.log('加载jq了啊……')
+                getPoi()
+                seekdrug= avalon.define({
+                    $id: 'seekdrug',
+                    user_info: {address: '', tel: ''},
+                    drug_list: [
+                        {drug_name:'',format:'',company:''},
+                    ],
+                    add_drug: function(){
+                        seekdrug.drug_list.push({drug_name:'',format:'',company:''})
+                    },
+                    map_wall: false,
+                    fuckMapwall: function(flag){
+                        seekdrug.map_wall= flag
+                        seekdrug.getMap()
+                    },
+                    sheep_wall: false,
+                    fuckSheepwall: function(flag){
+                        seekdrug.sheep_wall= flag
+                    },
+                    getMap: function(){
+                        //百度地图API功能
+                        var map= new BMap.Map("allmap");//创建Map实例
+//                        console.log($('#geo').text(map))
+                        if(sessionStorage.user_lat|| sessionStorage.user_lng){
+                            console.log(sessionStorage);
+                            var point = new BMap.Point(sessionStorage.user_lng, sessionStorage.user_lat);
+                            map.centerAndZoom(point, 11);  // 初始化地图,设置用户中心点坐标和地图级别
+                            var mk = new BMap.Marker(point);
+                            map.addOverlay(mk);
+//                            console.info('CENTER BY:sessionStorage.userpoi')
+                        }
+                        map.setCurrentCity('中国');//设置地图显示的城市 此项是必须设置的
+                        map.enableScrollWheelZoom(true);//开启鼠标滚轮缩放
+                        map.addEventListener("click",function(e){
+                            var self= e;
+                            var point = new BMap.Point(self.point.lng, self.point.lat);
+                            var mk = new BMap.Marker(point);
+                            map.clearOverlays();
+                            map.addOverlay(mk);
+//                            console.log(self.point.lng, self.point.lat);
+                            var url= "http://api.map.baidu.com/telematics/v3/reverseGeocoding?location="+(self.point.lng||116.3017193083)+","+(self.point.lat||40.050743859593)+"&coord_type=gps&output=json&ak=c19wNezZKguqlGLqUWDvGCI7";
+//                            $.getJSON({
+//                                url: url,
+//                                success: function(res, json){
+//                                    console.log(json)
+//                                }
+//                            })
+                        });
+                    },
+                })
+                avalon.scan()
+                //获取经纬度
+                function getPoi(){
+                    if(!sessionStorage.user_lat|| !sessionStorage.user_lng){
+                        setTimeout(function(){
+//                            location.reload()
+                        },2000)
+                    }
+                    if(navigator.geolocation){
+                        navigator.geolocation.getCurrentPosition(function (poi){
+                            sessionStorage.user_lat= poi.coords.latitude;
+                            sessionStorage.user_lng= poi.coords.longitude;
+                            console.log(sessionStorage.user_lat+','+sessionStorage.user_lng)
+    //                        return poi;
+                        },function (error){
+                            console.log(error)
+                            $('#geo').parent().text('您的设备可能未开启GPS定位，请到系统设置中开启')
+                        },{enableHighAccuracy: true,timeout:2000})
+                    }
+                    else{
+                        console.log('geolocation is not supported')
+                    }
+                }
+            })
+        </script>
+    </body>
+</html>

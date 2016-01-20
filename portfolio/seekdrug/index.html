@@ -1,0 +1,284 @@
+<!doctype html author='cdll@20150521'>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta http-equiv="pragma" content="no-cache"/>
+        <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache, must-revalidate, 0"/>
+        <META HTTP-EQUIV="Set-Cookie" CONTENT="0"/>
+        <META HTTP-EQUIV="Expires" CONTENT="0"/>
+
+        <title>找药</title>
+
+        <link rel="stylesheet" type="text/css" href="css/style.css"/>
+
+    </head>
+    
+    <body class="index">
+        <section class="shopper-information " ms-controller='seekdrug'>
+            <div class="zyo-box box-88">
+                <p class="p">想找肿瘤药、罕见病药、新药？掌药客服来帮您
+                </p>
+                <div class="col-4">
+                    <img class="col-11 center-block" src="img/seek_banner.png"/>
+                </div>
+                <div class="col-8">
+                    <p class="p">
+                        <small class="text-gray">客服在线时间：周一至周五09点~18点</small>
+                    </p>
+                        <a class="col-7 btn btn-zyo-info text-white text-center" href="tel:4000318766">
+                            <img class="col-2" src="img/btn_conversation_dial.png"/>
+                            点击咨询
+                        </a>
+                </div>
+                <div class="clear">
+                </div>
+            </div>
+            <p class="p box-88">
+                <small>客服不在线？上传信息帮您找药，48小时内给您答复。</small>
+            </p>
+<!--            <form action="" method="post" id='findRareDrug'>-->
+                <div class="zyo-box box-88">
+                    <div class='col-2'>地址</div>
+                    <div class='col-1 text-center'>
+                        <span class='text-warning'>*</span>
+                    </div>
+                    <div class='col-8'>
+                        <input type='text' class='full-width tosub' id='addr' name="addr" placeholder='请输入详细地址' onblur='javascript:blurItem(this)'/>
+                    </div>
+                    <div class='col-1' id="get_location" onclick='javscript:fuckMapwall()'>
+                        <img class="col-6 pull-right" src="img/icon_locate.png"/>
+                    </div>
+                    <div class='clear'></div>
+                </div>
+                <div class="zyo-box zyo-box-last box-88">
+                    <div class='col-2'>电话</div>
+                    <div class='col-1 text-center'>
+                        <span class='text-warning'>*</span>
+                    </div>
+                    <div class='col-9'>
+<!--                        <input class="full-width temp-tel" id="tempTel" ms-duplex=user_info.tel placeholder='掌药客服联系您的方式' style='margin-bottom:-18px;'/>-->
+                        <input type='tel' class='full-width tosub' id="tel" name="tel" placeholder='掌药客服联系您的方式' onblur='javascript:blurItem(this)' ms-duplex=user_info.tel ms-css-opacity='1'/>
+                        <div class="" style="background:white;margin-top:-17px;width:12px;height:17px;float:right;z-index:100;"></div>
+                    </div>
+                    <div class='clear'></div>
+                </div>
+<!--                <p class="p text-center"><small>您当前的位置:<span id="geo">{{sessionStorage.user_lng}},{{sessionStorage.user_lat}}</span></small></p>-->
+                <dd>
+                    <dl ms-repeat='drug_list'>
+                        <div class="zyo-box box-88">
+                            <div class="col-1 pull-right" style="height:20px;margin-bottom:-24px;margin-top:-2px;background:none;padding: 3px;border:none;" ms-if='drug_list.length>1' ms-data-index=$index ms-click=remove_drug($index)>
+                                <img class="row-12 pull-right" src="img/icon_search_clear_history.png"/>
+                            </div>
+                            <div class='col-2'>药品名</div>
+                            <div class='col-1 text-center'>
+                                <span class='text-warning'>*</span>
+                            </div>
+                            <div class='col-8'>
+                                <input type='text' class='full-width tosub' ms-attr-name=el.idname placeholder='输入要找的药品名称' ms-attr-value='el.drug_name' onblur='javascript:blurItem(this)'/>
+                            </div>
+                            
+                            <div class='clear'></div>
+                        </div>
+                        <div class="zyo-box zyo-box-last box-88">
+                            <div class='col-2'>规格</div>
+                            <div class='col-1 text-center'>
+                                <span class='text-warning'>*</span>
+                            </div>
+                            <div class='col-9'>
+                                <input type='text' class='full-width tosub' ms-attr-name=el.idform placeholder='输入要找的药品规格' ms-attr-value='el.format' onblur='javascript:blurItem(this)'/>
+                            </div>
+                            <div class='clear'></div>
+                        </div>
+                        <div class="zyo-box zyo-box-last box-88">
+                            <div class='col-2'>厂家</div>
+                            <div class='col-1 text-center'>
+                                <span class='text-warning'>*</span>
+                            </div>
+                            <div class='col-9'>
+                                <input type='text' class='full-width tosub' ms-attr-name=el.idcom placeholder='输入要找的药品生产厂家' ms-attr-value='el.company' onblur='javascript:blurItem(this)'/>
+                            </div>
+                            <div class='clear'></div>
+                        </div>
+                    </dl>
+                    <div class="zyo-box zyo-box-last text-center" ms-if='drug_list.length<10' ms-click="add_drug">
+<!--                        <b><big>+</big></b>-->
+                        <img class="co-1" src='img/btn_add_yes.png' style='max-width:22px;'/>
+                        <span class="">点击添加药品</span>
+                    </div>
+                </dd>
+<!--                <input class="hide" name="redirect" value="http://phone.lkhealth.net/ydzx/business/seekdrug" readOnly/>-->
+                <div class="box-88">
+                    <button class="btn btn-block btn-zyo-yes text-white" id="submit" type="submit">提交</button>
+                </div>
+<!--            </form>-->
+            <p class="p"><br></p>
+            <div class="ajax-tip" style="position:fixed;bottom:-20%;width:60%;background:rgba(8,8,8,.8);color:white;font-weight:bold;padding:.55em .15em;margin-left: 20%;border-radius:1em;opacity:0;text-align:center;">
+                <p class="text-center p">
+                    <img class="center-block hide" src="img/icon_popup_tip_check.png" width='25px'/>
+                    <img class="center-block " src="img/icon_popup_tip_cross.png" width='25px'/>
+                </p>
+                <span></span>
+            </div>
+            <div class="blacksheepwall " ms-if=sheep_wall ms-click=fuckSheepwall(false)>
+                <div class="zyo-box">
+                </div>
+            </div>
+        </section>
+        
+<!--        <script id="jqueryCore" type="text/javascript" src="js/jquery-1.9.1.min.js"></script>-->
+<!--        <script src="js/zyo-api-url.js"></script>-->
+        <script id="avalonCore" src="js/avalon.min.js"></script>
+        <script id='txMapAPI' src="http://map.qq.com/api/js?v=2.exp&libraries=convertor" chacharset="utf-8"></script>
+
+        <script type="text/javascript">
+            avalon.config({
+                paths: {
+                    jquery: "/jquery-1.9.1.min.js",
+//                    zyoAPI: '/zyo-api-url.js'
+                },
+                shim: {
+                    jquery: {
+                        exports: "jQuery"//这是原来jQuery库的命名空间，必须写上
+                    },
+                },
+                debug: false,
+            })
+            require(['jquery'], function($){
+//                avalon.log('加载jq了啊……')
+                getPoi()
+                seekdrug= avalon.define({
+                    $id: 'seekdrug',
+                    user_info: {address: '', tel: ''},
+                    drug_list: [
+                        {drug_name:'',format:'',company:'',idname:'drugs[0][drug_name]',idform:'drugs[0][drug_form]',idcom:'drugs[0][drug_company]'},
+                    ],
+                    add_drug: function(){
+                        var len= seekdrug.drug_list.length;
+                        seekdrug.drug_list.push({drug_name:'',format:'',company:'',idname:'drugs['+len+'][drug_name]',idform:'drugs['+len+'][drug_form]',idcom:'drugs['+len+'][drug_company]'})
+                    },
+                    map_wall: false,
+                    sheep_wall: false,
+                    fuckSheepwall: function(flag){
+                        seekdrug.sheep_wall= flag
+                    },
+                    remove_drug: function(index){
+                        console.log(index)
+                        seekdrug.drug_list.splice(index,1)
+                    },
+                    blurItem: function(o){
+                        console.log(o)
+                    }
+                })
+                avalon.scan()
+                //获取经纬度
+                function getPoi(){
+                    if(navigator.geolocation){
+                        navigator.geolocation.getCurrentPosition(function (poi){
+                            sessionStorage.user_lat= poi.coords.latitude;
+                            sessionStorage.user_lng= poi.coords.longitude;
+                            console.log(sessionStorage.user_lat,sessionStorage.user_lng)
+    //                        return poi;
+                        },function (error){
+                            console.log(error.message)
+//                            alert('定位未开启，请刷新页面后重试~')
+                        },{enableHighAccuracy: true,timeout:3000})
+                    }
+                    else{
+                        console.log('geolocation is not supported')
+                    }
+                }
+                //自定义表单提交
+                $('#submit').click(function(e){
+                    e.preventDefault();
+                    //提交前校验表单空值
+                    if($('.tosub')[0]){
+                        $('.tosub').eq(0).css('outline','1px solid red')
+                        $(document).scrollTop($('.tosub')[0].offsetTop-10)
+                        setTimeout(function(){
+                            $('.tosub').eq(0).css('outline','none')
+                        },1000)
+                        return false
+                    }
+                    else{
+//                        $('#findRareDrug').submit()
+                        var input_data='';
+                        for(var i= 0, l= $('input[name]').length; i< l; i++){
+                            input_data+= '&'+ $('input[name]')[i].name+ '='+ $('input[name]')[i].value
+                        }
+                        var url= 'http://api.lkhealth.net/index.php?r=drug/findRareDrug'+ input_data;
+                        $.post(url, function(json){
+                            console.log(res= JSON.parse(json));
+                            if(res.code== 0){
+                                $('.ajax-tip p>img').toggleClass('hide')
+                                $('.ajax-tip span').text('提交成功')
+                                $('.ajax-tip').delay(0).animate({bottom:'40%',opacity:1},500)
+                                setTimeout(function(){
+                                    location.reload()
+                                },3000)
+                            }else{
+                                $('.ajax-tip span').text('提交失败')
+                                $('.ajax-tip').delay(0).animate({bottom:'40%',opacity:1},500).delay(3000).animate({bottom:'-20%',opacity:0},500)
+                            }
+                        })
+                    }
+                })
+                $('.disable').on('click', function(e){
+                    e.preventDefault()
+                })
+            })
+            //移除表单空值判断标记tosub
+            function blurItem(o){
+                if($(o).val().match(/^[\s]{0,}$/)){
+                    $(o).addClass('tosub')
+                }
+                else{
+                    $(o).removeClass('tosub')
+                }
+            }
+            //点击定位按钮进行直接定位
+            function fuckMapwall(){
+                console.log(get_location)
+                if(navigator.geolocation){
+                    navigator.geolocation.getCurrentPosition(function (poi){
+                        sessionStorage.user_lat= poi.coords.latitude;
+                        sessionStorage.user_lng= poi.coords.longitude;
+                        console.log(sessionStorage.user_lat,sessionStorage.user_lng)
+//                        return poi;
+                        var lat=sessionStorage.user_lat;
+                        var lng=sessionStorage.user_lng;
+                        qq.maps.convertor.translate(new qq.maps.LatLng(lat,lng), 1, function(res){
+                            var latlng = res[0];
+                            var geocoder = new qq.maps.Geocoder();//地址和经纬度之间进行转换服务
+                            geocoder.getAddress(latlng);//对指定经纬度进行解析
+                            geocoder.setComplete(function(result) {//设置服务请求成功的回调函数
+                                $('#addr').val(result.detail.address).removeClass('tosub');
+                            });
+                        })
+                    },function (error){
+                        console.log(addr.placeholder= '定位超时~')
+//                        if($('.ajax-tip').css('opacity')== 0){
+//                            $('.ajax-tip span').text('定位超时，请开启GPS及WIFI辅助定位后刷新页面重试~');
+//                            $('.ajax-tip').delay(0).animate({bottom:'40%',opacity:1},500).delay(3000).animate({bottom:'-20%',opacity:0},500);
+//                        }
+                    },{enableHighAccuracy: true,timeout:3000})
+                }
+                else{
+                    console.log(addr.placeholder= '您的设备未开启定位服务~')
+//                    $('.ajax-tip span').text('您的设备未开启定位服务，请刷新页面后重试~')
+//                    $('.ajax-tip').delay(0).animate({bottom:'40%',opacity:1},500).delay(3000).animate({bottom:'-20%',opacity:0},500)
+                }
+            }
+        </script>
+        <script id='baiduAnalysis'>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "http://hm.baidu.com/hm.js?5002c973b1b7f507356d12df430097f5";
+            var s = document.getElementsByTagName("script")[0]; 
+            s.parentNode.insertBefore(hm, s);
+        })();
+        </script>
+    </body>
+</html>

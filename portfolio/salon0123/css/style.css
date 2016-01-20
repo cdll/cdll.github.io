@@ -1,0 +1,41 @@
+@charset "utf-8";
+/*@font-face{font-family: Yuanti;src:url('../fonts/Youyuan.TTF') format('truetype');}*/
+*{margin:0; padding:0; word-wrap:break-word;font-family:'Microsoft Yahei';}
+html{min-height:100%;}
+body{font-weight:normal; margin: 0 auto;-webkit-user-select: none;-webkit-text-size-adjust: none; min-height: 100%; min-width:320px; max-width:480px;}
+img {border:0; max-width:100%;outline: none;}
+li{list-style:none;}
+table{border-collapse:collapse; border-spacing:0;}
+th,td{padding:0;}
+input,button,select,textarea{outline:none;border:0;}
+a{color:#4f4f4f;outline:medium none; text-decoration:none;-webkit-tap-highlight-color:rgba(0,0,0,0);}
+a:hover{color:#4f4f4f; text-decoration:none;}
+ul{list-style:none;}
+.clear{ clear:both;}
+.full-width{width:100%;}
+.left-fix{padding-left:0;margin-left:0;}
+.right-fix{padding-right:0;margin-right:0;}
+input[type=file]{height:100%;left:0;top:0;z-index:500;opacity:0;filter:alpha(opacity=0);-ms-filter:'alpha(opacity=0)';line-height: 2em;}
+
+body.qxwd{background-color:white;text-shadow: 0px 0px 1px white;}
+.detail{border:none;padding: 15px;background-color: white;/*background-image: url(../images/sec_bottom_bg.png);background-position: center;background-repeat: no-repeat;background-size: 100%;*/}
+.detail h5{color: #0093dd;font-weight: bold;}
+.detail p{font-size: 1.1em;text-indent: 2em;margin: 0 0 5px;color: gray;}
+.plan h5{color: #0093dd;font-weight: bold;}
+.plan-item{margin: 0;padding: 5px;}
+.plan-item p{padding-left: 0;color: gray;}
+.plan-item:nth-child(odd){background: #e5f4fc;border-radius: 10px;}
+.banner-center{background: url(../images/banner_center_bg.png) no-repeat;background-size: 100% 100%;color: white;text-align: center;text-shadow: none;padding: 10px 0!important;}
+.plan>p{padding: 2px 0;}
+.stores{padding: 15px;background-color: white;background-image: url(../images/sec_bottom_bg.png);background-position: bottom;background-repeat: no-repeat;background-size: 100%;}
+.stores h5{color: #0093dd;font-weight: bold;}
+.stores div{color: #a1a0a0;font-weight: normal;}
+.enroll{margin-top: 15px;}
+.enroll>div{margin-top: 0;margin-bottom: 10px;}
+.enroll-top{background: #0093dd;color: white;padding: 15px!important;}
+.enroll-lable{padding-right: 0;}
+.enroll-lable>span{color: red;}
+.enroll-input{border:1px solid lightgray;padding: 5px;border-radius: 5px;width: 100%;}
+.enroll-text{resize: none;border: 1px solid lightgray;width: 100%;min-height:100px;border-radius: 5px;}
+#sub-btn{margin:10px 5%;padding:5px 5%; min-width: 10em;width: 90%;}
+.footer p{font-size: .75em;margin-bottom: 5px;}
