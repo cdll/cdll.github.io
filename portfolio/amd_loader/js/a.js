@@ -2,29 +2,31 @@
 //  document.write(query)
 //})
 require.config({
-  baseUrl: '/',
-  paths:{
-    jquery: '/bower_components/jquery/dist/jquery.min',
-    ajax: "/bower_components/ajax/dist/ajax.min"
-  },
-  shim:{
+  baseUrl: '/'
+  ,paths:{
+    jquery: '/bower_components/jquery/dist/jquery.min'
+    ,ajax: "/bower_components/ajax/dist/ajax.min"
+    ,qwest: "/bower_components/qwest/qwest.min.js"
+  }
+  ,shim:{
     jquery:{
       exports: 'jquery'
-    },
-    ajax:{
+    }
+    ,ajax:{
       exports: 'Ajax'
     }
-  },
-  timeout: 5
+  }
+  ,timeout: 10
 })
-//require(['jquery'], function($){
-//  //todo 获取index.json中的json数据
-//  $.getJSON('./index.json', function(res){
-//    console.info(res)
-//  })
-//})
 
-require(['ajax'], function(){
-  var ajax= new Ajax()
-  console.info(ajax)
+require(['qwest'], function(ajax){
+  ajax.get(
+    './index.json'
+    ,''
+    ,''
+    ,''
+  )
+  .then(function(xhr, res){
+    console.info(xhr, res)
+  })
 })
