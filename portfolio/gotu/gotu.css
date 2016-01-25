@@ -1,6 +1,7 @@
 /*common*/
 *{margin: 0 auto; padding: 0;}
 .ms-controller{visibility: hidden;}
+[ms-click]{cursor: pointer;}
 
 .btn{
   border: none;
@@ -39,4 +40,12 @@
 
 .form-input{
   padding: 8px 10px;
+}
+
+.footer{
+	height: 1.5em;
+	line-height: 1.5em;
+	position: fixed;
+	bottom: 0;
+	width: 100%;
 }
