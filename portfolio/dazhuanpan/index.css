@@ -1,0 +1,38 @@
+*{
+  margin: 0;
+  padding: 0;
+  outline: none;
+  -webkit-transition: 0s linear;
+  transition: 0s linear;
+}
+
+html, body{
+  min-height: 100%;
+}
+
+.rotater-desk{
+  width: 300px;height: 300px;background: lightgreen;border-radius: 50%;border: none;
+  background: -webkit-linear-gradient(lightgreen, lightblue);background: linear-gradient(lightgreen, lightblue);
+  -webkit-animation: 1s rotate infinite;
+  animation: 1s rotate infinite;
+}
+@-webkit-keyframes rotate{
+  from{
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  to{
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes rotate{
+  from{
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  to{
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
