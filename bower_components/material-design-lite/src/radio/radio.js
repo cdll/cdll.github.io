@@ -225,6 +225,11 @@
       this.btnElement_ = this.element_.querySelector('.' +
           this.CssClasses_.RADIO_BTN);
 
+      this.boundChangeHandler_ = this.onChange_.bind(this);
+      this.boundFocusHandler_ = this.onChange_.bind(this);
+      this.boundBlurHandler_ = this.onBlur_.bind(this);
+      this.boundMouseUpHandler_ = this.onMouseup_.bind(this);
+
       var outerCircle = document.createElement('span');
       outerCircle.classList.add(this.CssClasses_.RADIO_OUTER_CIRCLE);
 
@@ -244,7 +249,7 @@
             this.CssClasses_.RIPPLE_CONTAINER);
         rippleContainer.classList.add(this.CssClasses_.RIPPLE_EFFECT);
         rippleContainer.classList.add(this.CssClasses_.RIPPLE_CENTER);
-        rippleContainer.addEventListener('mouseup', this.onMouseup_.bind(this));
+        rippleContainer.addEventListener('mouseup', this.boundMouseUpHandler_);
 
         var ripple = document.createElement('span');
         ripple.classList.add(this.CssClasses_.RIPPLE);
@@ -253,10 +258,10 @@
         this.element_.appendChild(rippleContainer);
       }
 
-      this.btnElement_.addEventListener('change', this.onChange_.bind(this));
-      this.btnElement_.addEventListener('focus', this.onFocus_.bind(this));
-      this.btnElement_.addEventListener('blur', this.onBlur_.bind(this));
-      this.element_.addEventListener('mouseup', this.onMouseup_.bind(this));
+      this.btnElement_.addEventListener('change', this.boundChangeHandler_);
+      this.btnElement_.addEventListener('focus', this.boundFocusHandler_);
+      this.btnElement_.addEventListener('blur', this.boundBlurHandler_);
+      this.element_.addEventListener('mouseup', this.boundMouseUpHandler_);
 
       this.updateClasses_();
       this.element_.classList.add(this.CssClasses_.IS_UPGRADED);

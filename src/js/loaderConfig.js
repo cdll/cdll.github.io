@@ -1,19 +1,20 @@
 var config= {
-  debug: 0,
-  baseUrl: '/',
-  paths: {
-    mock: "/bower_components/mockjs/dist/mock-min.js",
-    polymer: '',
-    bs: "/bower_components/bootstrap/bootstrap-3.3.6/dist/js/bootstrap.min.js",
-    jquery: '/bower_components/jquery/dist/jquery.min.js',
-  },
-  shim: {
+  debug: 0
+  ,baseUrl: '/'
+  ,paths: {
+    avalon: '/bower_components/avalon/dist/avalon.min'
+    ,qwest: "/bower_components/qwest/qwest.min"
+    ,mock: "/bower_components/mockjs/dist/mock-min"
+    ,bs: "/bower_components/bootstrap/bootstrap-3.3.6/dist/js/bootstrap.min"
+    ,jquery: '/bower_components/jquery/dist/jquery.min'
+  }
+  ,shim: {
     jquery: {
       exports: 'jquery'
-    },
-    bs: {
-      deps: ['jquery'],
+    }
+    ,bs: {
       exports: 'bs'
+      ,deps: ['jquery']
     }
   }
 }

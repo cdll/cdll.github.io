@@ -1,4 +1,4 @@
-qwest 3.0.0
+qwest 4.1.1
 ============
 
 Qwest is a simple ajax library based on `promises` and that supports `XmlHttpRequest2` special data like `ArrayBuffer`, `Blob` and `FormData`.
@@ -12,10 +12,12 @@ bower install qwest
 jam install qwest
 ```
 
-What's new in 3.0?
+What's new in 4.0?
 ------------------
 
-Not much, but according to the #100 issue, the `error` parameter of the `catch` callback is now the first parameter. We've also updated the documentation about CORS and preflight requests since some users have encounter problems with `OPTIONS` requests. Please read it carefully.
+- call `abort()` to abort an async request
+- group requests
+- `complete()` has been removed
 
 Quick examples
 --------------
@@ -51,9 +53,6 @@ qwest.`method`(`url`, `data`, `options`, `before`)
 	 })
 	 .catch(function(e, xhr, response) {
 		// Process the error
-	 })
-	 .complete(function(xhr, response) {
-		// Always run
 	 });
 ```
 
@@ -71,7 +70,6 @@ The available `options` are :
 - withCredentials : `false` by default; sends [credentials](http://www.w3.org/TR/XMLHttpRequest2/#user-credentials) with your XHR2 request ([more info in that post](https://dev.opera.com/articles/xhr2/#xhrcredentials))
 - timeout : the timeout for the request in ms; `30000` by default
 - attempts : the total number of times to attempt the request through timeouts; 1 by default; if you want to remove the limit set it to `null`
-- pinkyswear : override promise methods (experimental)
 
 You can change the default data type with :
 
@@ -97,6 +95,25 @@ qwest.get('example.com', {async: false})
 	 })
 	 .send();
 ```
+
+Group requests
+--------------
+
+Sometimes we need to call several requests and execute some tasks after all of them are completed. You can simply do it by chaining your requests like :
+
+```js
+qwest.get('example.com/articles')
+	 .get('example.com/users')
+	 .post('example.com/login', auth_data)
+	 .then(function(values) {
+	 	/*
+			Prints [ [xhr, response], [xhr, response], [xhr, response] ]
+		*/
+	 	console.log(values);
+	 });
+```
+
+If an error is encountered then `catch()` will be called and all requests will be aborted.
 
 Base URI
 --------
@@ -150,7 +167,27 @@ If you want to remove the limit, set it to `null`.
 CORS and preflight requests
 ---------------------------
 
-According to #90 and #99, a CORS request will send a preflight `OPTIONS` request to the server to know what is allowed and what's not. It's because we're adding a `Cache-Control` header to handle caching of requests. The simplest way to avoid this `OPTIONS` request is to set `cache` option to `true`. If you want to know more about preflight requests and how to really handle them, read this : https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS
+According to [#90](https://github.com/pyrsmk/qwest/issues/90) and [#99](https://github.com/pyrsmk/qwest/issues/99), a CORS request will send a preflight `OPTIONS` request to the server to know what is allowed and what's not. It's because we're adding a `Cache-Control` header to handle caching of requests. The simplest way to avoid this `OPTIONS` request is to set `cache` option to `true`. If you want to know more about preflight requests and how to really handle them, read this : https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS
+
+Aborting a request
+------------------
+
+```js
+// Start the request
+var request = qwest.get('example.com')
+				   .then(function(xhr, response) {
+				 	  // Won't be called
+				   })
+				   .catch(function(xhr, response) {
+				 	  // Won't be called either
+				   });
+
+// Some code
+
+request.abort();
+```
+
+Not that only works with asynchroneous requests since synchroneous requests are... synchroneous.
 
 Set options to the XHR object
 -----------------------------

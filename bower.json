@@ -20,7 +20,7 @@
     "animate.css": "~3.4.0",
     "avalon": "~1.5.4",
     "coffee-script": "~1.10.0",
-    "material-design-lite": "~1.0.5",
+    "material-design-lite": "~1.1.1",
     "Swiper": "swiper#~3.1.7",
     "jquery": "~2.1.4",
     "vue": "~1.0.4",
@@ -28,6 +28,9 @@
     "surface": "https://github.com/mildrenben/surface.git",
     "bootstrap": "~3.3.6",
     "system.js": "~0.19.9",
-    "qwest": "~3.0.0"
+    "qwest": "~4.1.1"
+  },
+  "resolutions": {
+    "material-design-lite": "~1.1.1"
   }
 }

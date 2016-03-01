@@ -1,4 +1,4 @@
-/*! qwest 3.0.0 (https://github.com/pyrsmk/qwest) */
+/*! qwest 4.1.1 (https://github.com/pyrsmk/qwest) */
 
 module.exports = function() {
 
@@ -14,17 +14,16 @@ module.exports = function() {
 		requests = 0,
 		request_stack = [],
 		// Get XMLHttpRequest object
-		getXHR = function(){
-			return global.XMLHttpRequest?
-					new global.XMLHttpRequest():
-					new ActiveXObject('Microsoft.XMLHTTP');
+		getXHR = global.XMLHttpRequest? function(){
+			return new global.XMLHttpRequest();
+		}: function(){
+			return new ActiveXObject('Microsoft.XMLHTTP');
 		},
 		// Guess XHR version
 		xhr2 = (getXHR().responseType===''),
 
 	// Core function
 	qwest = function(method, url, data, options, before) {
-
 		// Format
 		method = method.toUpperCase();
 		data = data || null;
@@ -59,18 +58,13 @@ module.exports = function() {
 
 		// Create the promise
 		promise = pinkyswear(function(pinky) {
-			pinky['catch'] = function(f) {
-				return pinky.then(null, f);
-			};
-			pinky.complete = function(f) {
-				return pinky.then(f, f);
-			};
-			// Override
-			if('pinkyswear' in options) {
-				for(i in options.pinkyswear) {
-					pinky[i] = options.pinkyswear[i];
+			pinky.abort = function() {
+				if(xhr) {
+					xhr.abort();
+					--requests;
+					aborted = true;
 				}
-			}
+			};
 			pinky.send = function() {
 				// Prevent further send() calls
 				if(sending) {
@@ -115,7 +109,7 @@ module.exports = function() {
 					}
 				}
 				// Verify if the response type is supported by the current browser
-				if(xhr2 && options.responseType!='document' && options.responseType!='auto') { // Don't verify for 'document' since we're using an internal routine
+				if(xhr2 && options.responseType != 'document' && options.responseType!='auto') { // Don't verify for 'document' since we're using an internal routine
 					try {
 						xhr.responseType = options.responseType;
 						nativeResponseParsing = (xhr.responseType==options.responseType);
@@ -135,7 +129,7 @@ module.exports = function() {
 					};
 				}
 				// Override mime type to ensure the response is well parsed
-				if(options.responseType!='auto' && 'overrideMimeType' in xhr) {
+				if(options.responseType != 'auto' && 'overrideMimeType' in xhr) {
 					xhr.overrideMimeType(mimeTypes[options.responseType]);
 				}
 				// Run 'before' callback
@@ -151,7 +145,7 @@ module.exports = function() {
 					// https://developer.mozilla.org/en-US/docs/Web/API/XDomainRequest
 					setTimeout(function() {
 						xhr.send(method != 'GET'? data : null);
-					},0);
+					}, 0);
 				}
 				else {
 					xhr.send(method != 'GET' ? data : null);
@@ -220,16 +214,18 @@ module.exports = function() {
 					// Handle response type
 					switch(responseType) {
 						case 'json':
-							try {
-								if('JSON' in global) {
-									response = JSON.parse(xhr.responseText);
+							if(xhr.responseText.length) {
+								try {
+									if('JSON' in global) {
+										response = JSON.parse(xhr.responseText);
+									}
+									else {
+										response = eval('('+xhr.responseText+')');
+									}
 								}
-								else {
-									response = eval('('+xhr.responseText+')');
+								catch(e) {
+									throw "Error while parsing JSON body : "+e;
 								}
-							}
-							catch(e) {
-								throw "Error while parsing JSON body : "+e;
 							}
 							break;
 						case 'xml':
@@ -353,35 +349,96 @@ module.exports = function() {
 		return promise;
 
 	};
-
-	// Return the external qwest object
-	return {
-		base: '',
-		get: function(url, data, options, before) {
-			return qwest('GET', this.base+url, data, options, before);
+	
+	// Define external qwest object
+	var getNewPromise = function(q) {
+			// Prepare
+			var promises = [],
+				loading = 0,
+				values = [];
+			// Create a new promise to handle all requests
+			return pinkyswear(function(pinky) {
+				// Basic request method
+				var createMethod = function(method) {
+					return function(url, data, options, before) {
+						++loading;
+						promises.push(qwest(method, pinky.base + url, data, options, before).then(function(xhr, response) {
+							values.push(arguments);
+							if(!--loading) {
+								pinky(true, values.length == 1 ? values[0] : [values]);
+							}
+						}, function() {
+							pinky(false, arguments);
+						}));
+						return pinky;
+					};
+				};
+				// Define external API
+				pinky.get = createMethod('GET');
+				pinky.post = createMethod('POST');
+				pinky.put = createMethod('PUT');
+				pinky['delete'] = createMethod('DELETE');
+				pinky['catch'] = function(f) {
+					return pinky.then(null, f);
+				};
+				pinky.map = function(type, url, data, options, before) {
+					return createMethod(type.toUpperCase()).call(this, url, data, options, before);
+				};
+				for(var prop in q) {
+					if(!(prop in pinky)) {
+						pinky[prop] = q[prop];
+					}
+				}
+				pinky.send = function() {
+					for(var i=0, j=promises.length; i<j; ++i) {
+						promises[i].send();
+					}
+					return pinky;
+				};
+				pinky.abort = function() {
+					for(var i=0, j=promises.length; i<j; ++i) {
+						promises[i].abort();
+					}
+					return pinky;
+				};
+				return pinky;
+			});
 		},
-		post: function(url, data, options, before) {
-			return qwest('POST', this.base+url, data, options, before);
-		},
-		put: function(url, data, options, before) {
-			return qwest('PUT', this.base+url, data, options, before);
-		},
-		'delete': function(url, data, options, before) {
-			return qwest('DELETE', this.base+url, data, options, before);
-		},
-		map: function(type, url, data, options, before) {
-			return qwest(type.toUpperCase(), this.base+url, data, options, before);
-		},
-		xhr2: xhr2,
-		limit: function(by) {
-			limit = by;
-		},
-		setDefaultXdrResponseType: function(type) {
-			defaultXdrResponseType = type.toLowerCase();
-		},
-		setDefaultDataType: function(type) {
-			defaultDataType = type.toLowerCase();
-		}
-	};
+		q = {
+			base: '',
+			get: function() {
+				return getNewPromise(q).get.apply(this, arguments);
+			},
+			post: function() {
+				return getNewPromise(q).post.apply(this, arguments);
+			},
+			put: function() {
+				return getNewPromise(q).put.apply(this, arguments);
+			},
+			'delete': function() {
+				return getNewPromise(q)['delete'].apply(this, arguments);
+			},
+			map: function() {
+				return getNewPromise(q).map.apply(this, arguments);
+			},
+			xhr2: xhr2,
+			limit: function(by) {
+				limit = by;
+				return q;
+			},
+			setDefaultXdrResponseType: function(type) {
+				defaultXdrResponseType = type.toLowerCase();
+				return q;
+			},
+			setDefaultDataType: function(type) {
+				defaultDataType = type.toLowerCase();
+				return q;
+			},
+			getOpenRequests: function() {
+				return requests;
+			}
+		};
+	
+	return q;
 
 }();

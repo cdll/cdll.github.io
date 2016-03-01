@@ -28,15 +28,15 @@
     "Gruntfile.js",
     "package.json"
   ],
-  "version": "3.0.0",
-  "_release": "3.0.0",
+  "version": "4.1.1",
+  "_release": "4.1.1",
   "_resolution": {
     "type": "version",
-    "tag": "3.0.0",
-    "commit": "3d3b9d0bb23ae6d3d4fdb1679d1cf406cb70487f"
+    "tag": "4.1.1",
+    "commit": "55d3042ba174a26e831a35a568aa9bb7b559fa03"
   },
   "_source": "git://github.com/pyrsmk/qwest.git",
-  "_target": "~3.0.0",
+  "_target": "~4.1.1",
   "_originalSource": "qwest",
   "_direct": true
 }
