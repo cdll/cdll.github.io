@@ -16,7 +16,6 @@
     "tests"
   ],
   "dependencies": {
-    "ajax": "~0.0.10",
     "animate.css": "~3.4.0",
     "avalon": "~1.5.4",
     "coffee-script": "~1.10.0",
