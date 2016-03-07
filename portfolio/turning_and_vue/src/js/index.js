@@ -1,14 +1,4 @@
-//require.config({
-//  paths: {
-//    Ajax: '/bower_components/ajax/dist/ajax.min'
-//    ,qwest: 'xxxxxx'
-//  },
-//  shim: {
-//    Ajax: {
-//      exports: 'Ajax'
-//    }
-//  }
-//})
+
 require(['/src/js/loaderConfig.js'], function(cfg){
   require.config(cfg)
   require(['/bower_components/vue/dist/vue.min.js'], function(Vue){
@@ -54,7 +44,7 @@ require(['/src/js/loaderConfig.js'], function(cfg){
                 }
               })
               .catch(function(err, xhr, res){
-                console.info(err, res)
+                console.warn(err, xhr, res)
               })
             })
           }
