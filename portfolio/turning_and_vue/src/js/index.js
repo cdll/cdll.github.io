@@ -53,6 +53,9 @@ require(['/src/js/loaderConfig.js'], function(cfg){
                     console.warn(vm.result= 'robot resting...')
                 }
               })
+              .catch(function(err, xhr, res){
+                console.info(err, res)
+              })
             })
           }
         }
