@@ -18,9 +18,17 @@ var config= {
     }
   }
 }
-//event: AMD shim
-if(typeof require== 'function'&& define.amd){
-  define('config', function(config){
-    return this.config
+//event: avalon loader fix
+if(window.avalon&& typeof window.avalon.require== 'function'){
+  define('config', function(){
+    return config
   })
+}
+//event: amd loader fix
+else if(typeof require== 'function'&& define.amd){
+  define(config);
+}
+//event: cmd loader fix
+else if(typeof exports== 'object'){
+  module.exports= config;
 }
