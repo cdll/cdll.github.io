@@ -12,7 +12,7 @@ require(['/loaderConfig'], function(config){
     console.log(JSON.stringify(data))
   })
   
-  require(['qwest', 'bs'], function(ajax){
+  require(['qwest', 'bs', 'css!bower_components/bootstrap/bootstrap-3.3.6/dist/css/bootstrap.min'], function(ajax){
     console.log(ajax, $)
   })
 })
