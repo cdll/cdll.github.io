@@ -5,6 +5,9 @@
   
   <body class="">
     <section class="" id="main"></section>
+    <center id='todoList'>
+      <dl class="" id="dl"></dl>
+    </center>
     
     <script src="src/js/incremental-dom.js"></script>
 <!--    https://github.com/google/incremental-dom/blob/master/demo/keys.html-->
@@ -88,28 +91,34 @@
         ,cc= 0
         
         function update(data){
-          var nodeCount= data.nodeCount
           ID.patch(main, function(){
             ID.elementOpen('div')
-            ID.elementVoid('input', null, null
-                           ,'type', 'text'
-                           ,'onkeypress', handleInput
-                           ,'autofocus', 'autofocus'
-                          )
+            ID.elementVoid(
+              'input', null, null
+              ,'type', 'text'
+              ,'onkeypress', handleInput
+//              ,'autofocus', 1
+            )
             ID.elementClose('div')
 
             ID.elementOpen('div')
             inputList.forEach(function(el){
-              ID.elementOpen('div', el.id, null
-                             ,'style', 'min-height: 1.5em;')
+              ID.elementOpen(
+                'div', el.id, null
+                ,'style', {
+                  "min-height": "1.5em"
+                }
+              )
               ID.text(el.text)
               ID.elementClose('div')
             })
             ID.elementClose('div')
             
-            ID.elementOpen('div', null, null
-                           ,'style', 'position: absolute;top: 0;right: 0;')
-            ID.text('text node created: '+ nodeCount)
+            ID.elementOpen(
+              'div', null, null
+              ,'style', 'position: absolute;top: 0;right: 0;'
+            )
+            ID.text('text node created: '+ data.nodeCount)
             ID.elementClose('div')
           })
         }
@@ -137,6 +146,37 @@
         })
         
         //todoList
+        ID.patch(
+          document.getElementById('todoList')
+          ,function(){
+            ID.elementOpen(
+              'input', null, null
+              ,'style', {
+                padding: '.5em 1em'
+              }
+              ,'autofocus', 1
+              ,'onkeypress', function(eve){
+                var key= eve.which|| eve.keyCode
+                if(key== 13){
+                  console.info(13)
+                  ID.patch(
+                    document.getElementById('dl')
+                    ,function(){
+                      ID.elementOpen(
+                        'li', null, null
+                        ,'style', {
+                          border: 'red'
+                        }
+                      )
+                      ID.elementClose('li')
+                    }
+                  )
+                }
+              }
+            )
+            ID.elementClose('input')
+          }
+        )
       })();
     </script>
   </body>
