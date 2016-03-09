@@ -1,0 +1,143 @@
+<!doctype html>
+<html>
+  <head>
+  </head>
+  
+  <body class="">
+    <section class="" id="main"></section>
+    
+    <script src="src/js/incremental-dom.js"></script>
+<!--    https://github.com/google/incremental-dom/blob/master/demo/keys.html-->
+    <script>
+//      (function() {
+//        console.info(ID=IncrementalDOM)
+//        function before(obj, fnName, cb) {
+//          var old = obj[fnName];
+//          obj[fnName] = function() {
+//            cb();
+//            return old.apply(this, arguments);
+//          }
+//        }
+//  //      var patch = IncrementalDOM.patch, elementOpen = IncrementalDOM.elementOpen, elementVoid = IncrementalDOM.elementVoid, elementClose = IncrementalDOM.elementClose, text = IncrementalDOM.text;
+//        function update(data) {
+//          ID.patch(main, function() {
+//            ID.elementOpen('div');
+//            ID.elementVoid('input'
+//                           ,null, null
+//                           ,'type', 'text'
+//                           ,'onkeydown', handleInput
+//                           ,'autofocus', 'autofocus');
+//            ID.elementClose('div');
+//            
+//            ID.elementOpen('div');
+//            ID.text('last 10 inputs');
+//            ID.elementClose('div');
+//            
+//            ID.elementOpen('div');
+//            lastInputs.forEach(function(item) {
+//              ID.elementOpen('div'
+//                             , item.id, null
+//                             ,'style', 'min-height: 1em');
+//                ID.text(item.text);
+//              ID.elementClose('div');
+//            });
+//            ID.elementClose('div');
+//            
+//            ID.elementOpen('div'
+//                           , null, null
+//                           ,'style', 'position: absolute; top: 0; right: 0;');
+//            ID.text('text nodes created: ' + data.textNodesCreated);
+//            ID.elementClose('div');
+//          });
+//        }
+//        var lastInputs = [];
+//        var count = 0;
+//        before(document, 'createTextNode', function() {
+//          count += 1;
+//        });
+//        function handleInput(e) {
+//          lastInputs = [{
+//              text: e.target.value,
+//              id: Date.now()
+//            }]
+//            .concat(lastInputs)
+////            .slice(0, 10);
+//          update({
+//            lastInputs: lastInputs,
+//            textNodesCreated: count
+//          });
+//        }
+//        // Initial render
+//        update({
+//          lastInputs: lastInputs,
+//          textNodesCreated: count
+//        });
+//      })();
+    </script>
+    <script>
+      (function(){
+        console.info(ID= IncrementalDOM)
+        function before(obj, fnName, cb) {
+          var old = obj[fnName];
+          obj[fnName] = function() {
+            cb();
+            return old.apply(this, arguments);
+          }
+        }
+        var inputList= []
+        ,cc= 0
+        
+        function update(data){
+          var nodeCount= data.nodeCount
+          ID.patch(main, function(){
+            ID.elementOpen('div')
+            ID.elementVoid('input', null, null
+                           ,'type', 'text'
+                           ,'onkeypress', handleInput
+                           ,'autofocus', 'autofocus'
+                          )
+            ID.elementClose('div')
+
+            ID.elementOpen('div')
+            inputList.forEach(function(el){
+              ID.elementOpen('div', el.id, null
+                             ,'style', 'min-height: 1.5em;')
+              ID.text(el.text)
+              ID.elementClose('div')
+            })
+            ID.elementClose('div')
+            
+            ID.elementOpen('div', null, null
+                           ,'style', 'position: absolute;top: 0;right: 0;')
+            ID.text('text node created: '+ nodeCount)
+            ID.elementClose('div')
+          })
+        }
+        before(document, 'createTextNode', function(){
+          cc+= 1
+        })
+        
+        function handleInput(eve){
+          inputList= [
+            {
+              text: eve.target.value
+              ,id: Date.now()
+            }
+          ]
+          .concat(inputList)
+          
+          update({
+            inputList: inputList
+            ,nodeCount: cc
+          })
+        }
+        update({
+          inputList: inputList
+          ,nodeCount: cc
+        })
+        
+        //todoList
+      })();
+    </script>
+  </body>
+</html>
