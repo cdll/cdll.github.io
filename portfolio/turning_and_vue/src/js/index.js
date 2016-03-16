@@ -1,16 +1,27 @@
 
 require(['/src/js/loaderConfig.js'], function(cfg){
   require.config(cfg)
-  require(['/bower_components/vue/dist/vue.min.js'], function(Vue){
-    var vm= new Vue({
+  require(['/bower_components/vue/dist/vue.min.js', "/bower_components/qwest/qwest.min.js"], function(Vue, ajax){
+    vm= new Vue({
       el: '.robot',
       data: {
-        turning_key: '9a0fce02fe4282343c2d3a38a035be50',
-        input: '',
-        status: 0,
-        result: ''
-      },
-      methods: {
+        turning_key: '9a0fce02fe4282343c2d3a38a035be50'
+        ,input: ''
+        ,status: 0
+        ,result: ''
+        ,ipinfo: {}
+      }
+      ,computed: {
+//        ipinfo: function(){
+//          ajax.get(
+//            'http://ipinfo.io'
+//          )
+//          .then(function(xhr, res){
+//            return res
+//          })
+//        }
+      }
+      ,methods: {
         enterSearch: function(e){
           if(e.which== 13&& !!vm.input.trim()){
             require(["/bower_components/qwest/qwest.min.js"], function(ajax){
@@ -50,6 +61,16 @@ require(['/src/js/loaderConfig.js'], function(cfg){
           }
         }
       }
+    })
+    ajax.get(
+      'http://ipinfo.io'
+      ,''
+      ,{
+        dataType: 'json'
+      }
+    )
+    .then(function(xhr, res){
+      vm.ipinfo= res
     })
   })
 })
