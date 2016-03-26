@@ -1,0 +1,6 @@
+{
+  "loose": ["all"],
+  "whitelist": [
+    "es6.properties.computed"
+  ]
+}

@@ -2,13 +2,13 @@
 <html>
   <head>
   </head>
-  
+
   <body class="">
     <section class="" id="main"></section>
     <center id='todoList' class='list'>
       <dl class="" id="dl"></dl>
     </center>
-    
+
     <script src="src/js/incremental-dom.js"></script>
 <!--    https://github.com/google/incremental-dom/blob/master/demo/keys.html-->
     <script>
@@ -32,11 +32,11 @@
 //                           ,'onkeydown', handleInput
 //                           ,'autofocus', 'autofocus');
 //            ID.elementClose('div');
-//            
+//
 //            ID.elementOpen('div');
 //            ID.text('last 10 inputs');
 //            ID.elementClose('div');
-//            
+//
 //            ID.elementOpen('div');
 //            lastInputs.forEach(function(item) {
 //              ID.elementOpen('div'
@@ -46,7 +46,7 @@
 //              ID.elementClose('div');
 //            });
 //            ID.elementClose('div');
-//            
+//
 //            ID.elementOpen('div'
 //                           , null, null
 //                           ,'style', 'position: absolute; top: 0; right: 0;');
@@ -128,7 +128,7 @@
         }
         var inputList= []
         ,cc= 0
-        
+
         function update(data){
           ID.patch(main, function(){
 //            ID.elementOpen('div')
@@ -154,7 +154,7 @@
               ID.elementClose('div')
             })
 //            ID.elementClose('div')
-            
+
             ID.elementOpen(
               'div', null, null
               ,'style', 'position: absolute;top: 0;right: 0;'
@@ -167,7 +167,7 @@
         before(document, 'createTextNode', function(){
           cc+= 1
         })
-        
+
         function handleInput(eve){
           inputList= [
             {
@@ -177,7 +177,7 @@
           ]
           .concat(inputList)
           .slice(0, 20)
-          
+
           update({
             inputList: inputList
             ,nodeCount: cc
@@ -187,7 +187,7 @@
           inputList: inputList
           ,nodeCount: cc
         })
-        
+
         //todoList
         ID.patch(
           document.querySelector('.list')//document.getElementById('todoList')

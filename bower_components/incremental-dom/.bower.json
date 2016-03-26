@@ -1,0 +1,14 @@
+{
+  "name": "incremental-dom",
+  "homepage": "https://github.com/google/incremental-dom",
+  "version": "0.3.3",
+  "_release": "0.3.3",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.3.3",
+    "commit": "f7d5b110698d4327fba038ecfb55586442ce8310"
+  },
+  "_source": "git://github.com/google/incremental-dom.git",
+  "_target": "~0.3.3",
+  "_originalSource": "incremental-dom"
+}
