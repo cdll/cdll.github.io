@@ -7,6 +7,8 @@ var config= {
     ,mock: "/bower_components/mockjs/dist/mock-min"
     ,bs: "/bower_components/bootstrap/bootstrap-3.3.6/dist/js/bootstrap.min"
     ,jquery: '/bower_components/jquery/dist/jquery.min'
+    ,mdl: "/bower_components/material-design-lite/material.min.js"
+    ,mdlcss: "/bower_components/material-design-lite/material.min.css"
   }
   ,shim: {
     jquery: {
@@ -15,6 +17,10 @@ var config= {
     ,bs: {
       exports: 'bs'
       ,deps: ['jquery']
+    }
+    ,mdl: {
+      exports: 'mdl'
+      ,deps: ['css!mdlcss']
     }
   }
 }
