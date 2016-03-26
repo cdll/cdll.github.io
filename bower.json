@@ -25,10 +25,10 @@
     "vue": "~1.0.4",
     "polymer": "~1.2.3",
     "surface": "https://github.com/mildrenben/surface.git",
-    "bootstrap": "~3.3.6",
     "system.js": "~0.19.9",
     "qwest": "~4.1.1",
     "requirejs": "~2.1.22",
-    "incremental-dom": "~0.3.3"
+    "incremental-dom": "~0.3.3",
+    "basket.js": "~0.5.2"
   }
 }
