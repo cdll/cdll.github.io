@@ -1,5 +1,5 @@
 <!DOCTYPE html author='cdll@20140819'>
-<html>
+<html class="mdl-layout__container">
 
   <head>
     <meta charset='utf-8'>
@@ -11,98 +11,64 @@
 
     <link rel="shortcut icon" href="img/cdbg_1010.png" mce_href="/favicon.ico" type="image/x-icon">
 
-<!--    <link rel="stylesheet" type="text/css" href="/bower_components/bootstrap/bootstrap-3.3.6/dist/css/bootstrap.min.css">-->
-<!--    <link rel="stylesheet" type="text/css" href="/bower_components/material-design-lite/material.min.css">-->
+    <link rel="stylesheet" type="text/css" href="/bower_components/material-design-lite/material.min.css">
     <link rel="stylesheet" type="text/css" media="screen" href="/bower_components/font-awesome-4.2.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="src/css/style_index.css">
 
     <title>C.D.Leon</title>
   </head>
 
-  <body>
-    <!-- HEADER -->
-    <header>
-      <div class='navbar navbar-default'>
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="col-xs-12 navbar-header">
-          <div class='clear'>
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#cd-navbar">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href=""><i class="fa fa-spinner fa-spin"></i>C.D.</a>
+  <body class="mdl-layout mdl-layout--fixed-header">
+      <!-- HEADER -->
+      <header class="mdl-layout__header -mdl-layout__header--waterfall">
+        <div class='mdl-layout__header-row'>
+          <!-- MDL Spinner Component -->
+          <div class="mdl-layout-title mdl-spinner mdl-js-spinner is-active"></div>
+          <a class="mdl-navigation__link" href="">
+            <span>C.D.LL</span>
+          </a>
+<!--            <i class="fa fa-spinner fa-spin"></i>-->
+      <!-- Add spacer, to align navigation to the right -->
+      <div class="mdl-layout-spacer"></div>
 
-            <div id="cd-navbar" class="collapse navbar-collapse navbar-right">
-              <ul class="nav navbar-nav">
-                <li class="active" title='主页'>
-                  <a href="">
-                    <i class="fa fa-home"></i>Home
-                    <span class="sr-only">(current)</span>
-                  </a>
+          <nav class="mdl-navigation">
+            <a class='mdl-navigation__link' href=""><i class="fa fa-home"></i>Home</a>
+            <a class='mdl-navigation__link' href="#"><i class="fa fa-pencil"></i>Dailys</a>
+            <a class='mdl-navigation__link' href="portfolio"><i class="fa fa-twitch"></i>Portfolios</a>
+            <a class='mdl-navigation__link' href="darlingshow/index.html"><i class="fa fa-female"></i>Liliane</a>
+          </nav>
+            <button class="mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect demo-menu-lower-right">
+              <a class="mdl-navigation__link">
+                <i class="fa fa-ellipsis-v"></i>
+              </a>
+              <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple is-animating" style="width: 92.5097px; height: 92.5097px; transform: translate(-50%, -50%) translate(13px, 12px);"></span>
+              </span>
+            </button>
+            <div class="mdl-menu__container -is-visible" style="right: 40px; top: 48px; width: 127.703px; height: 208px;">
+              <div class="mdl-menu__outline mdl-menu--bottom-right" style="width: 127.703px; height: 208px;"></div>
+              <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect mdl-js-ripple-effect--ignore-events" for="more-button" data-upgraded=",MaterialMenu,MaterialRipple" style="clip: rect(0px 127.703px 208px 0px);">
+                <li class="mdl-menu__item mdl-js-ripple-effect" tabindex="-1" data-upgraded=",MaterialRipple" style="transition-delay: 0.00923077s;">
                 </li>
-                <li title='生活志'>
-                  <a href="#">
-                    <i class="fa fa-pencil"></i>Dailys
-                  </a>
+                <li class="mdl-menu__item mdl-js-ripple-effect" tabindex="-1" data-upgraded=",MaterialRipple" style="transition-delay: 0.0646154s;">
+            <a class='mdl-navigation__link' href="#"><i class="fa fa-question"></i>What'sMore</a>
                 </li>
-                <li title='作品集'>
-                  <a href="portfolio">
-                    <i class="fa fa-twitch"></i>Portfolios
-                  </a>
+                <li disabled="" class="mdl-menu__item mdl-js-ripple-effect" tabindex="-1" data-upgraded=",MaterialRipple" style="transition-delay: 0.12s;">
+            <a class='mdl-navigation__link' href="index_bk.html">here 's the original index page...</a>
                 </li>
-                <li class="dropdown" title='更多'>
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-bars">
-                    </i>More<span class="caret"></span>
-                  </a>
-                  <ul class="dropdown-menu" role="menu">
-                    <li title='亲爱的'>
-                      <a href="darlingshow/index.html"><i class="fa fa-female">Liliane</i></a>
-                    </li>
-                    <li title='七嘴八舌'>
-                      <a href="#"><i class="fa fa-question"></i>Opinions</a>
-                    </li>
-                    <li title='还有啥呢'>
-                      <a href="#"><i class="fa fa-question"></i>What'sMore</a>
-                    </li>
-                    <li class="divider"></li>
-                    <li title='广告位出租'>
-                      <a href="#"><i class="fa fa-newspaper-o"></i>Ads</a>
-                    </li>
-                    <li title=''>
-                      <a href="index_bk.html">here 's the original index page...</a>
-                    </li>
-                    <li class="divider"></li>
-                    <li title='Oops～'>
-                      <a href="#"><i class="fa fa-ellipsis-h"></i></a>
-                    </li>
-                  </ul>
+                <li class="mdl-menu__item mdl-js-ripple-effect" tabindex="-1" data-upgraded=",MaterialRipple" style="transition-delay: 0.175385s;">
                 </li>
               </ul>
             </div>
-          </div>
         </div>
-      </div>
-    </header>
+      </header>
 
-<!--
-    <link rel="import" href="poly-el.html">
-    <poly-el></poly-el>
--->
-    
-<!--
-    <div class="container-fluid text-center index-sec">
-      <a href="index_bk.html">here 's the original index page...</a>
-    </div>
--->
-
-    <div class="clear"></div>
+    <div class="mdl-layout__content clear"></div>
     <!-- FOOTER  -->
-    <footer class="footer-index">
-      <div class="footer-container container-fluid">
+    <footer class="-footer-index">
+      <div class="footer-container mdl-grid">
         <hr>
-        <div class="col-xs-6 col-md-3">
+        <div class="mdl-cell mdl-cell--3-col">
           <div class='row'>
             <h4>友情链接：</h4>
             <a class='center-block' href='http://stefory.github.io/' target="_blank">
@@ -119,7 +85,7 @@
             </a>
           </div>
         </div>
-        <div class="col-xs-6 col-md-3">
+        <div class="mdl-cell mdl-cell--3-col">
           <div class='row'>
             <h4>我在这里：</h4>
             <a href='http://plus.google.com/cd234350150'><i class="fa fa-google-plus-square fa-lg"></i></a>
@@ -133,7 +99,7 @@
             <i class="fa fa-qrcode fa-lg"></i>
           </div>
         </div>
-        <div class="col-xs-6 col-md-3">
+        <div class="mdl-cell mdl-cell--3-col">
           <div class='row'>
             <h4>友情社区：</h4>
             <a class="cneter-block" href='https://cnodejs.org/' target="_blank">
@@ -147,7 +113,7 @@
             </a>
           </div>
         </div>
-        <div class="col-xs-6 col-md-3">
+        <div class="mdl-cell mdl-cell--3-col">
           <div class='row'>
             <h4>快速联系：</h4>
             <a href='tel:18521534116'><i class="fa fa-phone fa-lg"></i></a>
@@ -159,7 +125,6 @@
     </footer>
 
     <script src="/bower_components/avalon/dist/avalon.min.js" data-main='/src/js/index.js?v=20160229'></script>
-<!--    <script src="js/sqlite_cdll.js"></script>-->
 
   </body>
 </html>
