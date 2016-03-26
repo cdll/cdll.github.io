@@ -13,6 +13,6 @@ require(['/loaderConfig'], function(config){
   })
 
   require(['qwest', 'mdl'], function(ajax){
-    console.log(ajax, $)
+    console.log(ajax)
   })
 })
