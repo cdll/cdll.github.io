@@ -106,11 +106,13 @@
       </div>
     </section>
 
-    <script src="/bower_components/avalon/dist/avalon.mobile.min.js" data-main></script>
+    <script src="/bower_components/avalon/dist/avalon.mobile.min.js" datamain></script>
+<!--    <script src="/bower_components/requirejs/require.js" datamain></script>-->
     <script>
-avalon.config.baseUrl= '/src/js'
-require(['/loaderConfig'], function(config){
-  avalon.config(config)
+require.config.baseUrl= '/'
+require(['/src/js/loaderConfig.js'], function(cfg){
+  console.info(cfg)
+  require.config(cfg)
 
   require(['mock'], function(Mock){
     var data= Mock.mock({
@@ -124,7 +126,7 @@ require(['/loaderConfig'], function(config){
   })
 
   require(['qwest', 'mdl'], function(ajax){
-    console.log(ajax, $)
+    console.log(ajax)
   })
 })
     </script>
