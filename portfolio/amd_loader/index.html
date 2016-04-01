@@ -2,6 +2,8 @@
 </style>
 
 <body class="amd-loader">
+  <p>
+  </p>
 </body>
 
 <!--
@@ -11,4 +13,18 @@
 <script src="/bower_components/qwest/qwest.min.js"></script>
 -->
 
-<script src='/bower_components/avalon/dist/avalon.min.js' data-main='./js/a.js'></script>
+<!--<script src='/bower_components/avalon/dist/avalon.min.js' data-main='./js/a.js'></script>-->
+<script src='/bower_components/rsvp/rsvp.min.js'></script>
+<script doc='https://addyosmani.com/basket.js/#basketrequire' src='/bower_components/basket.js/dist/basket.js'></script>
+<script sr>
+basket.require({
+  url: "/bower_components/qwest/qwest.min.js"
+},{
+  url: '/bower_components/avalon/dist/avalon.shim.min.js'
+},{
+  url: '/src/js/loaderConfig.js'
+})
+.then(function(){
+  console.info('avalon.version:', avalon.version)
+})
+</script>

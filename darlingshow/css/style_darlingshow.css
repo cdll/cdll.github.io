@@ -1,3 +1,5 @@
+@import '/bower_components/Swiper/dist/css/swiper.min.css';
+
 html, body{margin: 0;padding: 0;height: 100%;overflow:hidden;}
 
 .swiper-container, .swiper-wrapper{height: 100%;}

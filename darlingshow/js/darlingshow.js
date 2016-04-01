@@ -1,15 +1,29 @@
-avalon.config({
-  debug: 0,
-  paths: {
-    Swiper: '../../bower_components/Swiper/dist/js/swiper.min.js'
-  },
-  shim: {
-    Swiper: {
-      exports: 'Swiper'
-    }
-  },
+//avalon.config({
+//  debug: 0,
+//  paths: {
+//    Swiper: '../../bower_components/Swiper/dist/js/swiper.min.js'
+//  },
+//  shim: {
+//    Swiper: {
+//      exports: 'Swiper'
+//    }
+//  },
+//})
+//require(['Swiper'], function(Swiper){
+////  http://www.swiper.com.cn/api/start/2014/1218/140.html
+//  var show= new Swiper('#darlingshow-carousel', {
+//    pagination: '.swiper-indicators',
+//    autoplay: 3500,
+//    loop: true,
+//    mousewheelControl: true,
+//    parallax: true,
+//  })
+//})
+
+basket.require({
+  url: '/bower_components/Swiper/dist/js/swiper.min.js'
 })
-require(['Swiper'], function(Swiper){
+.then(function(){
 //  http://www.swiper.com.cn/api/start/2014/1218/140.html
   var show= new Swiper('#darlingshow-carousel', {
     pagination: '.swiper-indicators',
