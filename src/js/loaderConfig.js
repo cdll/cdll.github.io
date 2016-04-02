@@ -9,6 +9,8 @@ var config= {
     ,jquery: '/bower_components/jquery/dist/jquery.min'
     ,mdl: "/bower_components/material-design-lite/material.min.js"
     ,mdlcss: "/bower_components/material-design-lite/material.min.css"
+    ,rsvp: "/bower_components/rsvp/rsvp.min.js"
+    ,basket: '/bower_components/basket.js/dist/basket.js'
   }
   ,shim: {
     jquery: {
@@ -21,6 +23,10 @@ var config= {
     ,mdl: {
       exports: 'mdl'
       ,deps: ['css!mdlcss']
+    }
+    ,basket: {
+      exports: 'basket'
+//      ,deps: ['css!mdlcss']
     }
   }
 }
