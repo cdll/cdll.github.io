@@ -1,0 +1,23 @@
+<head>
+  <meta content='charset=UTF-8' />
+  <meta name='viewport' content="width=device-width,user-scalable=0,initial-scale=1.0,maximum-scale=1.0" />
+
+  <title>CDLL</title>
+</head>
+
+<body class="admin-index">
+  <div class="">
+  </div>
+
+  <script src="/bower_components/requirejs/require.js"></script>
+  <script>
+require.config.baseUrl= '/'
+require(['/src/js/loaderConfig.js'], function(){
+  console.info(config)
+  require.config(config)
+  require(['avalonRouter'], function(){
+    console.info(avalon.router)
+  })
+})
+  </script>
+</body>

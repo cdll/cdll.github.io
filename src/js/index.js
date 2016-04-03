@@ -1,26 +1,25 @@
 //require(['/loaderConfig'], function(cfg){
-  require.config(cfg)
+//  require.config(cfg)
+//
+//  require(['mock'], function(Mock){
+//    var data= Mock.mock({
+//      'list|1-10': [
+//        {
+//          'id|+1': 1
+//        }
+//      ]
+//    })
+//    console.log(JSON.stringify(data))
+//  })
 
-  require(['mock'], function(Mock){
-    var data= Mock.mock({
-      'list|1-10': [
-        {
-          'id|+1': 1
-        }
-      ]
-    })
-    console.log(JSON.stringify(data))
-  })
-
-  require(['rsvp', 'basket'], function(RSVP){
-//    console.info(RSVP, basket)
+//  require(['RSVP', 'basket'], function(RSVP){
     basket.require({
       url: "/bower_components/material-design-lite/material.min.js"
     })
     .then(function(){
-      console.info(basket)
+      console.info(RSVP, basket)
     })
-  })
+//  })
 
 //  require(['qwest', 'mdl'], function(ajax){
 //    ajax.get(
