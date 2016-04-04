@@ -1,5 +1,5 @@
 if(!!window.avalon){
-  define(['/bower_components/material-design-lite/material.min.js'], ()=>{
+  define([], function(){
     var vm= avalon.define({
       $id: 'login'
       ,user: ''
