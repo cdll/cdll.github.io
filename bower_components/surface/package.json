@@ -1,33 +1,29 @@
 {
-  "name": "substance-surface",
-  "description": "An extensible low-level interface for displaying Substance documents.",
-  "url": "http://github.com/substance/surface/",
-  "keywords": [
-    "document renderer",
-    "selection",
-    "cursor"
-  ],
-  "author": "Michael Aufreiter",
-  "contributors": [
-    "Oliver Buchtala"
-  ],
+  "name": "surface",
+  "version": "1.0.1",
+  "description": "Material Design, CSS only framework.",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/substance/surface.git"
+    "url": "git+https://github.com/mildrenben/surface.git"
   },
-  "dependencies": {
-    "underscore": "1.5.x",
-    "substance-util": "0.3.0-1",
-    "substance-application": "0.2.0-1",
-    "substance-operator": "0.3.0-1"
+  "keywords": [
+    "material",
+    "material-design"
+  ],
+  "author": "Ben Mildren",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mildrenben/surface/issues"
   },
+  "homepage": "http://www.iamsurface.com",
   "devDependencies": {
-    "substance-test": "0.3.0-1",
-    "substance-document": "0.6.0-1"
-  },
-  "version": "0.4.0-1",
-  "engines": {
-    "node": ">=0.8.x",
-    "npm": ">=1.1.x"
+    "browser-sync": "^2.10.1",
+    "gulp-autoprefixer": "^3.1.0",
+    "gulp-minify-css": "^1.2.2",
+    "gulp-sass": "^2.1.1"
   }
 }
