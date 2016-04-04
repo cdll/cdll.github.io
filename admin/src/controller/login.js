@@ -1,14 +1,14 @@
-if(avalon){
-  define(['avalon'], function(){
+if(!!window.avalon){
+  define(['avalon'], ()=>{
     var vm= avalon.define({
-      $id: 'vm'
+      $id: 'login'
       ,user: ''
       ,psw: ''
     })
-    return vm
+    return avalon.controller(vm)
   })
 }
-if(angular){
+else if(!!window.angular){
   angular.module('admin')
   .controller('loginCtrl', [
     '$scope'

@@ -32,6 +32,9 @@ var config= {
       exports: 'basket'
 //      ,deps: ['css!mdlcss']
     }
+    ,mmState: {
+      deps: ['avalon', 'mmRouter', 'mmHistory', 'mmPromise']
+    }
   }
 }
 
