@@ -10,16 +10,18 @@ basket.require({
   var admin= angular.module('admin', [
     'ngRoute'
   ])
+  //data: admin config
   .constant('adminConfig', {
     nav: [
-      { url: '/admin', name: 'Overview' }
-      ,{ url: '/admin/#/group/admin/ctrl/home/action/feature', name: 'Features' }
-      ,{ url: '/admin/#/group/admin/ctrl/home/action/detail', name: 'Details' }
-      ,{ url: '/admin/#/group/home/ctrl/home/action/tech', name: 'Technology' }
-      ,{ url: '/admin/#/group/home/ctrl/home/action/faq', name: 'FAQ' }
-      ,{ url: '/admin/#/login', name: 'Login' }
+      { url: '/', name: 'Overview' }
+      ,{ url: '/group/admin/ctrl/home/action/feature', name: 'Features' }
+      ,{ url: '/group/admin/ctrl/home/action/detail', name: 'Details' }
+      ,{ url: '/group/home/ctrl/home/action/tech', name: 'Technology' }
+      ,{ url: '/group/home/ctrl/home/action/faq', name: 'FAQ' }
+      ,{ url: '/login', name: 'Login' }
     ]
   })
+  //data: router config
   .config(function($locationProvider){
     $locationProvider.html5Mode(false)
   })
@@ -27,15 +29,15 @@ basket.require({
     $routeProvider
     .when('/', {
       templateUrl: '/admin/src/view/login.html'
-      ,controllerUrl: '/admin/src/controller/login.js'
+      ,controller: 'indexCtrl'
     })
     .when('/login', {
       templateUrl: '/admin/src/view/login.html'
-      ,controllerUrl: '/admin/src/controller/login.js'
+      ,controller: 'loginCtrl'
     })
     .when('/admin/group/:group/ctrl/:ctrl/action/:action', {
       templateUrl: '/admin/src/view/200.html'
-      ,controllerUrl: '/admin/src/controller/login.js'
+      ,controller: 'mdlCtrl'
     })
     .otherwise({
       templateUrl: '/admin/src/view/404.html'
@@ -46,12 +48,14 @@ basket.require({
     '$rootScope'
     ,'$location'
     ,'$http'
-    ,function($rootScope, $location, $http){
+    ,'$route'
+    ,function($rootScope, $location, $http, $route){
       $rootScope.$on('$routeChangeStart', function(eve, next, curr){
-        console.info( next)
+        console.info($route.current)//return undefined
       })
     }
   ])
+  //data: navbar ctrl
   .controller('navCtrl', [
     '$scope'
     ,'$location'
@@ -67,5 +71,28 @@ basket.require({
       })
     }
   ])
-  angular.bootstrap(document, ['admin'])
+  //data: index ctrl
+  .controller('indexCtrl', [
+    '$scope'
+    ,function(vm){
+      console.info(vm)
+    }
+  ])
+  //data: login ctrl
+  .controller('loginCtrl', [
+    '$scope'
+    ,function(vm){
+      console.info(vm)
+    }
+  ])
+  //data: modules ctrl
+  .controller('mdlCtrl', [
+    '$scope'
+    ,function(vm){
+      console.info(vm)
+    }
+  ])
+
+
+//  angular.bootstrap(document, ['admin'])//ng-app='admin'
 })
