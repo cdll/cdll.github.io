@@ -1,0 +1,17 @@
+/* Surface
+-------------------------------------------------------------------------------*/
+
+.surface {
+  position: relative;
+}
+
+/* Very important dude */
+/* Makes sure .nodes is used as a reference for absolute positioning */
+.surface .nodes {
+  position: relative;
+}
+
+/* Generic node styles */
+.surface .content-node {
+  position: relative;
+}

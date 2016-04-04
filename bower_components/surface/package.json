@@ -1,0 +1,33 @@
+{
+  "name": "substance-surface",
+  "description": "An extensible low-level interface for displaying Substance documents.",
+  "url": "http://github.com/substance/surface/",
+  "keywords": [
+    "document renderer",
+    "selection",
+    "cursor"
+  ],
+  "author": "Michael Aufreiter",
+  "contributors": [
+    "Oliver Buchtala"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/substance/surface.git"
+  },
+  "dependencies": {
+    "underscore": "1.5.x",
+    "substance-util": "0.3.0-1",
+    "substance-application": "0.2.0-1",
+    "substance-operator": "0.3.0-1"
+  },
+  "devDependencies": {
+    "substance-test": "0.3.0-1",
+    "substance-document": "0.6.0-1"
+  },
+  "version": "0.4.0-1",
+  "engines": {
+    "node": ">=0.8.x",
+    "npm": ">=1.1.x"
+  }
+}
