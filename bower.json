@@ -30,6 +30,7 @@
     "requirejs": "~2.1.22",
     "incremental-dom": "~0.3.3",
     "basket.js": "~0.5.2",
-    "angular": "angular2#~1.5.3"
+    "angular": "angular2#~1.5.3",
+    "angular-route": "~1.5.3"
   }
 }
