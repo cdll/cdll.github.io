@@ -3,113 +3,77 @@
   <meta name='viewport' content="width=device-width,user-scalable=0,initial-scale=1.0,maximum-scale=1.0" />
 
   <title>CDLL|Admin</title>
-  <base href="/admin"/>
+  <base href="/"/>
 
   <style>
     @import "/bower_components/material-design-lite/material.min.css";
   </style>
 </head>
 
-<body class="mdl-layout" ms-controller='root'>
-  <div ms-view="header"></div>
+<body class="mdl-layout" ng-controller='root'>
+  <div ng-view="header"></div>
 
-  <header class="mdl-layout__header- mdl-layout__header--scroll- mdl-color--primary">
+  <header class="mdl-layout__header- mdl-layout__header--scroll- mdl-color--primary" ng-controller='navCtrl'>
     </div>
     <div class="mdl-layout--large-screen-only mdl-layout__header-row">
       <h3>Admin</h3>
     </div>
     </div>
     <div class="mdl-layout__bar mdl-js-ripple-effect mdl-color--primary-dark clearfix">
-      <a href="#" class="mdl-layout__tab is-active">Overview
+      <a ng-href="/" class="mdl-layout__tab is-active">Overview
         <span class="mdl-layout__tab-ripple-container mdl-js-ripple-effect" data-upgraded=",MaterialRipple"><span class="mdl-ripple"></span></span>
       </a>
-      <a href="#/group/admin/ctrl/home/action/feature" class="mdl-layout__tab">Features
+      <a ng-href="/group/admin/ctrl/home/action/feature" class="mdl-layout__tab">Features
       </a>
-      <a href="#/group/admin/ctrl/home/action/detail" class="mdl-layout__tab">Details</a>
-      <a href="#/group/home/ctrl/home/action/tech" class="mdl-layout__tab">Technology</a>
-      <a href="#/group/home/ctrl/home/action/faq" class="mdl-layout__tab">FAQ</a>
-      <a href="#/login" class="mdl-layout__tab">Login</a>
+      <a ng-href="/group/admin/ctrl/home/action/detail" class="mdl-layout__tab">Details</a>
+      <a ng-href="/group/home/ctrl/home/action/tech" class="mdl-layout__tab">Technology</a>
+      <a ng-href="/group/home/ctrl/home/action/faq" class="mdl-layout__tab">FAQ</a>
+      <a ng-href="/login" class="mdl-layout__tab">Login</a>
       <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-shadow--4dp mdl-color--accent" hidden>
         <i class="material-icons" role="presentation">add</i>
         <span class="visuallyhidden">Add</span>
       </button>
     </div>
   </header>
-  <div ms-view="" class="layout"></div>
+  <div ng-view="" class="layout"></div>
 
 
-  <script src="/bower_components/requirejs/require.js"></script>
-  <script>
-'use strict'
-//require.config.baseUrl= '/'
-require(['/src/js/loaderConfig.js'], function(){
-//  console.log(config)
-  require.config(config)
-
-  require(['/bower_components/material-design-lite/material.min.js'])
-  require(['mmState'], function(){
-    avalon.state('index', {
-      url: '/'
-      ,abstract: true // 抽象状态，不会对应到url上
-      ,views: {
-        "": {
-          controller: {
-            '$id': 'index'
-          }
-//          ,view: ''
-//          ,controllerUrl: "" // 指定控制器地址
-          ,template: function(){
-            return '<center>bello</center>'
-          }
-//          ,templateUrl: "" // 指定模板地址
-        }
-        ,"header@": {// 视图名字的语法请仔细查阅文档
-          template: function() {// 指定一个返回字符串的函数来获取模板
-            return "<header style=\"text-align:center;\">this is footer</header>"
-          }
-        }
-      }
+  <script src="/bower_components/rsvp/rsvp.min.js"></script>
+  <script src="/bower_components/basket.js/dist/basket.js"></script>
+  <script sr>
+basket.require({
+  url: '/bower_components/material-design-lite/material.min.js'
+},{
+  url: "/bower_components/angular/angular.min.js"
+})
+.then(function(){
+  var admin= angular.module('admin', [
+    'ngRoute'
+  ])
+  .config(function($locationProvider){
+    return $locationProvider.html5Mode(true)
+  })
+  .config(function($routeProvider){
+    return $routeProvider.when('/', {
+      redirectTo: '/index'
+      ,templateUrl: './src/view/login.html'
+      ,controllerUrl: ''
     })
-    .state('login', {
-      url: '/login'
-      ,views: {
-        '': {
-          controllerUrl: '/admin/src/controller/login.js'
-          ,templateUrl: '/admin/src/view/login.html'
-        }
-      }
+    .when('/', {
+      redirectTo: '/login'
+      ,templateUrl: './src/view/login.html'
+      ,controllerUrl: './src/controller/login.js'
     })
-    .state('module', {
-      url: '/group/:group/ctrl/:ctrl/action/:action'
-      ,views: {
-        '': {
-          controller: {
-            $id: 'action'
-          }
-          ,controllerProvider: function(){
-            console.info(this)
-          }
-//          ,view: ''
-          ,template: function(){
-            return '<big>'+this+'</big>'
-          }
-        }
-        ,"header@": {// 视图名字的语法请仔细查阅文档
-          template: function() {// 指定一个返回字符串的函数来获取模板
-            return "<header style=\"text-align:center;\">this is footer</header>"
-          }
-        }
-      }
-      ,onEnter: function(v, vv, vvv){
-        console.info(this.params, v, vv, vvv)
-      }
+    .otherwise({
+      templateUrl: './src/view/404.html'
     })
-
-    avalon.history.start({
-      basepath: "/admin"
-      ,html5Mode: 0
-    })
-    avalon.scan()
+  })
+  .run([
+    '$rootScope'
+    ,'$location'
+    ,'$http'
+  ], function(){
+    console.info(123)
   })
 })
   </script>
