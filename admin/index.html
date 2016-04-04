@@ -2,21 +2,114 @@
   <meta content='charset=UTF-8' />
   <meta name='viewport' content="width=device-width,user-scalable=0,initial-scale=1.0,maximum-scale=1.0" />
 
-  <title>CDLL</title>
+  <title>CDLL|Admin</title>
+  <base href="/admin"/>
+
+  <style>
+    @import "/bower_components/material-design-lite/material.min.css";
+  </style>
 </head>
 
-<body class="admin-index">
-  <div class="">
-  </div>
+<body class="mdl-layout" ms-controller='root'>
+  <div ms-view="header"></div>
+
+  <header class="mdl-layout__header- mdl-layout__header--scroll- mdl-color--primary">
+    </div>
+    <div class="mdl-layout--large-screen-only mdl-layout__header-row">
+      <h3>Admin</h3>
+    </div>
+    </div>
+    <div class="mdl-layout__bar mdl-js-ripple-effect mdl-color--primary-dark clearfix">
+      <a href="#" class="mdl-layout__tab is-active">Overview
+        <span class="mdl-layout__tab-ripple-container mdl-js-ripple-effect" data-upgraded=",MaterialRipple"><span class="mdl-ripple"></span></span>
+      </a>
+      <a href="#/group/admin/ctrl/home/action/feature" class="mdl-layout__tab">Features
+      </a>
+      <a href="#/group/admin/ctrl/home/action/detail" class="mdl-layout__tab">Details</a>
+      <a href="#/group/home/ctrl/home/action/tech" class="mdl-layout__tab">Technology</a>
+      <a href="#/group/home/ctrl/home/action/faq" class="mdl-layout__tab">FAQ</a>
+      <a href="#/login" class="mdl-layout__tab">Login</a>
+      <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-shadow--4dp mdl-color--accent" hidden>
+        <i class="material-icons" role="presentation">add</i>
+        <span class="visuallyhidden">Add</span>
+      </button>
+    </div>
+  </header>
+  <div ms-view="" class="layout"></div>
+
 
   <script src="/bower_components/requirejs/require.js"></script>
   <script>
-require.config.baseUrl= '/'
+'use strict'
+//require.config.baseUrl= '/'
 require(['/src/js/loaderConfig.js'], function(){
-  console.info(config)
+//  console.log(config)
   require.config(config)
-  require(['avalonRouter'], function(){
-    console.info(avalon.router)
+
+  require(['/bower_components/material-design-lite/material.min.js'])
+  require(['mmState'], function(){
+    avalon.state('index', {
+      url: '/'
+      ,abstract: true // 抽象状态，不会对应到url上
+      ,views: {
+        "": {
+          controller: {
+            '$id': 'index'
+          }
+//          ,view: ''
+//          ,controllerUrl: "" // 指定控制器地址
+          ,template: function(){
+            return '<center>bello</center>'
+          }
+//          ,templateUrl: "" // 指定模板地址
+        }
+        ,"header@": {// 视图名字的语法请仔细查阅文档
+          template: function() {// 指定一个返回字符串的函数来获取模板
+            return "<header style=\"text-align:center;\">this is footer</header>"
+          }
+        }
+      }
+    })
+    .state('login', {
+      url: '/login'
+      ,views: {
+        '': {
+          controllerUrl: '/admin/src/controller/login.js'
+          ,templateUrl: '/admin/src/view/login.html'
+        }
+      }
+    })
+    .state('module', {
+      url: '/group/:group/ctrl/:ctrl/action/:action'
+      ,views: {
+        '': {
+          controller: {
+            $id: 'action'
+          }
+          ,controllerProvider: function(){
+            console.info(this)
+          }
+//          ,view: ''
+          ,template: function(){
+            return '<big>'+this+'</big>'
+          }
+        }
+        ,"header@": {// 视图名字的语法请仔细查阅文档
+          template: function() {// 指定一个返回字符串的函数来获取模板
+            return "<header style=\"text-align:center;\">this is footer</header>"
+          }
+        }
+      }
+      ,onEnter: function(v, vv, vvv){
+        console.info(this.params, v, vv, vvv)
+      }
+    })
+
+    avalon.history.start({
+      basepath: "/admin"
+      ,html5Mode: 0
+    })
+    avalon.scan()
   })
 })
   </script>

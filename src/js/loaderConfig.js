@@ -1,9 +1,12 @@
 var config= {
-  debug: 1
+  debug: 0
   ,baseUrl: '/'
   ,paths: {
-    avalon: '/bower_components/avalon/dist/avalon.min'
-    ,avalonRouter: "/bower_components/mmRouter/mmRouter"
+    avalon: '/bower_components/avalon/dist/avalon.shim.min'
+    ,mmRouter: "/bower_components/mmRouter/mmRouter"
+    ,mmHistory: "/bower_components/mmRouter/mmHistory"
+    ,mmState: "/bower_components/mmRouter/mmState"
+    ,mmPromise: "/bower_components/mmRouter/mmPromise"
     ,qwest: "/bower_components/qwest/qwest.min"
     ,mock: "/bower_components/mockjs/dist/mock-min"
     ,bs: "/bower_components/bootstrap/bootstrap-3.3.6/dist/js/bootstrap.min"
@@ -29,21 +32,12 @@ var config= {
       exports: 'basket'
 //      ,deps: ['css!mdlcss']
     }
-    ,avalonRouter: {
-      deps: ['avalon']
-      ,exports: 'avalonRouter'
-    }
   }
 }
-//event: avalon loader fix
-//if(window.avalon&& typeof window.avalon.require== 'function'){
-//  define('config', function(){
-//    return config
-//  })
-//}
+
 //event: amd loader fix
 if(typeof require== 'function'&& define.amd){
-  console.info('amd')
+//  console.info('amd')
   define('config', function(){
     return config
   });
