@@ -3,7 +3,7 @@
   <meta name='viewport' content="width=device-width,user-scalable=0,initial-scale=1.0,maximum-scale=1.0" />
 
   <title>CDLL|Admin</title>
-  <base href="/admin" />
+  <base href="/admin/" >
 
   <style>
     @import "/bower_components/material-design-lite/material.min.css";
@@ -21,7 +21,7 @@
     </div>
     <div class="mdl-layout__bar mdl-js-ripple-effect mdl-color--primary-dark clearfix">
       <a class="mdl-layout__tab" ng-repeat='nav in navbarList track by $index' ng-href="{{nav.url}}" ng-class='{"is-active": $index==currentNav}'>
-        <span ng-bind='nav.name'></span>
+        <span ng-bind='nav.name'>{{currentNav}}</span>
         <span class="mdl-layout__tab-ripple-container mdl-js-ripple-effect" ><span class="mdl-ripple"></span></span>
       </a>
 <!--
@@ -43,81 +43,5 @@
 
   <script src="/bower_components/rsvp/rsvp.min.js"></script>
   <script src="/bower_components/basket.js/dist/basket.js"></script>
-  <script >
-basket.require({
-  url: '/bower_components/material-design-lite/material.min.js'
-},{
-  url: "/bower_components/angular/angular.min.js"
-},{
-  url: "/bower_components/angular-route/angular-route.min.js"
-})
-.then(function(){
-  var admin= angular.module('admin', [
-    'ngRoute'
-  ])
-  .constant('adminConfig', {
-    nav: [
-      { url: '/admin', name: 'Overview' }
-      ,{ url: '/admin/group/admin/ctrl/home/action/feature', name: 'Features' }
-      ,{ url: '/admin/group/admin/ctrl/home/action/detail', name: 'Details' }
-      ,{ url: '/admin/group/home/ctrl/home/action/tech', name: 'Technology' }
-      ,{ url: '/admin/group/home/ctrl/home/action/faq', name: 'FAQ' }
-      ,{ url: '/admin/login', name: 'Login' }
-    ]
-  })
-  .config(function($locationProvider){
-    $locationProvider.baseUrl= '/admin'
-    $locationProvider.html5Mode(true)
-  })
-  .config(function($routeProvider){
-    return $routeProvider.when('/', {
-      redirectTo: '/index'
-      ,templateUrl: './src/view/login.html'
-      ,controllerUrl: ''
-    })
-    .when('/login', {
-      redirectTo: '/login'
-      ,templateUrl: './src/view/login.html'
-      ,controllerUrl: './src/controller/login.js'
-    })
-    .when('/group/:group/ctrl/:ctrl/action/:action', {
-      redirectTo: '/login'
-      ,templateUrl: './src/view/login.html'
-      ,controllerUrl: './src/controller/login.js'
-    })
-    .otherwise({
-      templateUrl: '/admin/src/view/404.html'
-    })
-  })
-  .run([
-    '$rootScope'
-    ,'$location'
-    ,'$http'
-    ,function($rootScope, $location, $http){
-      $rootScope.$on('$routeChangeStart', function(eve, next, curr){
-        console.info(123, eve, next, curr)
-      })
-    }
-  ])
-  .controller('navCtrl', [
-    '$scope'
-    ,'$location'
-    ,'adminConfig'
-    ,function($scope, $location, Config){
-      console.info($scope)
-      $scope.navbarList= Config.nav
-      console.info($location)
-      $scope.currentNav= function(){
-        $scope.navbarList.forEach(function(nav, index){
-          if($location.url().match(nav.url)){
-            return index
-          }
-        })
-        return 0
-      }
-    }
-  ])
-  angular.bootstrap(document, ['admin'])
-})
-  </script>
+  <script src='./src/ngApp.js'></script>
 </body>
