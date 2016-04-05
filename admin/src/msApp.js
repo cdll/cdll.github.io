@@ -11,7 +11,7 @@ require(['/src/js/loaderConfig.js'], function(){
         ,{ url: '/group/admin/ctrl/home/action/feature', name: 'Features' }
         ,{ url: '/group/admin/ctrl/home/action/detail', name: 'Details' }
         ,{ url: '/group/home/ctrl/home/action/tech', name: 'Technology' }
-        ,{ url: '/nice/home/ctrl/home/action/faq', name: 'FAQ' }
+        ,{ url: '/group/home/ctrl/home/action/faq', name: 'FAQ' }
         ,{ url: '/login', name: 'Login' }
       ]
       ,currentNav: 0
