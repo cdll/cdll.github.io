@@ -11,17 +11,17 @@ require(['/src/js/loaderConfig.js'], function(){
         ,{ url: '/group/admin/ctrl/home/action/feature', name: 'Features' }
         ,{ url: '/group/admin/ctrl/home/action/detail', name: 'Details' }
         ,{ url: '/group/home/ctrl/home/action/tech', name: 'Technology' }
-        ,{ url: '/group/home/ctrl/home/action/faq', name: 'FAQ' }
+        ,{ url: '/nice/home/ctrl/home/action/faq', name: 'FAQ' }
         ,{ url: '/login', name: 'Login' }
       ]
       ,currentNav: 0
       ,updateParams: function(){
         location.__proto__.query= this.params
-        vm.navbarList.forEach(function(nav){
-          for(k in location.query){
-            console.info(k, ':', location.query[k])
-          }
-        })
+//        vm.navbarList.forEach(function(nav){
+//          for(k in location.query){
+//            console.info(k, ':', location.query[k])
+//          }
+//        })
         avalon.scan()
       }
       ,toggleNav: function(i){
@@ -29,6 +29,21 @@ require(['/src/js/loaderConfig.js'], function(){
       }
     })
 //    console.info('a.v:', avalon.version)
+    /**
+     * 路由全局配置
+     */
+    avalon.state.config({
+      onError: function () {
+        console.log(arguments)
+      },
+      onBegin: function () {
+
+      },
+      onViewEnter: function (newNode, oldNode) {
+
+      } // 不建议使用动画，因此实际使用的时候，最好去掉onViewEnter和ms-view元素上的oni-mmRouter-slide
+
+    })
     avalon.state('index', {
       url: '/'
       ,views: {

@@ -8,7 +8,7 @@
   <style>
     @import "/bower_components/material-design-lite/material.min.css";
     [ms-controller]{visibility: hidden;}
-    .mdl-layout__tab.is-active{border-bottom: 2pt solid rgba(255,255,255,.55);}
+    .mdl-layout__tab.is-active{border-bottom: 3pt solid rgba(255,255,255,.55);}
   </style>
 </head>
 
@@ -31,7 +31,9 @@
          ng-href="{{'/admin/#'+nav.url}}"
          ng-class='{"is-active": $index==currentNav}'>
         <span class=''>{{nav.name}}</span>
-        <span class="mdl-layout__tab-ripple-container mdl-js-ripple-effect" ngl-if='$index===currentNav'><span class="mdl-ripple"></span></span>
+        <span class="mdl-layout__tab-ripple-container mdl-js-ripple-effect">
+          <span class="mdl-ripple"></span>
+        </span>
       </a>
 <!--
       <a ng-href="/group/admin/ctrl/home/action/feature" class="mdl-layout__tab">Features
@@ -42,15 +44,13 @@
       <a ng-href="/login" class="mdl-layout__tab">Login</a>
 -->
       <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-shadow--4dp mdl-color--accent" hidden>
-        <i class="material-icons" role="presentation">add</i>
+        <i class="material-icons">add</i>
         <span class="visuallyhidden">Add</span>
       </button>
     </div>
   </header>
-  <div ng-view="" ></div>
+  <div ng-view="" ms-view=""></div>
 
 <!--  <script src="/bower_components/requirejs/require.js" data-main='./src/msApp.js'></script>-->
-  <script src="/bower_components/rsvp/rsvp.min.js"></script>
-  <script src="/bower_components/basket.js/dist/basket.js"></script>
-  <script src='./src/ngApp.js'></script>
+  <script src="/bower_components/rsvp/rsvp.min.js"></script><script src="/bower_components/basket.js/dist/basket.js"></script><script src='./src/ngApp.js'></script>
 </body>
