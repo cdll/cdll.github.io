@@ -1,7 +1,9 @@
 
 require(['/src/js/loaderConfig.js'], function(){
   require.config(config)
-  require(['/bower_components/material-design-lite/material.min.js', 'mmState'], function(){
+  require(['/bower_components/material-design-lite/material.min.js'], function(){
+  })
+  require(['mmState'], function(){
     var vm= avalon.define({
       $id: 'root'
       ,navbarList: [
@@ -13,10 +15,17 @@ require(['/src/js/loaderConfig.js'], function(){
         ,{ url: '/login', name: 'Login' }
       ]
       ,currentNav: 0
-      ,params: {}
       ,updateParams: function(){
-        vm.params= this.params
+        location.__proto__.query= this.params
+        vm.navbarList.forEach(function(nav){
+          for(k in location.query){
+            console.info(k, ':', location.query[k])
+          }
+        })
         avalon.scan()
+      }
+      ,toggleNav: function(i){
+        vm.currentNav= i
       }
     })
 //    console.info('a.v:', avalon.version)
@@ -51,13 +60,14 @@ require(['/src/js/loaderConfig.js'], function(){
       ,onEnter: vm.updateParams
     })
     .state('null', {
-      url: '/\*'
+      url: '/nice'
       ,views: {
         '': {
-          template: '404'
+          templateUrl: './src/view/200.html'
         }
       }
       ,onEnter: vm.updateParams
+      ,abstract: '/'
     })
     avalon.history.start({
       basepath: "/admin"

@@ -23,20 +23,20 @@ basket.require({
   })
   //data: router config
   .config(function($locationProvider){
-    $locationProvider.html5Mode(false)
+    $locationProvider.html5Mode(0)
   })
   .config(function($routeProvider){
     $routeProvider
     .when('/', {
-      templateUrl: '/admin/src/view/login.html'
+      templateUrl: './src/view/200.html'
       ,controller: 'indexCtrl'
     })
     .when('/login', {
-      templateUrl: '/admin/src/view/login.html'
+      templateUrl: './src/view/login.html'
       ,controller: 'loginCtrl'
     })
     .when('/admin/group/:group/ctrl/:ctrl/action/:action', {
-      templateUrl: '/admin/src/view/200.html'
+      templateUrl: './src/view/404.html'
       ,controller: 'mdlCtrl'
     })
     .otherwise({
@@ -49,25 +49,18 @@ basket.require({
     ,'$location'
     ,'$http'
     ,'$route'
-    ,function($rootScope, $location, $http, $route){
-      $rootScope.$on('$routeChangeStart', function(eve, next, curr){
-        console.info($route.current)//return undefined
-      })
-    }
-  ])
-  //data: navbar ctrl
-  .controller('navCtrl', [
-    '$scope'
-    ,'$location'
     ,'adminConfig'
-    ,function($scope, $location, Config){
+    ,function($scope, $location, $http, $route, Config){
       $scope.navbarList= Config.nav
-      $scope.currentNav= 0
-      $scope.navbarList.forEach(function(nav, index){
-//        console.info(index, $location, nav.url)
-        if($location.path().match(nav.url)){
-          $scope.currentNav= index
-        }
+      $scope.currentNav= ''
+      $scope.$on('$routeChangeStart', function(eve, next, curr){
+        console.info($location)
+//        console.log(eve, next, curr)
+        $scope.navbarList.forEach(function(nav, index){
+          if($location.path().match(nav.url)){
+            $scope.currentNav= index
+          }
+        })
       })
     }
   ])

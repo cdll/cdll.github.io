@@ -4,6 +4,7 @@ if(!!window.avalon){
       $id: 'login'
       ,user: ''
       ,psw: ''
+      ,ranColor: '#'+Math.floor(Math.random() * 0xFFFFFF).toString(16)|| '#'+(~~(Math.random()*(1<<24))).toString(16)
     })
     return avalon.controller(vm)
   })
