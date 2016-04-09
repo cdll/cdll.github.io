@@ -1,0 +1,43 @@
+<html charset='utf-8'>
+  <head>
+
+    <title>我的pjax路由器试验田</title>
+  </head>
+
+  <body class="">
+
+    <center>
+      <a class="" href='#/home'>home</a>
+      <a class="" href='#/module'>module</a>
+      <a class="" href='#/login'>login</a>
+    </center>
+
+    <script>
+(function(window){
+  location.__proto__.query= new Function(location.search.substring(1).replace('=', ':'))
+  location.__proto__.router= {}
+
+  window.onhashchange= function(eve){
+//    console.info(eve)
+    console.info(eve.newURL.substr(eve.newURL.lastIndexOf('#')), eve.oldURL)
+    eve.defaultPrevented= true
+    eve.cancelable= true
+    eve.preventDefault()
+  }
+//  console.info(window.onhashchange.prototype, window.onhashchange.__proto__)
+//  window.onhashchange.prototype.__proto__= {
+//    constructor: function(){
+//      console.info(arguments)
+//    }
+//  }
+
+  var router= {
+    route: function(){}
+  }
+  location.__proto__.router.__proto__= router
+
+  console.log(location.query, location.router)
+})(window)
+    </script>
+  </body>
+</html>

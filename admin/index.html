@@ -12,7 +12,7 @@
   </style>
 </head>
 
-<body class="mdl-layout" ng-app='admin' mss-controller='root'>
+<body class="mdl-layout" ng-app='admin' ms-controller='root'>
 <!--  <div ng-view="header"></div>-->
 
   <header class="mdl-layout__header- mdl-layout__header--scroll- mdl-color--primary">
@@ -29,7 +29,7 @@
          ms-on-click='toggleNav($index)'
          ng-repeat='nav in navbarList track by $index'
          ng-href="{{'/admin/#'+nav.url}}"
-         ng-class='{"is-active": $index==currentNav}'>
+         ng-class='{"is-active": $index===currentNav, hide: $index!==0}'>
         <span class=''>{{nav.name}}</span>
         <span class="mdl-layout__tab-ripple-container mdl-js-ripple-effect">
           <span class="mdl-ripple"></span>
@@ -51,6 +51,6 @@
   </header>
   <div ng-view="" ms-view=""></div>
 
-<!--  <script src="/bower_components/requirejs/require.js" data-main='./src/msApp.js'></script>-->
-  <script src="/bower_components/rsvp/rsvp.min.js"></script><script src="/bower_components/basket.js/dist/basket.js"></script><script src='./src/ngApp.js'></script>
+  <script src="/bower_components/requirejs/require.js" data-main='./src/msApp.js'></script>
+<!--  <script src="/bower_components/rsvp/rsvp.min.js"></script><script src="/bower_components/basket.js/dist/basket.js"></script><script src='./src/ngApp.js'></script>-->
 </body>

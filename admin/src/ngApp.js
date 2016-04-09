@@ -13,79 +13,85 @@ basket.require({
   //data: admin config
   .constant('adminConfig', {
     nav: [
-      { url: '/', name: 'Overview' }
-      ,{ url: '/group/admin/ctrl/home/action/feature', name: 'Features' }
-      ,{ url: '/group/admin/ctrl/home/action/detail', name: 'Details' }
-      ,{ url: '/group/home/ctrl/home/action/tech', name: 'Technology' }
-      ,{ url: '/group/home/ctrl/home/action/faq', name: 'FAQ' }
+      { url: '/home', name: 'Overview' }
+      ,{ url: '/group/admin/ctrl/index/action/feature', name: 'Features' }
+      ,{ url: '/group/admin/ctrl/index/action/detail', name: 'Details' }
+      ,{ url: '/group/user/ctrl/index/action/tech', name: 'Technology' }
+      ,{ url: '/group/user/ctrl/index/action/faq', name: 'FAQ' }
       ,{ url: '/login', name: 'Login' }
     ]
   })
   //data: router config
   .config(function($locationProvider){
-    $locationProvider.html5Mode(0)
+    $locationProvider.html5Mode({
+      enabled: false
+      ,requireBase: false
+      ,rewriteLinks: false
+    });
   })
   .config(function($routeProvider){
     $routeProvider
     .when('/', {
+      redirectTo: '/home'
+    })
+    .when('/home', {
       templateUrl: './src/view/200.html'
-      ,controller: 'indexCtrl'
+      ,controllerUrl: './src/controller/homeCtrl'
+//      ,controller: 'homeCtrl'
     })
     .when('/login', {
       templateUrl: './src/view/login.html'
       ,controller: 'loginCtrl'
     })
-    .when('/admin/group/:group/ctrl/:ctrl/action/:action', {
-      templateUrl: './src/view/404.html'
+    .when('/group/:group/ctrl/:ctrl/action/:action', {
+      templateUrl: './src/view/module.html'
       ,controller: 'mdlCtrl'
     })
     .otherwise({
       templateUrl: '/admin/src/view/404.html'
-//      redirectTo: '/admin/#/login'
     })
   })
   .run([
     '$rootScope'
     ,'$location'
-    ,'$http'
-    ,'$route'
     ,'adminConfig'
-    ,function($scope, $location, $http, $route, Config){
-      $scope.navbarList= Config.nav
-      $scope.currentNav= ''
-      $scope.$on('$routeChangeStart', function(eve, next, curr){
-        console.info($location)
-//        console.log(eve, next, curr)
-        $scope.navbarList.forEach(function(nav, index){
+    ,function(vm, $location, Config){
+      vm.navbarList= Config.nav
+      vm.currentNav= undefined
+      vm.$on('$locationChangeStart', function(eve, next, curr){
+//        console.warn($location, location)
+        vm.navbarList.forEach(function(nav, index){
           if($location.path().match(nav.url)){
-            $scope.currentNav= index
+            vm.currentNav= index
+            console.info(vm.currentNav)
           }
         })
       })
     }
   ])
   //data: index ctrl
-  .controller('indexCtrl', [
+  .controller('homeCtrl', [
     '$scope'
     ,function(vm){
-      console.info(vm)
+      console.info('home:', vm)
     }
   ])
   //data: login ctrl
   .controller('loginCtrl', [
     '$scope'
     ,function(vm){
-      console.info(vm)
+//      console.info('login:', vm)
     }
   ])
   //data: modules ctrl
   .controller('mdlCtrl', [
     '$scope'
-    ,function(vm){
-      console.info(vm)
+    ,'$location'
+    ,function(vm, $location){
+//      console.info('module:', vm)
+//      console.info($location, location)
     }
   ])
-
 
 //  angular.bootstrap(document, ['admin'])//ng-app='admin'
 })

@@ -40,13 +40,12 @@ var config= {
 
 //event: amd loader fix
 if(typeof require== 'function'&& define.amd){
-//  console.info('amd')
-  define('config', function(){
+  define(function(){
     return config
-  });
+  })
 }
 //event: cmd loader fix
 else if(typeof exports== 'object'){
-  module.exports= config;
+  module.exports= config
 }
 
