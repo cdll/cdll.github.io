@@ -68,7 +68,7 @@ require(['/src/js/loaderConfig.js'], function(){
       url: '/group/:group/ctrl/:ctrl/action/:action'
       ,views: {
         '': {
-          templateUrl: './src/view/404.html'
+          templateUrl: './src/view/module.html'
           ,controllerUrl: ''
         }
       }
@@ -78,7 +78,7 @@ require(['/src/js/loaderConfig.js'], function(){
       url: '/nice'
       ,views: {
         '': {
-          templateUrl: './src/view/200.html'
+          templateUrl: './src/view/404.html'
         }
       }
       ,onEnter: vm.updateParams
