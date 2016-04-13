@@ -1,0 +1,43 @@
+{
+  "name": "ng-mdl",
+  "description": "Angular wrapper for Material Design Lite",
+  "main": "dist/ng-mdl.js",
+  "keywords": [
+    "angular",
+    "material",
+    "design",
+    "lite",
+    "mdl",
+    "ng",
+    "ng-mdl",
+    "angular-mdl"
+  ],
+  "authors": [
+    "Dominik Winter <dominik.winter92@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/sydev/ng-mdl",
+  "dependencies": {
+    "material-design-lite": "^1.1.3",
+    "angular": "^1.5.3"
+  },
+  "devDependencies": {
+    "angular-highlightjs": "^0.6.1"
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "docs",
+    "src"
+  ],
+  "_release": "8c13f999e9",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "8c13f999e9a72fe177c3cd0bc5f07f4d31dba940"
+  },
+  "_source": "https://github.com/sydev/ng-mdl.git",
+  "_target": "*",
+  "_originalSource": "ng-mdl",
+  "_direct": true
+}

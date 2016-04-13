@@ -31,6 +31,7 @@
     "basket.js": "~0.5.2",
     "angular": "angular2#~1.5.3",
     "angular-route": "~1.5.3",
-    "surface": "https://github.com/mildrenben/surface.git"
+    "surface": "https://github.com/mildrenben/surface.git",
+    "ng-mdl": "*"
   }
 }
