@@ -1,18 +1,18 @@
 
 basket.require({
-//  url: '/bower_components/material-design-lite/material.min.js'
-//},{
   url: "/bower_components/angular/angular.min.js"
 },{
   url: "/bower_components/angular-route/angular-route.min.js"
 },{
-  url: "/bower_components/ng-mdl/dist/ng-mdl.min.js"
+  url: '/bower_components/material-design-lite/material.min.js'
+//},{
+//  url: "/bower_components/ng-mdl/dist/ng-mdl.min.js"
 })
 .then(function(){
-  console.info(ngMdl)
+//  console.info(ngMdl)
   var admin= angular.module('admin', [
     'ngRoute'
-    ,'ng.mdl'
+//    ,'ng.mdl'
   ])
   //data: admin config
   .constant('adminConfig', {
@@ -66,6 +66,9 @@ basket.require({
       vm.navbarList= Config.nav
       vm.currentNav= undefined
       vm.$on('$locationChangeStart', function(eve, next, curr){
+        basket.require({
+          url: '/bower_components/material-design-lite/material.min.js'
+        })
 //        console.warn($location, location)
         vm.navbarList.forEach(function(nav, index){
           if($location.path().match(nav.url)){
