@@ -7,21 +7,19 @@
 
   <style>
     @import "/bower_components/material-design-lite/material.min.css";
-    [ms-controller]{visibility: hidden;}
+    .ms-controller, [ms-controller]{visibility: hidden;}
     .mdl-layout__tab.is-active{border-bottom: 3pt solid rgba(255,255,255,.55);}
   </style>
 </head>
 
-<body class="mdl-layout" ng-app='admin' ng-cloak mss-controller='root'>
+<body class="mdl-layout" ng-app='admin' ng-cloak>
 <!--  <div ng-view="header"></div>-->
 
   <header class="mdl-layout__header- mdl-layout__header--scroll- mdl-color--primary">
+    <div class="mdl-layout--large-screen-only mdl-layout__header-row" hidden->
+      <h3>Admins</h3>
     </div>
-    <div class="mdl-layout--large-screen-only mdl-layout__header-row">
-      <h3>Admin</h3>
-    </div>
-    </div>
-    <div class="mdl-layout__bar mdl-js-ripple-effect mdl-color--primary-dark clearfix">
+    <div class="mdl-layout__bar -mdl-js-ripple-effect mdl-color--primary-dark clearfix">
       <a class="mdl-layout__tab"
          ms-repeat-nav='navbarList'
          ms-attr-href="{{'/admin/#'+nav.url}}"
@@ -35,14 +33,6 @@
           <span class="mdl-ripple"></span>
         </span>
       </a>
-<!--
-      <a ng-href="/group/admin/ctrl/home/action/feature" class="mdl-layout__tab">Features
-      </a>
-      <a ng-href="/group/admin/ctrl/home/action/detail" class="mdl-layout__tab">Details</a>
-      <a ng-href="/group/home/ctrl/home/action/tech" class="mdl-layout__tab">Technology</a>
-      <a ng-href="/group/home/ctrl/home/action/faq" class="mdl-layout__tab">FAQ</a>
-      <a ng-href="/login" class="mdl-layout__tab">Login</a>
--->
       <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-shadow--4dp mdl-color--accent" hidden>
         <i class="material-icons">add</i>
         <span class="visuallyhidden">Add</span>

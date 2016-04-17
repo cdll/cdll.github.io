@@ -17,11 +17,11 @@ require(['/src/js/loaderConfig.js'], function(){
       ,currentNav: 0
       ,updateParams: function(){
         location.__proto__.query= this.params
-//        vm.navbarList.forEach(function(nav){
-//          for(k in location.query){
-//            console.info(k, ':', location.query[k])
-//          }
-//        })
+        vm.navbarList.forEach(function(nav){
+          for(k in location.query){
+            console.info(k, ':', location.query[k])
+          }
+        })
         avalon.scan()
       }
       ,toggleNav: function(i){
@@ -88,6 +88,7 @@ require(['/src/js/loaderConfig.js'], function(){
       basepath: "/admin"
       ,html5Mode: 0
     })
-//    avalon.scan()
+    document.body.setAttribute("ms-controller", 'root')
+    avalon.scan()
   })
 })
