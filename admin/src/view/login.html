@@ -1,24 +1,47 @@
-<center class=''>
-  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-    <input class="mdl-textfield__input" type="text" maxlength="15" id="input_user" ms-duplex="user" ng-model='user'>
-    <label class="mdl-textfield__label" for="input_user">User...</label>
-    <span class="mdl-textfield__error">Only 15 max length allowed!</span>
-  </div>
-  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-    <input class="mdl-textfield__input" type="password" pattern="-?[0-9]*(\.[0-9]+)?" id="input_psw" ms-duplex="psw" ng-model='psw'>
-    <label class="mdl-textfield__label" for="input_psw">Password...</label>
-    <span class="mdl-textfield__error">Input is not a number!</span>
-  </div>
-  <center class=''>
-    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
-      Login
-    </button>
+<section class=''>
+  <center>
+    <button type="button" class="mdl-button show-modal" hidden>Show Modal</button>
+    <section dialog class="mdl-dialog">
+      <div class="mdl-dialog__content">
+<!--
+        <p>
+          Allow this site to collect usage data to improve your experience?
+        </p>
+-->
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <input class="mdl-textfield__input" type="text" maxlength="15" id="input_user" ms-duplex="user" ng-model='user'>
+          <label class="mdl-textfield__label" for="input_user">User...</label>
+          <span class="mdl-textfield__error">Only 15 max length allowed!</span>
+        </div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <input class="mdl-textfield__input" type="password" pattern="-?[0-9]*(\.[0-9]+)?" id="input_psw" ms-duplex="psw" ng-model='psw'>
+          <label class="mdl-textfield__label" for="input_psw">Password...</label>
+          <span class="mdl-textfield__error">Input is not a number!</span>
+        </div>
+        <center class=''>
+          <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+            Login
+          </button>
+        </center>
+      </div>
+      <div class="mdl-dialog__actions mdl-dialog__actions--full-width">
+        <button type="button" class="mdl-button">Forgot Password</button>
+        <button type="button" class="mdl-button close">Sign In</button>
+      </div>
+    </section>
+    <script>
+      var dialog = document.querySelector('dialog');
+      var showModalButton = document.querySelector('.show-modal');
+      console.info(dialog)
+      if (! dialog.showModal) {
+        dialogPolyfill.registerDialog(dialog);
+      }
+      showModalButton.addEventListener('click', function() {
+        dialog.showModal();
+      });
+      dialog.querySelector('.close').addEventListener('click', function() {
+        dialog.close();
+      });
+    </script>
   </center>
-</center>
-
-<center>
-  <mdl-text-field label="UserName" ng-model="user"></mdl-text-field>
-  <mdl-text-field label="PassWord" ng-model="psw"></mdl-text-field>
-  <br>
-  <mdl-button-raised theme="primary">Login</mdl-button-raised>
-</center>
+</section>
