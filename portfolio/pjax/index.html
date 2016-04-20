@@ -2,9 +2,15 @@
   <head>
 
     <title>我的pjax路由器试验田</title>
+
+    <style>
+      .ms-controller{
+        visibility: hidden;
+      }
+    </style>
   </head>
 
-  <body class="" ms-controller='demo'>
+  <body class="ms-controller" ms-controller='demo'>
 
     <center>
 <!--ms-for:el in @array-->
@@ -13,7 +19,11 @@
       <span><a class="" href='#/login'>login</a></span>
 <!--ms-for-end:-->
     </center>
-<!--粤B0J4H7-->
+    <div class="">
+<!--ms-for:el in @array-->
+      <big>shit</big>
+<!--ms-for-end:-->
+    </div>
     <script src="/src/js/avalon.20160419.js"></script>
     <script>
 (function(window){
@@ -21,6 +31,7 @@
     $id: 'demo'
     ,array: [1, 2]
   })
+  avalon.scan(document.body)
 
   location.__proto__.query= new Function(location.search.substring(1).replace('=', ':'))
   location.__proto__.router= {}
