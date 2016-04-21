@@ -63,6 +63,7 @@ basket.require({
     ,'$location'
     ,'adminConfig'
     ,function(vm, $location, Config){
+      window.ll= $location
       vm.navbarList= Config.nav
       vm.currentNav= undefined
       vm.$on('$locationChangeStart', function(eve, next, curr){

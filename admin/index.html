@@ -7,12 +7,20 @@
 
   <style>
     @import "/bower_components/material-design-lite/material.min.css";
+<<<<<<< Updated upstream
     .ms-controller, [ms-controller]{visibility: hidden;}
+=======
+    .ms-controller{visibility: hidden;}
+>>>>>>> Stashed changes
     .mdl-layout__tab.is-active{border-bottom: 3pt solid rgba(255,255,255,.55);}
   </style>
 </head>
 
+<<<<<<< Updated upstream
 <body class="mdl-layout" ng-app='admin' ng-cloak>
+=======
+<body class="mdl-layout mss-controller" ng-app='admin' ng-cloak ms-controller='root'>
+>>>>>>> Stashed changes
 <!--  <div ng-view="header"></div>-->
 
   <header class="mdl-layout__header- mdl-layout__header--scroll- mdl-color--primary">
@@ -24,7 +32,7 @@
     <div class="mdl-layout__bar -mdl-js-ripple-effect mdl-color--primary-dark clearfix">
       <a class="mdl-layout__tab"
          ms-repeat-nav='navbarList'
-         ms-attr-href="{{'/admin/#'+nav.url}}"
+         ms-attr-href="'/admin/#'+nav.url"
          ms-class='is-active: $index== currentNav'
          ms-on-click='toggleNav($index)'
          ng-repeat='nav in navbarList track by $index'
@@ -43,7 +51,7 @@
   </header>
   <div ng-view="" ms-view=""></div>
 
-<!--  <script src="/bower_components/requirejs/require.js" data-main='./src/msApp.js'></script>-->
-  <script src="/bower_components/rsvp/rsvp.min.js"></script><script src="/bower_components/basket.js/dist/basket.js"></script><script src='./src/ngApp.js'></script>
+  <script src="/bower_components/requirejs/require.js" data-main='./src/msApp.js'></script>
+<!--  <script src="/bower_components/rsvp/rsvp.min.js"></script><script src="/bower_components/basket.js/dist/basket.js"></script><script src='./src/ngApp.js'></script>-->
 
 </body>

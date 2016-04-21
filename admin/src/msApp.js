@@ -37,10 +37,8 @@ require(['/src/js/loaderConfig.js'], function(){
         console.log(arguments)
       },
       onBegin: function () {
-
       },
       onViewEnter: function (newNode, oldNode) {
-
       } // 不建议使用动画，因此实际使用的时候，最好去掉onViewEnter和ms-view元素上的oni-mmRouter-slide
 
     })
