@@ -23,14 +23,14 @@
 //    null
 //});
 
-(function(){
+(function(location){
   //fn: parse the location.search into url queries
   var _query= function(prop){
     var search= location.search.substr(1)
     var query= {}
     search.split('&').forEach(function(str, index){
-      k= str.split('=')[0]
-      v= str.match('=')?
+      var k= str.split('=')[0]
+      var v= str.match('=')?
         decodeURIComponent(str.split('=')[1])
         :
         null//js中null本意为'此处不应该有值'
@@ -44,7 +44,9 @@
     }
   }
   location.__proto__.query= _query
+})(window.location);
 
+(function(location){
   var _router= (function(){
     var router= {
       config: function(){
@@ -80,7 +82,7 @@
   location.__proto__.router= _router
 
   console.log(location.query(), location.router)
-})()
+})(window.location);
     </script>
   </body>
 </html>
