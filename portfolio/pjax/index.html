@@ -5,7 +5,7 @@
     <title>我的pjax路由器试验田</title>
   </head>
 
-  <body class="">
+  <body class="" ms-controller='vm'>
 
     <center>
       <a class="" href='#/home'>home</a>
@@ -15,6 +15,9 @@
 <!--粤B0J4H7-->
     <script src="/src/js/avalon.20160424.js"></script>
     <script>
+var vm= avalon.define({
+  $id: 'vm'
+})
 //location.query prepared for amplitude log event
 //;location.search.substr(1).split('&').forEach(function(el){
 //  location.query= location.__proto__.query|| {}
@@ -24,7 +27,7 @@
 //    null
 //});
 
-(function(location){
+;(function(location){
   //fn: parse the location.search into url queries
   var _query= function(prop){
     var search= location.search.substr(1)
@@ -47,7 +50,7 @@
   location.__proto__.query= _query
 })(window.location);
 
-(function(location){
+;(function(location){
   var _router= (function(){
     var router= {
       config: function(){
