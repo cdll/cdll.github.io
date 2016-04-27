@@ -13,11 +13,17 @@
 
 <script>
   Polymer({
-    is: 'poly-data',
-    ready: function(){
-      this.familyName= 'LL';
-      this.firstName= 'CD';
-      this.now= (new Date()).toLocaleTimeString()
+    is: 'poly-data'
+    ,properties: {
+    }
+    ,ready: function(){
+      var self= this
+      self.familyName= 'LL';
+      self.firstName= 'CD';
+      self.now= (new Date()).toLocaleTimeString()
+      setInterval(function(){
+        self.now= (new Date()).toLocaleTimeString()
+      }, 100)
     }
   })
 </script>

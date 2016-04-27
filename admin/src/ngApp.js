@@ -70,11 +70,12 @@ basket.require({
         basket.require({
           url: '/bower_components/material-design-lite/material.min.js'
         })
-//        console.warn($location, location)
+//        console.warn($location)
+//        console.info(location)
         vm.navbarList.forEach(function(nav, index){
           if($location.path().match(nav.url)){
             vm.currentNav= index
-            console.info(vm.currentNav)
+//            console.info(vm.currentNav)
           }
         })
       })

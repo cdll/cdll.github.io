@@ -1,6 +1,11 @@
 <link rel='import' href='/bower_components/polymer/polymer.html'>
 
 <dom-module id='poly-attr'>
+  <style>
+    [active]{
+      color: red;
+    }
+  </style>
   <template>
     <p class="">
       i am <b>{{author}}</b>.
@@ -8,29 +13,29 @@
     <center class=''>
       {{nua}}
     </center>
-    <div class="" hidden="{{hide}}">im here~</div>
+    <div class="" data-active={{active}}>{{active}}, im here~</div>
   </template>
 </dom-module>
 
 <script>
   Polymer({
-    is: 'poly-attr',
-    properties: {
+    is: 'poly-attr'
+    ,properties: {
       author: {
         type: String,
         value: 'clld'
-      },
-      nua: {
+      }
+      ,nua: {
         value: navigator.userAgent
-      },
-      hide: {
+      }
+      ,active: {
         value: true
       }
-    },
-    ready: function(){
+    }
+    ,ready: function(){
       var self= this
       setInterval(function(){
-        self.hide= !self.hide
+        self.active= !self.active
       }, 1000)
     }
   })

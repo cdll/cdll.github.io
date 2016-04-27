@@ -3,14 +3,20 @@
   <head>
 
     <title>我的pjax路由器试验田</title>
+
+    <style>
+      .btn-route{
+        padding: 5pt;margin: 0;display: inline-block; border: 1pt dotted lightgreen;border-radius: 5px;
+      }
+    </style>
   </head>
 
   <body class="" ms-controller='vm'>
 
     <center>
-      <a class="" href='#/home'>home</a>
-      <a class="" href='#/module'>module</a>
-      <a class="" href='#/login'>login</a>
+      <a class="btn-route" href='#/home'>home</a>
+      <a class="btn-route" href='#/module'>module</a>
+      <a class="btn-route" href='#/login'>login</a>
     </center>
 <!--粤B0J4H7-->
     <script src="/src/js/avalon.20160424.js"></script>
@@ -18,27 +24,26 @@
 var vm= avalon.define({
   $id: 'vm'
 })
-//location.query prepared for amplitude log event
-//;location.search.substr(1).split('&').forEach(function(el){
-//  location.query= location.__proto__.query|| {}
-//  location.query[el.split('=')[0]]= el.match('=')?
-//    decodeURIComponent(el.split('=')[1])
-//    :
-//    null
-//});
+,router= {}
 
 ;(function(location){
   //fn: parse the location.search into url queries
   var _query= function(prop){
-    var search= location.search.substr(1)
+    var search= window.location.search.substr(1)
     var query= {}
     search.split('&').forEach(function(str, index){
-      var k= str.split('=')[0]
-      var v= str.match('=')?
-        decodeURIComponent(str.split('=')[1])
-        :
-        null//js中null本意为'此处不应该有值'
-      query[k]= v
+//      var k//= str.split('=')[0]|| false
+      if(decodeURIComponent(str.split('=')[0])=== ''){
+        return false
+      }
+      else{
+        var k= str.split('=')[0]
+        var v= str.match('=')?
+          decodeURIComponent(str.split('=')[1])
+          :
+          null//js中null本意为'此处不应该有值'
+        query[k]= v
+      }
     })
     if(prop===''|| prop===undefined){
       return query
@@ -48,21 +53,23 @@ var vm= avalon.define({
     }
   }
   location.__proto__.query= _query
-})(window.location);
+})(router);
 
 ;(function(location){
   var _router= (function(){
     var router= {
-      config: function(){
-        return {
-          path: this.path()
-        }
+      config: function(obj){
+//        console.info(obj)
+        obj.paths.forEach(function(p, i){
+          p.pattern= (new RegExp(p.url))
+          router.paths.push(p)
+        })
       }
-      ,path: function(url, callback){
-        console.info(location.href, url)
+      ,paths: []
+      ,route: function(url, callback){
         if(url!== ''&& url!== undefined){
           return (function(url, callback){
-            location.hash= url.substr(url.indexOf('#'))>0?
+            window.location.hash= url.substr(url.indexOf('#'))>0?
               url.substr(url.indexOf('#'))
               :
               url
@@ -78,15 +85,47 @@ var vm= avalon.define({
       }
     }
     window.addEventListener('hashchange', function(eve){
-      console.info(currURL= eve.newURL, lastURL= eve.oldURL)
-      console.info(eve.newURL.substr(eve.newURL.lastIndexOf('#')), eve.oldURL)
+      var newURL= eve.newURL.substr(eve.newURL.lastIndexOf('#'))
+      ,oldURL= eve.oldURL.substr(eve.oldURL.lastIndexOf('#'))
+      var targeted= false
+      _router.paths.forEach(function(path, index){
+//        console.info(path, newURL, oldURL, index)
+        if(newURL.match(path.pattern)){
+          targeted= true
+          if(typeof path.callback=== 'function'){
+            path.callback()
+          }
+          else{
+            console.warn('routing callback not found~')
+          }
+        }
+      })
+      if(targeted=== false){
+        console.warn('routing path not found~')
+      }
     })
     return router
-  })()
+  })();
   location.__proto__.router= _router
 
   console.log(location.query(), location.router)
-})(window.location);
+  location.router.config({
+    paths: [
+      {
+        url: '/home'
+        ,callback: function(){
+          console.info((new Date()).toDateString())
+        }
+      }
+      ,{
+        url: '/module'
+        ,callback: function(){
+          console.info(window.location.hash)
+        }
+      }
+    ]
+  })
+})(router);
     </script>
   </body>
 </html>

@@ -15,9 +15,18 @@
 
 <script>
   Polymer({
-    is: 'poly-todo',
-    properties: {
-      
+    is: 'poly-todo'
+    ,properties: {
+    }
+    ,ready: function(){
+      var self= this
+      console.info(self)
+      self.querySelector('input').addEventListener('keyup', function(eve){
+        console.info(eve)
+      })
+    }
+    ,update: function(v, vv){
+      console.info(v, vv)
     }
   })
 </script>
