@@ -1,5 +1,5 @@
 ````javascript
-const man= new Object({
+var man= new Object({
   init: {
     name: '梁鑫伟'
     ,enName: 'David Leon'
