@@ -73,18 +73,40 @@ var man= new Object({
 
 <br>
 ##技术概要
->**photoshop:** 精通切图处理及图像优化，熟悉gif图像制作，了解sprite精灵图开发方式<br>
-**HTML5:** 熟悉html5开发、语义化标签，熟悉移动设备定位geolocation、画布canvas、UA探测、浏览器前端数据存储web storage、history前端路由机制 等<br>
-**CSS3:** 精通选择器/选择器优先级、伪类/伪元素应用，熟悉媒体查询、animation动画、transform变换 等<br>
-**bootstrap:** 熟悉样式重置、栅格系统、清除浮动，各类组件<br>
-**javascript:** 熟悉基础dom操作、function封装，熟悉原型链、面向对象开发，熟悉json对象、ajax及jsonp/script跨域处理机制<br>
-**jQuery:** 熟悉dom选择器、ajax操作、animate动画<br>
-**mvvm:** 熟悉avalonjs，可实现双向绑定、多级联动、pjax，熟悉符合AMD规范的加载器机制及shim兼容机制，了解CMD/AMD/UMD开发，了解angularjs、vuejs<br>
-**nodejs:** 熟悉thinkjs开发、各类gulp中间件使用，了解各类grunt中间件使用、express开发<br>
-**code manage:** 熟悉git、svn<br>
-**IDE:** 精通notepad++、brackets、atom、VScode<br>
-**debugger:** chrome<br>
-**键盘习惯:** 习惯使用各版本ps、各类ide快捷键，习惯使用右手敲击空格及回车键位，不习惯fn功能键在左下的windows键盘<br>
+**photoshop:** 
+>精通切图处理及图像优化，熟悉gif图像制作，了解sprite精灵图开发方式
+>
+**HTML5:**
+>熟悉html5开发、语义化标签，熟悉移动设备定位geolocation、画布canvas、UA探测、浏览器前端数据存储web storage、history前端路由机制 等
+**CSS3:** 精通选择器/选择器优先级、伪类/伪元素应用，熟悉媒体查询、animation动画、transform变换 等
+>
+**bootstrap:**
+>熟悉样式重置、栅格系统、清除浮动，各类组件
+>
+**javascript:**
+>熟悉基础dom操作、function封装，熟悉原型链、面向对象开发，熟悉json对象、ajax及jsonp/script跨域处理机制
+>
+**jQuery:**
+>熟悉dom选择器、ajax操作、animate动画
+>
+**mvvm:**
+>熟悉avalonjs，可实现双向绑定、多级联动、pjax，熟悉符合AMD规范的加载器机制及shim兼容机制，了解CMD/AMD/UMD开发，了解angularjs、vuejs
+>
+**nodejs:**
+>熟悉thinkjs开发、各类gulp中间件使用，了解各类grunt中间件使用、express开发
+>
+**code manage:**
+>熟悉git、svn
+>
+**IDE:**
+>精通notepad++、brackets、atom、VScode
+>
+**debugger:**
+>chrome
+>
+**键盘习惯:**
+>习惯使用各版本ps、各类ide快捷键，习惯使用右手敲击空格及回车键位，不习惯fn功能键在左下的windows键盘
+>
 
 <br>
 ##工作经历
