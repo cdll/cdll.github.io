@@ -9,7 +9,7 @@ var man= new Object({
     ,tel: 18521534116
     ,living: '上海徐汇'
     ,graduation: '沈阳建筑大学（计算机科学与技术 2014届 本科）'
-    ,blog: [blog](https://github.com/cdll/blog/issues)
+    ,blog: 'https://github.com/cdll/blog/issues'
   }
   ,detail: [
     {
