@@ -1,3 +1,24 @@
+````javascript
+var man= new Person({
+  init: {
+    name: '梁鑫伟'
+    ,EnName: 'David Leon'
+    ,sex: 'male'
+    ,birth: '1991-08'
+    ,from: '广西柳州'
+    ,tel: 18521534116
+    ,living: '上海徐汇'
+    ,graduation: '沈阳建筑大学（计算机科学与技术 2014届 本科）'
+    ,blog: [blog](https://github.com/cdll/blog/issues)
+  }
+  ,detail: [
+    {
+      skill: 'Photoshop'
+      ,describtion: '精通切图处理及图像优化，熟悉gif图像制作，了解sprite精灵图开发方式'
+    }
+  ]
+})
+````
 ##个人简介
 >**姓名：**梁鑫伟`男`  
 **电话：**`18521534116`  
