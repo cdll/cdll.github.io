@@ -14,6 +14,7 @@
   <body class="" ms-controller='vm'>
 
     <center>
+      <a class="btn-route" href='#/'>null</a>
       <a class="btn-route" href='#/home'>home</a>
       <a class="btn-route" href='#/module'>module</a>
       <a class="btn-route" href='#/login'>login</a>
@@ -62,7 +63,8 @@ var vm= avalon.define({
 //        console.info(obj)
         obj.paths.forEach(function(p, i){
           p.pattern= (new RegExp(p.url))
-          router.paths.push(p)
+          console.info('path:', p)
+          p.url.match('/')? router.paths.unshift(p): router.paths.push(p)
         })
       }
       ,paths: []
@@ -74,7 +76,7 @@ var vm= avalon.define({
               :
               url
             ;typeof callback=== 'function'&& callback()|| console.warn('invalid callback function~');
-          })(url, callback)
+          })(url, callback);
         }
         return [
           {
@@ -111,7 +113,7 @@ var vm= avalon.define({
   console.log(location.query(), location.router)
   location.router.config({
     paths: [
-      {
+      ,{
         url: '/home'
         ,callback: function(){
           console.info((new Date()).toDateString())
@@ -121,6 +123,19 @@ var vm= avalon.define({
         url: '/module'
         ,callback: function(){
           console.info(window.location.hash)
+        }
+      }
+      //bug: some special patterns that donot work correctly
+      ,{
+        url: ''
+        ,callback: function(){
+          console.log('indexing~')
+        }
+      }
+      ,{
+        url: '/'
+        ,callback: function(){
+          console.log('indexing~')
         }
       }
     ]
