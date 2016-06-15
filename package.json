@@ -10,4 +10,7 @@
     "gulp": "^3.9.1",
     "incremental-dom": "^0.3.0"
   }
+  ,"script": {
+    "start": "node console.log('start')"
+  }
 }
