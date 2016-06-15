@@ -120,9 +120,14 @@
       </div>
     </footer>
 
-    <script src="/bower_components/rsvp/rsvp.min.js"></script>
-    <script src="/bower_components/basket.js/dist/basket.js"></script>
-    <script data-src="/bower_components/avalon/dist/avalon.min.js" src='/src/js/index.js?v=20160229'></script>
+    <script src="/bower_components/system.js/dist/system.js"></script>
+    <script sr>
+System.config({
+  baseUrl: '/'
+  ,map:{}
+})
+System.import('/src/js/index.js')
+    </script>
 
   </body>
 </html>

@@ -3,7 +3,7 @@
   <meta name='viewport' content="width=device-width,user-scalable=0,initial-scale=1.0,maximum-scale=1.0" />
 
   <title>CDLL|Admin</title>
-  <base href="/admin/" >
+  <base href="/admin/">
 
   <style>
     @import "/bower_components/material-design-lite/material.min.css";
@@ -43,7 +43,15 @@
   </header>
   <div ng-view="" ms-view=""></div>
 
-<!--  <script src="/bower_components/requirejs/require.js" data-main='./src/msApp.js'></script>-->
-  <script src="/bower_components/rsvp/rsvp.min.js"></script><script src="/bower_components/basket.js/dist/basket.js"></script><script src='./src/ngApp.js'></script>
+  <script src="/bower_components/avalon/dist/avalon.min.js" data-main='./src/msApp.js'></script>
+<!--
+  <script src="/bower_components/system.js/dist/system.js"></script>
+  <script -src='./src/ngApp.js'>
+System.config({
+  baseUrl: '/admin'
+})
+System.import('./src/ngApp.js')
+  </script>
+-->
 
 </body>

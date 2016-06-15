@@ -15,15 +15,15 @@
     "qunit": "~1.12.0"
   },
   "homepage": "https://github.com/systemjs/systemjs",
-  "version": "0.19.9",
-  "_release": "0.19.9",
+  "version": "0.19.31",
+  "_release": "0.19.31",
   "_resolution": {
     "type": "version",
-    "tag": "0.19.9",
-    "commit": "d80ea8dc89111fab92e7c8bed34e57686bf3eea7"
+    "tag": "0.19.31",
+    "commit": "f94507b22bc5aff669e9d404d43a6bd6e60fcf42"
   },
-  "_source": "git://github.com/systemjs/systemjs.git",
-  "_target": "~0.19.9",
+  "_source": "https://github.com/systemjs/systemjs.git",
+  "_target": "~0.19.31",
   "_originalSource": "system.js",
   "_direct": true
 }

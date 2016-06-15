@@ -1,5 +1,5 @@
 
-require(['/src/js/loaderConfig.js'], function(){
+require(['../../src/js/require.config.js'], function(){
   require.config(config)
   require(['/bower_components/material-design-lite/material.min.js'], function(){
   })

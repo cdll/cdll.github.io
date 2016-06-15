@@ -1,5 +1,5 @@
 
-require(['/src/js/loaderConfig.js'], function(cfg){
+require(['/src/js/require.config.js'], function(cfg){
   require.config(cfg)
   require(['/bower_components/vue/dist/vue.min.js', "/bower_components/qwest/qwest.min.js"], function(Vue, ajax){
     vm= new Vue({
