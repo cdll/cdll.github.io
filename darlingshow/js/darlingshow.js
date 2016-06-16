@@ -1,15 +1,8 @@
-require.config({
-  debug: 0,
-  paths: {
-    Swiper: '../../bower_components/Swiper/dist/js/swiper.min.js'
-  },
-  shim: {
-    Swiper: {
-      exports: 'Swiper'
-    }
-  },
+
+basket.require({
+  url: '/bower_components/Swiper/dist/js/swiper.min.js'
 })
-require(['Swiper'], function(Swiper){
+.then(function(){
 //  http://www.swiper.com.cn/api/start/2014/1218/140.html
   var show= new Swiper('#darlingshow-carousel', {
     pagination: '.swiper-indicators',
