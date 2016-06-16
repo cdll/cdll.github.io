@@ -106,11 +106,10 @@
       </div>
     </section>
 
-    <script src="/bower_components/avalon/dist/avalon.mobile.min.js" datamain=></script>
-    <script >
-require.config.baseUrl= '/'
+    <script src="/bower_components/requirejs/require.js" datamain=></script>
+    <script sr>
+//require.config.baseUrl= '/'
 require(['/src/js/require.config.js'], function(cfg){
-  console.info(cfg)
   require.config(cfg)
 
   require(['mock'], function(Mock){

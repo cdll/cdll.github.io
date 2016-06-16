@@ -129,11 +129,11 @@
         
 <!--        <script id="jqueryCore" type="text/javascript" src="js/jquery-1.9.1.min.js"></script>-->
 <!--        <script src="js/zyo-api-url.js"></script>-->
-        <script id="avalonCore" src="js/avalon.min.js"></script>
-        <script id='txMapAPI' src="http://map.qq.com/api/js?v=2.exp&libraries=convertor" chacharset="utf-8"></script>
+        <script src="js/avalon.min.js"></script>
+        <script src="http://map.qq.com/api/js?v=2.exp&libraries=convertor" chacharset="utf-8"></script>
 
         <script type="text/javascript">
-            avalon.config({
+            require.config({
                 paths: {
                     jquery: "/jquery-1.9.1.min.js",
 //                    zyoAPI: '/zyo-api-url.js'
@@ -146,7 +146,6 @@
                 debug: false,
             })
             require(['jquery'], function($){
-//                avalon.log('加载jq了啊……')
                 getPoi()
                 seekdrug= avalon.define({
                     $id: 'seekdrug',

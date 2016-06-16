@@ -1,6 +1,11 @@
 var config= {
   debug: 0
   ,baseUrl: '/'
+  ,map: {
+    '*': {
+      'css': '/bower_components/require-css/css.min.js'
+    }
+  }
   ,paths: {
 //    avalon: '/bower_components/avalon/dist/avalon.shim.min'
     avalon: 'https://cdnjs.cloudflare.com/ajax/libs/avalon.js/1.5.6/avalon.min.js'
@@ -13,7 +18,6 @@ var config= {
     ,bs: "/bower_components/bootstrap/bootstrap-3.3.6/dist/js/bootstrap.min"
     ,jquery: '/bower_components/jquery/dist/jquery.min'
     ,mdl: "/bower_components/material-design-lite/material.min"
-    ,mdlcss: "/bower_components/material-design-lite/material.min.css"
   }
   ,shim: {
     jquery: {
@@ -25,7 +29,7 @@ var config= {
     }
     ,mdl: {
       exports: 'mdl'
-      ,deps: ['css!mdlcss']
+      ,deps: ['css!mdl']
     }
     ,mmState: {
       deps: ['avalon', 'mmRouter', 'mmHistory', 'mmPromise']

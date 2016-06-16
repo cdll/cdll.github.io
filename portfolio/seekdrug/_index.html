@@ -118,11 +118,11 @@
         
 <!--        <script id="jqueryCore" type="text/javascript" src="js/jquery-1.9.1.min.js"></script>-->
         <script src="js/zyo-api-url.js"></script>
-        <script id="avalonCore" src="js/avalon.min.js"></script>
-        <script id='bdMapAPI' src="http://api.map.baidu.com/api?v=2.0&ak=c19wNezZKguqlGLqUWDvGCI7"></script>
+        <script src="js/avalon.min.js"></script>
+        <script src="http://api.map.baidu.com/api?v=2.0&ak=c19wNezZKguqlGLqUWDvGCI7"></script>
 
         <script type="text/javascript">
-            avalon.config({
+            require.config({
                 paths: {
                     jquery: "/jquery-1.9.1.min.js",
 //                    bMap: "http://api.map.baidu.com/api?v=2.0&ak=c19wNezZKguqlGLqUWDvGCI7",
@@ -137,7 +137,6 @@
             })
             require(['jquery'], function($){
 //                $.getScript("http://api.map.baidu.com/api?v=2.0&ak=c19wNezZKguqlGLqUWDvGCI7", function(){})
-//                avalon.log('加载jq了啊……')
                 getPoi()
                 seekdrug= avalon.define({
                     $id: 'seekdrug',
