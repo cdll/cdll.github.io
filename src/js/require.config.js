@@ -2,7 +2,8 @@ var config= {
   debug: 0
   ,baseUrl: '/'
   ,paths: {
-    avalon: '/bower_components/avalon/dist/avalon.shim.min'
+//    avalon: '/bower_components/avalon/dist/avalon.shim.min'
+    avalon: 'https://cdnjs.cloudflare.com/ajax/libs/avalon.js/1.5.6/avalon.min.js'
     ,mmRouter: "/bower_components/mmRouter/mmRouter"
     ,mmHistory: "/bower_components/mmRouter/mmHistory"
     ,mmState: "/bower_components/mmRouter/mmState"

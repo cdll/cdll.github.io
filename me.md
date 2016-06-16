@@ -38,7 +38,7 @@ var man= new Object({
     }
     ,{
       skill: 'mvvm'
-      ,describtion: '熟悉avalonjs，可实现双向绑定、多级联动、pjax，熟悉符合AMD规范的加载器机制及shim兼容机制，了解CMD/AMD/UMD开发，了解angularjs、vuejs'
+      ,describtion: '熟悉avalonjs、angularjs、vuejs等，可实现双向绑定、多级联动、pjax，熟悉符合AMD规范的加载器机制及shim兼容机制，遵循模块化开发'
     }
     ,{
       skill: 'nodejs'
@@ -82,7 +82,7 @@ var man= new Object({
 **bootstrap:**熟悉样式重置、栅格系统、清除浮动，各类组件  
 **javascript:**熟悉基础dom操作、function封装，熟悉原型链、面向对象开发，熟悉json对象、ajax及jsonp/script跨域处理机制  
 **jQuery:**熟悉dom选择器、ajax操作、animate动画  
-**mvvm:**熟悉avalonjs，可实现双向绑定、多级联动、pjax，熟悉符合AMD规范的加载器机制及shim兼容机制，了解CMD/AMD/UMD开发，了解angularjs
+**mvvm:**熟悉avalonjs、angularjs、vuejs等，可实现双向绑定、多级联动、pjax，熟悉符合AMD规范的加载器机制及shim兼容机制，遵循模块化开发
 、vuejs  
 **nodejs:**熟悉thinkjs开发、各类gulp中间件使用，了解各类grunt中间件使用、express开发  
 **code manage:**熟悉git、svn  

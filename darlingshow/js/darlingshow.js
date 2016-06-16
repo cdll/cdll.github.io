@@ -1,4 +1,4 @@
-avalon.config({
+require.config({
   debug: 0,
   paths: {
     Swiper: '../../bower_components/Swiper/dist/js/swiper.min.js'

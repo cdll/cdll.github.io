@@ -43,15 +43,16 @@
   </header>
   <div ng-view="" ms-view=""></div>
 
-  <script src="/bower_components/avalon/dist/avalon.min.js" data-main='./src/msApp.js'></script>
-<!--
   <script src="/bower_components/system.js/dist/system.js"></script>
-  <script -src='./src/ngApp.js'>
+  <script sr data-main='./src/ngApp.js'>
 System.config({
   baseUrl: '/admin'
+  ,map: {
+    traceur: '/bower_components/traceur/traceur.min.js'
+  }
 })
-System.import('./src/ngApp.js')
+//System.import('./src/ngApp.js')
+System.import('./src/vueApp.js')
   </script>
--->
 
 </body>

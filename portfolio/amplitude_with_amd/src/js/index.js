@@ -1,4 +1,4 @@
-avalon.config({
+require.config({
 //  debug: 0,
   paths: {
     amplitude: 'https://d24n15hnbwhuhn.cloudfront.net/libs/amplitude-2.6.1-min.gz.js'

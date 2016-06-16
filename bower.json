@@ -17,7 +17,6 @@
   ],
   "dependencies": {
     "animate.css": "~3.4.0",
-    "avalon": "~1.5.6",
     "coffee-script": "~1.10.0",
     "material-design-lite": "~1.1.1",
     "Swiper": "swiper#~3.1.7",
@@ -31,6 +30,7 @@
     "angular": "angular2#~1.5.3",
     "angular-route": "~1.5.3",
     "surface": "https://github.com/mildrenben/surface.git",
-    "ng-mdl": "*"
+    "ng-mdl": "*",
+    "traceur": "~0.0.111"
   }
 }
