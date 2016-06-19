@@ -121,16 +121,7 @@
     </footer>
 
     <script src="/bower_components/system.js/dist/system.js"></script>
-    <script sr>
-System.config({
-  baseUrl: '/'
-  ,map:{}
-  ,meta: {
-    Mock: '/bower_components/mockjs/dist/mock-min.js'
-  }
-})
-System.import('/src/js/index.js')
-    </script>
+    <script src='/config.js' onload="System.import('/src/js/index.js')" ></script>
 
   </body>
 </html>
