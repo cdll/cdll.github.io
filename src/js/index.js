@@ -13,7 +13,6 @@
 
 let mdl= require('mdl')
 let ajax= require('qwest')
-let qwest= require('/bower_components/qwest/qwest.min.js')
 console.info(ajax.xhr2, mdl)
 //ajax.get(
 //  'https://api.github.com/users/cdll/repos'
