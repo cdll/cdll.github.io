@@ -32,6 +32,7 @@
     "surface": "https://github.com/mildrenben/surface.git",
     "ng-mdl": "*",
     "traceur": "~0.0.111",
-    "require-css": "~0.1.8"
+    "require-css": "~0.1.8",
+    "mithril": "~0.2.5"
   }
 }
