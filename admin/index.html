@@ -3,30 +3,32 @@
   <meta name='viewport' content="width=device-width,user-scalable=0,initial-scale=1.0,maximum-scale=1.0" />
 
   <title>CDLL|Admin</title>
-  <base href="/admin/">
+  <base href="/admin/" >
 
   <style>
     @import "/bower_components/material-design-lite/material.min.css";
-    .ms-controller{visibility: hidden;}
+    [v-cloak]{
+      visibility: hidden;
+    }
     .mdl-layout__tab.is-active{border-bottom: 3pt solid rgba(255,255,255,.55);}
   </style>
 </head>
 
-<body class="mdl-layout mss-controller" ng-app='admin' ng-cloak ms-controller='root'>
+<body class="mdl-layout" ng-app='admin' ng-cloak v-cloak>
 <!--  <div ng-view="header"></div>-->
 
   <header class="mdl-layout__header- mdl-layout__header--scroll- mdl-color--primary">
     <div class="mdl-layout--large-screen-only mdl-layout__header-row" hidden->
       <!-- MDL Spinner Component -->
-      <a class=" mdl-spinner mdl-js-spinner is-active"></a>
+<!--      <a class=" mdl-spinner mdl-js-spinner is-active"></a>-->
+      <mdl-spinner :active="active"></mdl-spinner>
       <h3>Admin</h3>
     </div>
-    <div class="mdl-layout__bar -mdl-js-ripple-effect mdl-color--primary-dark clearfix">
+    <div class="vue-nav mdl-layout__bar -mdl-js-ripple-effect mdl-color--primary-dark clearfix">
       <a class="mdl-layout__tab"
-         ms-repeat-nav='navbarList'
-         ms-attr-href="'/admin/#'+nav.url"
-         ms-class='is-active: $index== currentNav'
-         ms-on-click='toggleNav($index)'
+         v-for='nav in navbarList'
+         vue-link='{path: nav.url}'
+         v-bind:href='"/admin/#"+nav.url'
          ng-repeat='nav in navbarList track by $index'
          ng-href="{{'/admin/#'+nav.url}}"
          ng-class='{"is-active": $index===currentNav, hide: $index!==0}'>
@@ -41,10 +43,11 @@
       </button>
     </div>
   </header>
-  <div ng-view="" ms-view=""></div>
+  <div ng-view="" ></div>
+  <router-view></router-view>
 
-  <script src="/bower_components/system.js/dist/system.js"></script>
-  <script sr data-main='./src/ngApp.js'>
+  <script src="/bower_components/system.js/dist/system.js" data-main='./src/ngApp.js'></script>
+  <script sr>
 System.config({
   baseUrl: '/admin'
   ,map: {

@@ -33,6 +33,8 @@
     "ng-mdl": "*",
     "traceur": "~0.0.111",
     "require-css": "~0.1.8",
-    "mithril": "~0.2.5"
+    "mithril": "~0.2.5",
+    "vue-mdl": "~0.8.4",
+    "vue-router": "~0.7.13"
   }
 }
