@@ -1,6 +1,7 @@
 //import Vue from '/bower_components/vue/dist/vue.min.js';
 const Vue= require('/bower_components/vue/dist/vue.min.js')
 const VueRouter= require('/bower_components/vue-router/dist/vue-router.min.js')
+//const VueRouter= require('https://cdn.jsdelivr.net/vue.router/0.7.12/vue-router.min.js')
 const mdl= require('/bower_components/vue-mdl/dist/vue-mdl.min.js')
 //require('/bower_components/vue-mdl/src/vue-mdl.js')
 require("/bower_components/material-design-lite/material.min.js")
@@ -22,18 +23,8 @@ let nav= new Vue({
   }
 })
 
-let vm= Vue.extend({
-  els: 'body'
-  ,data: {
-    navbarList: [
-      { url: '/home', name: 'Overview' }
-      ,{ url: '/group/admin/ctrl/index/action/feature', name: 'Features' }
-      ,{ url: '/group/admin/ctrl/index/action/detail', name: 'Details' }
-      ,{ url: '/group/user/ctrl/index/action/tech', name: 'Technology' }
-      ,{ url: '/group/user/ctrl/index/action/faq', name: 'FAQ' }
-      ,{ url: '/login', name: 'Login' }
-    ]
-  }
+let home= Vue.extend({
+  template: '<center class="">Home</center>'
 })
 
 let demo= Vue.extend({
@@ -54,24 +45,18 @@ Vue.use(VueRouter)
 let router= new VueRouter()
 
 router.beforeEach((data)=>{
-  console.info(data, router.app.$route)
+  setTimeout(()=>{
+    console.info(data, router.app.$route)
+  }, 0)
 })
 //.afterEach((data)=>{
 //  console.log(data, router.app)
 //})
 .map({
-//  '/': {
-//    component: vm
-//    ,subRoutes: {
-//      'login': {
-//        component: login
-//      }
-//    }
+//  '/home': {
+//    component: home
 //  }
 //  ,'/demo': {
-//    component: demo
-//  }
-//  ,'/home': {
 //    component: demo
 //  }
 //  ,'/group/:group/ctrl/:ctrl/action/:action': {
@@ -81,12 +66,12 @@ router.beforeEach((data)=>{
 //    component: login
 //  }
 })
-.redirect( {
+.redirect({
   '/': '/home'
   ,'*': '/notfound'
 })
 .on('/home', {
-  component: vm
+  component: home
 //  ,subRoutes: {
 //    '/login': {
 //      component: login
@@ -102,4 +87,4 @@ router.beforeEach((data)=>{
 .on('/notfound', {
   component: demo
 })
-.start(vm, 'body')
+.start(Admin, '[ng-view]')

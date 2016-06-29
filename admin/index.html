@@ -43,7 +43,8 @@
       </button>
     </div>
   </header>
-  <div ng-view="" ></div>
+
+  <div class="main-view" ng-view="" vue-if=0></div>
   <router-view></router-view>
 
   <script src="/bower_components/system.js/dist/system.js" data-main='./src/ngApp.js'></script>
@@ -55,7 +56,7 @@ System.config({
   }
 })
 //System.import('./src/ngApp.js')
-System.import('./src/vueApp.js')
+System.import('./src/vueApp.js?'+(new Date()).getTime())
   </script>
 
 </body>
