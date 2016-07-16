@@ -35,6 +35,5 @@ console.info(ajax.xhr2, mdl)
 
 setTimeout(()=>{
   let Vue= require('vue')
-
   console.info('Vue:', Vue.version)
-}, 1000)
+}, 0)
