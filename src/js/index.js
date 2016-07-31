@@ -13,7 +13,7 @@
 
 let mdl= require('mdl')
 let ajax= require('qwest')
-console.info(ajax.xhr2, mdl)
+console.info(ajax, mdl)
 //ajax.get(
 //  'https://api.github.com/users/cdll/repos'
 //  ,null

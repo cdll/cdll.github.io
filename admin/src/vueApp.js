@@ -1,10 +1,9 @@
 //import Vue from '/bower_components/vue/dist/vue.min.js';
 const Vue= require('/bower_components/vue/dist/vue.min.js')
 const VueRouter= require('/bower_components/vue-router/dist/vue-router.min.js')
-//const VueRouter= require('https://cdn.jsdelivr.net/vue.router/0.7.12/vue-router.min.js')
-const mdl= require('/bower_components/vue-mdl/dist/vue-mdl.min.js')
+//const mdl= require('/bower_components/vue-mdl/dist/vue-mdl.min.js')
 //require('/bower_components/vue-mdl/src/vue-mdl.js')
-require("/bower_components/material-design-lite/material.min.js")
+//require("/bower_components/material-design-lite/material.min.js")
 
 //console.info(Vue.version)
 
@@ -21,6 +20,7 @@ let nav= new Vue({
       ,{ url: '/login', name: 'Login' }
     ]
   }
+  ,components: {}
 })
 
 let home= Vue.extend({
@@ -34,8 +34,12 @@ let demo= Vue.extend({
 let login= Vue.extend({
   template: '<h3 class="center-block text-center">login</h3>'
   ,data: {
+    time: (new Date()).toLocaleTimeString()
   }
   ,methods: {
+  }
+  ,created: function(){
+    console.info((new Date()).toLocaleTimeString())
   }
 })
 
@@ -45,46 +49,48 @@ Vue.use(VueRouter)
 let router= new VueRouter()
 
 router.beforeEach((data)=>{
-  setTimeout(()=>{
-    console.info(data, router.app.$route)
-  }, 0)
+//  setTimeout(()=>{
+    console.info(data.to)//.app.$route.matched[0].params)
+//  }, 0)
 })
 //.afterEach((data)=>{
-//  console.log(data, router.app)
+//  console.log(data)
 //})
 .map({
-//  '/home': {
-//    component: home
-//  }
-//  ,'/demo': {
-//    component: demo
-//  }
-//  ,'/group/:group/ctrl/:ctrl/action/:action': {
-//    component: demo
-//  }
-//  ,'/login': {
-//    component: login
-//  }
+  '/home': {
+    component: home
+  }
+  ,'/demo': {
+    component: demo
+  }
+  ,'/group/:group/ctrl/:ctrl/action/:action': {
+    component: demo
+  }
+  ,'/login': {
+    component: login
+  }
 })
 .redirect({
   '/': '/home'
   ,'*': '/notfound'
 })
-.on('/home', {
-  component: home
-//  ,subRoutes: {
-//    '/login': {
-//      component: login
-//    }
-//  }
-})
-.on('/group/:g/ctrl/:c/action/:a', {
-  component: demo
-})
-.on('/login', {
-  component: login
-})
-.on('/notfound', {
-  component: demo
-})
-.start(Admin, '[ng-view]')
+/*
+*/
+//.on('/home', {
+//  component: home
+////  ,subRoutes: {
+////    '/login': {
+////      component: login
+////    }
+////  }
+//})
+//.on('/group/:g/ctrl/:c/action/:a', {
+//  component: demo
+//})
+//.on('/login', {
+//  component: login
+//})
+//.on('/notfound', {
+//  component: demo
+//})
+.start(Admin, document.querySelector('body'))
