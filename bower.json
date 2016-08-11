@@ -36,6 +36,7 @@
     "vue-mdl": "~0.8.4",
     "vue-router": "~0.7.13",
     "polymer": "~1.6.0",
-    "x-tag-core": "~1.5.11"
+    "x-tag-core": "~1.5.11",
+    "materialize": "~0.97.7"
   }
 }
