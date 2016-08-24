@@ -1,7 +1,8 @@
 
 //import Vue from '/bower_components/vue/dist/vue.min.js';
-const Vue= require('/bower_components/vue/dist/vue.min.js')
-const VueRouter= require('/bower_components/vue-router/dist/vue-router.min.js')
+//const Vue= require('/bower_components/vue/dist/vue.min.js')
+const Vue= require('vue')
+//const VueRouter= require('/bower_components/vue-router/dist/vue-router.min.js')
 //const mdl= require('/bower_components/vue-mdl/dist/vue-mdl.min.js')
 //require('/bower_components/vue-mdl/src/vue-mdl.js')
 //require("/bower_components/material-design-lite/material.min.js")
@@ -21,7 +22,10 @@ let nav= new Vue({
       ,{ url: '/login', name: 'Login' }
     ]
   }
-  ,components: {}
+//  ,components: {}
+  ,methods: {
+    
+  }
 })
 
 let home= Vue.extend({
@@ -45,6 +49,7 @@ let login= Vue.extend({
 })
 
 let Admin= Vue.extend({})
+/*
 
 Vue.use(VueRouter)
 let router= new VueRouter()
@@ -57,26 +62,24 @@ router.beforeEach((data)=>{
 //.afterEach((data)=>{
 //  console.log(data)
 //})
-.map({
-  '/home': {
-    component: home
-  }
-  ,'/demo': {
-    component: demo
-  }
-  ,'/group/:group/ctrl/:ctrl/action/:action': {
-    component: demo
-  }
-  ,'/login': {
-    component: login
-  }
-})
+//.map({
+//  '/home': {
+//    component: home
+//  }
+//  ,'/demo': {
+//    component: demo
+//  }
+//  ,'/group/:group/ctrl/:ctrl/action/:action': {
+//    component: demo
+//  }
+//  ,'/login': {
+//    component: login
+//  }
+//})
 .redirect({
   '/': '/home'
   ,'*': '/notfound'
 })
-/*
-*/
 //.on('/home', {
 //  component: home
 ////  ,subRoutes: {
@@ -95,3 +98,4 @@ router.beforeEach((data)=>{
 //  component: demo
 //})
 .start(Admin, document.querySelector('body'))
+*/

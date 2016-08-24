@@ -2,7 +2,8 @@ System.config({
     "baseUrl": "./",
     "bundles": {
         "vueApp.min.js": [
-            "admin/src/vueApp.js"
+            "admin/src/vueApp.js",
+            "vue"
         ]
     },
     "map": {

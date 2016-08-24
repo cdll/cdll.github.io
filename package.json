@@ -1,17 +1,11 @@
 {
-  "jspm": {
-    "devDependencies": {
-      "babel": "npm:babel-core@^5.8.24",
-      "babel-runtime": "npm:babel-runtime@^5.8.24",
-      "core-js": "npm:core-js@^1.1.4"
-    }
-  },
-  "dependencies": {
+  "devDependencies": {
     "gulp": "^3.9.1",
+    "gulp-jspm-build": "0.0.15",
     "incremental-dom": "^0.3.0"
-  }
-  ,"scripts": {
-    "start": "node console.log('start')"
-    ,"test": "jspm bundle ./src/js/index.js index.min.js --minify"
+  },
+  "scripts": {
+    "start": "node console.log('start')",
+    "test": "jspm bundle ./src/js/index.js index.min.js --minify"
   }
 }
