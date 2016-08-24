@@ -69,14 +69,14 @@
       <li class="" v-for='item in result.list'>
         <p class="">
           <left class='' v-text='"【"+name+"】"'></left>
-          <span class="" v-text='info'></span>
+          <span class="" v-html='info'></span>
         </p>
         <img class="" v-bind:src='icon' width="1.25em" height="1.25em" />
         <a class="a text-blue" v-href='detailurl' v-text='detailurl'></a>
       </li>
     </ol>
   </div>
-  <footer class="">{{JSON.stringify(ipinfo)}}</footer>
+<!--  <footer class="">{{JSON.stringify(ipinfo)}}</footer>-->
 </div>
 
 <script src="/bower_components/requirejs/require.js" data-main='src/js/index.js'></script>

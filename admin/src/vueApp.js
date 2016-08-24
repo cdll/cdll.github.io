@@ -1,3 +1,4 @@
+
 //import Vue from '/bower_components/vue/dist/vue.min.js';
 const Vue= require('/bower_components/vue/dist/vue.min.js')
 const VueRouter= require('/bower_components/vue-router/dist/vue-router.min.js')

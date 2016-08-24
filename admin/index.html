@@ -49,7 +49,7 @@
     <div class="main-view" ng-view="" vue-if=0></div>
 <!--    <router-view></router-view>-->
 
-    <script src="/bower_components/system.js/dist/system.js" data-main='./src/ngApp.js'></script>
+    <script src="/bower_components/system.js/dist/system.js" onload="System.import('./src/vueApp.js?'+(new Date()).getTime());" data-main='./src/ngApp.js'></script>
     <script sr>
   System.config({
     baseUrl: '/admin'
@@ -58,7 +58,7 @@
     }
   })
   //System.import('./src/ngApp.js')
-  System.import('./src/vueApp.js?'+(new Date()).getTime())
+//  System.import('./src/vueApp.js?'+(new Date()).getTime())
     </script>
 
   </body>
