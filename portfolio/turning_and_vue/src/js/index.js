@@ -11,16 +11,6 @@ require(['/src/js/require.config.js'], function(cfg){
         ,result: ''
         ,ipinfo: {}
       }
-      ,computed: {
-//        ipinfo: function(){
-//          ajax.get(
-//            'http://ipinfo.io'
-//          )
-//          .then(function(xhr, res){
-//            return res
-//          })
-//        }
-      }
       ,methods: {
         enterSearch: function(e){
           if(e.which== 13&& !!vm.input.trim()){
@@ -60,18 +50,20 @@ require(['/src/js/require.config.js'], function(cfg){
             })
           }
         }
+        ,getIPinfo: function(){
+          return ajax.get(
+            'http://ipinfo.io'
+            ,''
+            ,{
+              dataType: 'json'
+            }
+          )
+          .then(function(xhr, res){
+      //      vm.ipinfo= res
+            console.info(res)
+          })
+        }
       }
-    })
-    ajax.get(
-      'http://ipinfo.io'
-      ,''
-      ,{
-        dataType: 'json'
-      }
-    )
-    .then(function(xhr, res){
-//      vm.ipinfo= res
-      console.info(res)
     })
   })
 })
