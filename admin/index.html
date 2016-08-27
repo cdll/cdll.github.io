@@ -16,7 +16,7 @@
     </style>
   </head>
 
-  <body class="mdl-layout" ng-app='admin' ng-cloak v-cloak>
+  <body class="mdl-layout" ng-cloak vue-cloak>
   <!--  <div ng-view="header"></div>-->
 
     <header class="mdl-layout__header- mdl-layout__header--scroll- mdl-color--primary">
@@ -29,6 +29,7 @@
       <div class="vue-nav mdl-layout__bar -mdl-js-ripple-effect mdl-color--primary-dark clearfix">
         <a class="mdl-layout__tab"
            v-for='nav in navbarList'
+           track-by='$index'
            vue-link='{path: nav.url}'
            v-bind:href='"/admin/#"+nav.url'
            ng-repeat='nav in navbarList track by $index'
@@ -49,16 +50,17 @@
     <div class="main-view" ng-view="" vue-if=0></div>
 <!--    <router-view></router-view>-->
 
-    <script src="/bower_components/system.js/dist/system.js" onload="System.import('./src/vueApp.js?'+(new Date()).getTime());" data-main='./src/ngApp.js'></script>
+    <script src="/bower_components/system.js/dist/system.js" on-load="System.import('./src/vueApp.js?'+(new Date()).getTime());" data-main='./src/ngApp.js'></script>
     <script sr>
   System.config({
     baseUrl: '/admin'
     ,map: {
       traceur: '/bower_components/traceur/traceur.min.js'
+      ,vue: 'vue-loader.js'
     }
   })
   //System.import('./src/ngApp.js')
-//  System.import('./src/vueApp.js?'+(new Date()).getTime())
+  System.import('./src/vueApp.js?'+(new Date()).getTime())
     </script>
 
   </body>

@@ -219,4 +219,4 @@ var admin= angular.module('admin', [
   }
 ])
 
-//  angular.bootstrap(document, ['admin'])//ng-app='admin'
+angular.bootstrap(document, ['admin'])//ng-app='admin'

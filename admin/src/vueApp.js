@@ -1,13 +1,13 @@
 
 //import Vue from '/bower_components/vue/dist/vue.min.js';
-//const Vue= require('/bower_components/vue/dist/vue.min.js')
-const Vue= require('vue')
+const Vue= require('/bower_components/vue/dist/vue.min.js')
+// const Vue= require('vue')
 //const VueRouter= require('/bower_components/vue-router/dist/vue-router.min.js')
 //const mdl= require('/bower_components/vue-mdl/dist/vue-mdl.min.js')
-//require('/bower_components/vue-mdl/src/vue-mdl.js')
+require('/bower_components/vue-mdl/dist/vue-mdl.min.js')
 //require("/bower_components/material-design-lite/material.min.js")
 
-//console.info(Vue.version)
+console.info(Vue.version)
 
 let nav= new Vue({
   el: 'body'
@@ -24,31 +24,34 @@ let nav= new Vue({
   }
 //  ,components: {}
   ,methods: {
-    
+    pop: ()=>{
+      console.info(nav.navbarList)
+    }
   }
 })
+nav.pop()
 
-let home= Vue.extend({
-  template: '<center class="">Home</center>'
-})
+// let home= Vue.extend({
+//   template: '<center class="">Home</center>'
+// })
 
-let demo= Vue.extend({
-  template: '<h3 class="center-block text-center">Demo</h3>'
-})
+// let demo= Vue.extend({
+//   template: '<h3 class="center-block text-center">Demo</h3>'
+// })
 
-let login= Vue.extend({
-  template: '<h3 class="center-block text-center">login</h3>'
-  ,data: {
-    time: (new Date()).toLocaleTimeString()
-  }
-  ,methods: {
-  }
-  ,created: function(){
-    console.info((new Date()).toLocaleTimeString())
-  }
-})
+// let login= Vue.extend({
+//   template: '<h3 class="center-block text-center">login</h3>'
+//   ,data: {
+//     time: (new Date()).toLocaleTimeString()
+//   }
+//   ,methods: {
+//   }
+//   ,created: function(){
+//     console.info((new Date()).toLocaleTimeString())
+//   }
+// })
 
-let Admin= Vue.extend({})
+// let Admin= Vue.extend({})
 /*
 
 Vue.use(VueRouter)
