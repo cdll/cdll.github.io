@@ -9,7 +9,7 @@
     }
   </style>
   <template>
-    <input class="center-block" />
+    <input class="center-block" value$='{{todoValue}}' />
   </template>
 </dom-module>
 
@@ -17,13 +17,22 @@
   Polymer({
     is: 'poly-todo'
     ,properties: {
+      todoValue: String
+      ,todoList: Array
     }
     ,ready: function(){
       var self= this
       console.info(self)
-      self.querySelector('input').addEventListener('keyup', function(eve){
+//      self.querySelector('input').addEventListener('keyup', function(eve){
+//        if(eve.keyCode== 13|| eve.which== 13){
+//          console.info(eve, self)
+//          self.todoList.push(self.todoValue)
+//        }
+//      })
+      self.listen(self.querySelector('input'), 'keyup', 'pop')
+      this.pop= function(eve){
         console.info(eve)
-      })
+      }
     }
     ,update: function(v, vv){
       console.info(v, vv)
