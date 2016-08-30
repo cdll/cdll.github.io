@@ -1,7 +1,7 @@
 <link rel='import' href='/bower_components/polymer/polymer.html'>
 
 <dom-module id='poly-todo'>
-  <style>
+  <style >
     .center-block{
       display: block;
       margin-left: auto;
@@ -10,6 +10,11 @@
   </style>
   <template>
     <input class="center-block" value$='{{todoValue}}' />
+    <dd class="">
+      <template is='dom-repeat' items='[[todoList]]'>
+        <dl class="">{{item}}</dl>
+      </template>
+    </dd>
   </template>
 </dom-module>
 
@@ -20,6 +25,9 @@
       todoValue: String
       ,todoList: Array
     }
+    ,addTodo: function(obj){
+      this.push('todoList', obj|| this.todoValue|| '')
+    }
     ,ready: function(){
       var self= this
       console.info(self)
@@ -29,7 +37,8 @@
 //          self.todoList.push(self.todoValue)
 //        }
 //      })
-      self.listen(self.querySelector('input'), 'keyup', 'pop')
+      this.set('todoList', [3,2,1])
+      self.listen(self.querySelector('input'), 'keyup', 'addTodo')
       this.pop= function(eve){
         console.info(eve)
       }
