@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <script src="/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <link rel="import" href="/bower_components/polymer/polymer.html">
+    <link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
+
+  </head>
+  <body>
+
+    <!-- Wrap elements with auto-binding template to -->
+    <!-- allow use of Polymer bindings in main document -->
+    <template id="t" is="dom-bind">
+
+      <iron-ajax url="http://int.dpool.sina.com.cn/iplookup/iplookup.php"
+        auto
+        body=''
+        params='{}'
+        handle-as='json'
+        on-response='handleRes'
+        last-response="{{data}}"></iron-ajax>
+
+      <template is="dom-repeat" items="{{data}}">
+          <div><span>{{item.first}}</span> <span>{{item.last}}</span></div>
+      </template>
+
+    </template>
+
+  </body>
+  <script>
+    var t = document.querySelector('#t');
+
+    // The dom-change event signifies when the template has stamped its DOM.
+    // t.addEventListener('dom-change', function() {
+      // auto-binding template is ready.
+    // });
+  </script>
+</html>

@@ -9,12 +9,14 @@
     }
   </style>
   <template>
-    <input class="center-block" autofocus value='{{todoValue::input}}' on-keyup='addTodo' />
-    <dd class="">
-      <template is='dom-repeat' items='{{todoList}}'>
-        <dl class="">{{item}}</dl>
-      </template>
-    </dd>
+    <div class="mdl-textfield">
+      <input class="center-block mdl-textfield__input" autofocus value='{{todoValue::input}}' on-keyup='addTodo' />
+      <ul class="">
+        <template is='dom-repeat' items='[[todoList]]'>
+          <li class="">{{item}}<big class="mdl-snackbar__action" style="padding-top: 0;padding-bottom: 0;" on-tap='pop'>&times;</big></dl>
+        </template>
+      </ul>
+    </div>
   </template>
 </dom-module>
 
@@ -26,16 +28,15 @@
       ,todoList: Array
     }
     ,addTodo: function(eve){
-      console.info(this.todoValue)
+      // console.info(this.todoValue)
       var _key= eve.keyCode|| eve.which
-      if(_key== 13&& this.todoValue){
+      if(_key== 13&& this.todoValue.trim()){
         this.push('todoList', this.todoValue|| '')
         this.todoValue= undefined
       }
     }
     ,ready: function(){
       var self= this
-      console.info(self)
       this.todoValue= undefined
 //      self.querySelector('input').addEventListener('keyup', function(eve){
 //        if(eve.keyCode== 13|| eve.which== 13){
@@ -46,7 +47,8 @@
       this.todoList= [3,2,1]
 //      self.listen(self.querySelector('input'), 'keyup', 'addTodo')
       this.pop= function(eve){
-        console.info(eve)
+        console.info(eve, eve.model.index)
+        this.splice('todoList', eve.model.index, 1)
       }
     }
     ,update: function(v, vv){
