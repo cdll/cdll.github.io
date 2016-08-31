@@ -4,19 +4,22 @@
   <template>
     <div class="center-block">
       <p class="">now is <em>{{name}}</em></p>
-      <input class="" is='user' bind-value='{{name}}' placeholder="name here" />
+      <input class="" is='user' value='{{name::input}}' placeholder="name here" />
     </div>
   </template>
 </dom-module>
 
 <script>
   Polymer({
-    is: 'poly-editable',
-    properties: {
+    is: 'poly-editable'
+    ,properties: {
       name: {
         type: String,
         value: 'cdll'
       }
+    }
+    ,ready: function(){
+      // this.name= 'cdll'
     }
   })
 </script>

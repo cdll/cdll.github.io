@@ -24,30 +24,35 @@
   Polymer({
     is: 'poly-todo'
     ,properties: {
-      todoValue: String
-      ,todoList: Array
+      todoValue: {
+        type: String
+        ,value: ''
+      }
+      ,todoList: {
+        type: Array
+        ,value: [3,2,1]
+      }
     }
     ,addTodo: function(eve){
       // console.info(this.todoValue)
       var _key= eve.keyCode|| eve.which
-      if(_key== 13&& this.todoValue.trim()){
-        this.push('todoList', this.todoValue|| '')
+      if(_key== 13&& this.todoValue){
+        ;this.todoValue.trim() && this.push('todoList', this.todoValue|| '');
+        console.info(this.todoList)
         this.todoValue= undefined
       }
     }
     ,ready: function(){
       var self= this
-      this.todoValue= undefined
 //      self.querySelector('input').addEventListener('keyup', function(eve){
 //        if(eve.keyCode== 13|| eve.which== 13){
 //          console.info(eve, self)
 //          self.todoList.push(self.todoValue)
 //        }
 //      })
-      this.todoList= [3,2,1]
 //      self.listen(self.querySelector('input'), 'keyup', 'addTodo')
       this.pop= function(eve){
-        console.info(eve, eve.model.index)
+        console.warn(this.todoList, eve.model.index)
         this.splice('todoList', eve.model.index, 1)
       }
     }
