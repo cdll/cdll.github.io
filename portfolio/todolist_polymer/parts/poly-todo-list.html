@@ -9,9 +9,9 @@
     }
   </style>
   <template>
-    <input class="center-block" value$='{{todoValue}}' />
+    <input class="center-block" autofocus value='{{todoValue::input}}' on-keyup='addTodo' />
     <dd class="">
-      <template is='dom-repeat' items='[[todoList]]'>
+      <template is='dom-repeat' items='{{todoList}}'>
         <dl class="">{{item}}</dl>
       </template>
     </dd>
@@ -25,26 +25,33 @@
       todoValue: String
       ,todoList: Array
     }
-    ,addTodo: function(obj){
-      this.push('todoList', obj|| this.todoValue|| '')
+    ,addTodo: function(eve){
+      console.info(this.todoValue)
+      var _key= eve.keyCode|| eve.which
+      if(_key== 13&& this.todoValue){
+        this.push('todoList', this.todoValue|| '')
+        this.todoValue= undefined
+      }
     }
     ,ready: function(){
       var self= this
       console.info(self)
+      this.todoValue= undefined
 //      self.querySelector('input').addEventListener('keyup', function(eve){
 //        if(eve.keyCode== 13|| eve.which== 13){
 //          console.info(eve, self)
 //          self.todoList.push(self.todoValue)
 //        }
 //      })
-      this.set('todoList', [3,2,1])
-      self.listen(self.querySelector('input'), 'keyup', 'addTodo')
+      this.todoList= [3,2,1]
+//      self.listen(self.querySelector('input'), 'keyup', 'addTodo')
       this.pop= function(eve){
         console.info(eve)
       }
     }
     ,update: function(v, vv){
       console.info(v, vv)
+      console.info(this)
     }
   })
 </script>
