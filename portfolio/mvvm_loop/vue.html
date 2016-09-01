@@ -1,0 +1,70 @@
+<style>
+  *{transition: all .3s ease;}
+  dd dl
+  ,dl dl
+  ,dd input
+  ,dl input{margin-left: .75em;color: black;margin-bottom: 10px;}
+  dd dl:before
+  ,dl dl:before{content: '--';color: lightgray;}
+  input[contenteditable=true]{border-bottom: 1px solid blue;outline: none;padding: 0 5px 2px;background: none;}
+  input[contenteditable=true]:focus{border-bottom: 1px solid red;background: lightpink;}
+  iframe img{display: none;}
+</style>
+
+<body >
+  <div class="col-xs-6"  v-on:keyup='logData($event)'>
+    <dd v-for="(el,vl) in data" track-by="$index" v-show="el!= '_id'" contenteditable="false">{{el}} :
+      <input v-if="!isObject(vl)" v-model="vl"/>
+      <dl v-for="(ek,vk) in vl" track-by="$index" v-if="isObject(vl)">{{ek}} :
+        <input v-if="!isObject(vk)" v-model="vk"/>
+        <dl v-for="(ej,vj) in vk" track-by="$index" v-if="isObject(vk)">{{ej}} :
+          <input v-if="!isObject(vj)" v-model="vj"/>
+          <dl v-for="(eh,vh) in vj" track-by="$index" v-if="isObject(vj)">{{eh}} :
+            <input v-if="!isObject(vh)" v-model="vh"/>
+            <dl v-for="(eg,vg) in vh" track-by="$index" v-if="isObject(vh)">{{eg}} :
+              <input v-if="!isObject(vg)" v-model="vg"/>
+              <dl v-for="(ef,vf) in vg" track-by="$index" v-if="isObject(vg)">{{ef}} :
+                <input v-if="!isObject(vf)" v-model="vf"/>
+                <dl v-for="(ed,vd) in vf" track-by="$index" v-if="isObject(vf)">{{ed}} :
+                  <input v-if="!isObject(vd)" v-model="vd"/>
+                  <dl v-for="(es,vs) in vd" track-by="$index" v-if="isObject(vd)">{{es}} :
+                    <input v-if="!isObject(vs)" v-model="vs"/>
+                    <dl v-for="(ea,va) in vs" track-by="$index" v-if="isObject(vs)">{{ea}} :
+                      <input v-if="!isObject(va)" v-model="va"/>
+                    </dl>
+                  </dl>
+                </dl>
+              </dl>
+            </dl>
+          </dl>
+        </dl>
+      </dl>
+    </dd>
+  </div>
+</body>
+
+
+<script src="http://jiliguala.local/bower_components/vue/dist/vue.min.js" ></script>
+<script src="/bower_components/qwest/qwest.min.js" ></script>
+<script >
+  (function(Vue, ajax){
+    vm= new Vue({
+      el: 'body'
+      ,data: {
+        data: null
+      }
+      ,methods: {
+        isObject: function(o){
+          console.info(typeof(o), o)
+          var b= typeof(o)=== 'object'
+          return b
+        }
+      }
+    })
+    ajax.get('data.json')
+    .then(function(xhr, res){
+      console.info(res)
+      vm.data= res
+    })
+  })(Vue, qwest)
+</script>
