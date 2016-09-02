@@ -12,24 +12,24 @@
 </style>
 
 <body >
-  <div class="col-xs-6"  v-on:keyup='logData($event)'>
-    <dd v-for="(el,vl) in data" track-by="$index" v-show="el!= '_id'" contenteditable="false">{{el}} :
+  <div class="col-xs-6" v-on:keyup='logData($event)'>
+    <dd v-for="(vl,el) in data" v-bind:key="el" v-show="el!= '_id'" contenteditable="false" v-if=10>{{el}} :
       <input v-if="!isObject(vl)" v-model="vl"/>
-      <dl v-for="(ek,vk) in vl" track-by="$index" v-if="isObject(vl)">{{ek}} :
+      <dl v-for="(vk,ek) in vl" v-bind:key="ek" v-if="isObject(vl)">{{ek}} :
         <input v-if="!isObject(vk)" v-model="vk"/>
-        <dl v-for="(ej,vj) in vk" track-by="$index" v-if="isObject(vk)">{{ej}} :
+        <dl v-for="(vj,ej) in vk" v-bind:key="ej" v-if="isObject(vk)">{{ej}} :
           <input v-if="!isObject(vj)" v-model="vj"/>
-          <dl v-for="(eh,vh) in vj" track-by="$index" v-if="isObject(vj)">{{eh}} :
+          <dl v-for="(vh,eh) in vj" v-bind:key="eh" v-if="isObject(vj)">{{eh}} :
             <input v-if="!isObject(vh)" v-model="vh"/>
-            <dl v-for="(eg,vg) in vh" track-by="$index" v-if="isObject(vh)">{{eg}} :
+            <dl v-for="(vg,eg) in vh" v-bind:key="eg" v-if="isObject(vh)">{{eg}} :
               <input v-if="!isObject(vg)" v-model="vg"/>
-              <dl v-for="(ef,vf) in vg" track-by="$index" v-if="isObject(vg)">{{ef}} :
+              <dl v-for="(vf,ef) in vg" v-bind:key="ef" v-if="isObject(vg)">{{ef}} :
                 <input v-if="!isObject(vf)" v-model="vf"/>
-                <dl v-for="(ed,vd) in vf" track-by="$index" v-if="isObject(vf)">{{ed}} :
+                <dl v-for="(vd,ed) in vf" v-bind:key="ed" v-if="isObject(vf)">{{ed}} :
                   <input v-if="!isObject(vd)" v-model="vd"/>
-                  <dl v-for="(es,vs) in vd" track-by="$index" v-if="isObject(vd)">{{es}} :
+                  <dl v-for="(vs,es) in vd" v-bind:key="es" v-if="isObject(vd)">{{es}} :
                     <input v-if="!isObject(vs)" v-model="vs"/>
-                    <dl v-for="(ea,va) in vs" track-by="$index" v-if="isObject(vs)">{{ea}} :
+                    <dl v-for="(va,ea) in vs" v-bind:key="ea" v-if="isObject(vs)">{{ea}} :
                       <input v-if="!isObject(va)" v-model="va"/>
                     </dl>
                   </dl>
@@ -40,16 +40,17 @@
         </dl>
       </dl>
     </dd>
+<!--    <pre contenteditable="true">{{data}}</pre>-->
   </div>
 </body>
 
 
-<script src="http://jiliguala.local/bower_components/vue/dist/vue.min.js" ></script>
+<script src="/bower_components/vue/dist/vue.min.js" ></script>
 <script src="/bower_components/qwest/qwest.min.js" ></script>
 <script >
   (function(Vue, ajax){
     vm= new Vue({
-      el: 'body'
+      el: '.col-xs-6'
       ,data: {
         data: null
       }
@@ -58,6 +59,9 @@
           console.info(typeof(o), o)
           var b= typeof(o)=== 'object'
           return b
+        }
+        ,logData: function(){
+          console.log(vm.data)
         }
       }
     })

@@ -33,7 +33,7 @@
           "itemid": "000002",
           "height": 0.333333333333333
         }, {
-          "toX": -0.5,
+          "toX": 0.5,
           "width": 0.5,
           "type": "gif",
           "duration": 3000,

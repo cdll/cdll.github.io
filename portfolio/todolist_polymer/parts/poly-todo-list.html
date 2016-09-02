@@ -2,12 +2,21 @@
 
 <dom-module id='poly-todo'>
   <style >
+    :host{
+      display: block;
+      margin: 0 auto;
+      text-align: center;
+    }
+    :host *{
+      text-align: left;
+    }
     .center-block{
       display: block;
       margin-left: auto;
       margin-right: auto;
     }
   </style>
+
   <template>
     <div class="mdl-textfield">
       <input class="center-block mdl-textfield__input" autofocus value='{{todoValue::input}}' on-keyup='addTodo' />
@@ -43,17 +52,17 @@
       }
     }
     ,ready: function(){
-      var self= this
-//      self.querySelector('input').addEventListener('keyup', function(eve){
+      var vm= this
+//      vm.querySelector('input').addEventListener('keyup', function(eve){
 //        if(eve.keyCode== 13|| eve.which== 13){
-//          console.info(eve, self)
-//          self.todoList.push(self.todoValue)
+//          console.info(eve, vm)
+//          vm.todoList.push(vm.todoValue)
 //        }
 //      })
-//      self.listen(self.querySelector('input'), 'keyup', 'addTodo')
-      this.pop= function(eve){
-        console.warn(this.todoList, eve.model.index)
-        this.splice('todoList', eve.model.index, 1)
+//      vm.listen(vm.querySelector('input'), 'keyup', 'addTodo')
+      vm.pop= function(eve){
+        console.warn(vm.todoList, eve.model.index)
+        vm.splice('todoList', eve.model.index, 1)
       }
     }
     ,update: function(v, vv){

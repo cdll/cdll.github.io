@@ -1,0 +1,107 @@
+
+<head>
+  <script id="polymer-core" src="/bower_components/webcomponentsjs/webcomponents-lite.min.js" -data-url='http://en.polymerchina.org/1.0/docs/start/quick-tour.html'></script>
+  <link rel='import' href="/bower_components/polymer/polymer.html?dom=shady">
+  <style>
+    @import "/bower_components/material-design-lite/material.min.css";
+  </style>
+</head>
+
+<body class="">
+  <mvvm-loop>
+    <dom-module id='mvvm-loop'>
+      <style>
+        *{transition: all .3s ease;}
+        dd dl
+        ,dl dl
+        ,dd input
+        ,dl input{margin-left: .75em;color: black;margin-bottom: 10px;}
+        dd dl:before
+        ,dl dl:before{content: '--';color: lightgray;}
+        input[contenteditable=true]{border-bottom: 1px solid blue;outline: none;padding: 0 5px 2px;background: none;}
+        input[contenteditable=true]:focus{border-bottom: 1px solid red;background: lightpink;}
+        iframe img{display: none;}
+      </style>
+
+      <template>
+        <div class="col-xs-6" on-tap='logData'>
+          <code class="" hidden>{{dataString}}</code>
+          <template is='dom-repeat' item='[[datas]]' as='[[index]]'>
+            <div>{{item}}</div>
+          </template>
+
+          <template is='dom-repeat' el='{{data}}' dom--change='true'>
+          <dd contenteditable="false" >{{el}} :
+            <input value="{{vl}}"/>
+            <template is='dom-repeat' ek='[[el]]'>
+            <dl >{{ek}} :
+              <input value="{{vk}}"/>
+              <dl >{{ej}} :
+                <input value="{{vj}}"/>
+                <dl >{{eh}} :
+                  <input value="{{vh}}"/>
+                  <dl >{{eg}} :
+                    <input value="{{vg}}"/>
+                    <dl >{{ef}} :
+                      <input value="{{vf}}"/>
+                      <dl >{{ed}} :
+                        <input value="{{vd}}"/>
+                        <dl >{{es}} :
+                          <input value="{{vs}}"/>
+                          <dl >{{ea}} :
+                            <input value="{{va}}"/>
+                          </dl>
+                        </dl>
+                      </dl>
+                    </dl>
+                  </dl>
+                </dl>
+              </dl>
+            </dl>
+            </template>
+          </dd>
+          </template>
+
+        </div>
+      </template>
+
+      <script src="/bower_components/qwest/qwest.min.js"></script>
+      <script>
+        Polymer({
+          is: 'mvvm-loop'
+          ,properties: {
+            data: {
+              type: Object
+              ,value: [3,3,2,1]
+              ,observer: '_changedData'
+            }
+            ,dataString: {
+              type: String
+              ,observer: ''
+            }
+          }
+          ,ready: function(){
+            var vm= this
+            qwest.get('data.json')
+            .then(function(xhr, res){
+              vm.data= res
+            })
+          }
+          ,logData: function(eve){
+            console.info(eve, vm)
+          }
+          ,_changedData: function(v, vv){
+            console.info(v, vv, this)
+            this.dataString= JSON.stringify(v)
+          }
+        })
+      </script>
+    </dom-module>
+  </mvvm-loop>
+<!--
+    <poly-todo>
+      <link rel="import" href='/portfolio/todolist_polymer/parts/poly-todo-list.html'>
+    </poly-todo>
+-->
+</body>
+
