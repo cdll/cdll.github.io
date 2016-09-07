@@ -32,10 +32,12 @@
 <script>
   Polymer({
     is: 'poly-todo'
+    ,replace: true
     ,properties: {
       todoValue: {
         type: String
         ,value: ''
+        ,observer: ''
       }
       ,todoList: {
         type: Array

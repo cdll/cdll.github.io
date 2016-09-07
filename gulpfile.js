@@ -2,7 +2,6 @@
 var gulp= require('gulp')
 
 var jspm= require('gulp-jspm-build')
-
 gulp.task('jspm', [], function(){
   return jspm({
     bundles: [
@@ -21,4 +20,14 @@ gulp.task('jspm', [], function(){
     }
   })
   .pipe(gulp.dest('./admin/src'))
+})
+
+var browserSync= require('browser-sync').create()
+var reload= browserSync.reload
+gulp.task('serve', [], function(){
+  browserSync.init({
+    server: './'
+  })
+  gulp.watch('**/*.html')
+  .on('change', reload)
 })

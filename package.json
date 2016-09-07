@@ -1,5 +1,6 @@
 {
   "devDependencies": {
+    "browser-sync": "^2.15.0",
     "gulp": "^3.9.1",
     "gulp-jspm-build": "0.0.15",
     "gulp-uglify": "^2.0.0",
