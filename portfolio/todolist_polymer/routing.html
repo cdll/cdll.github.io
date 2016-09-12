@@ -2,21 +2,27 @@
 <html>
   <head>
     <link rel="stylesheet" href="/bower_components/material-design-lite/material.min.css" >
-    <script id="polymer-core" src="/bower_components/webcomponentsjs/webcomponents-lite.min.js" -data-url='https://elements.polymer-project.org/elements/app-route'></script>
-    <link rel="import" href="/bower_components/app-router/app-router.csp.html">
-    <base href="/portfolio/todolist_polymer/">
+    <script id="polymer-core" src="/bower_components/webcomponentsjs/webcomponents-lite.min.js" ></script>
+    <base href="">
   </head>
 
   <body>
+<!--
     <template is='dom-repeat' el='[1,2,3]'>
       <a href="{{el}}">{{el}}</a>
     </template>
-    <app-router mode="hash" trailingSlash="ignore">
-      <app-route path="" redirect='user/cdll'></app-route>
-      <app-route path="index" import='index.html'></app-route>
-      <app-route path="user/:uid" import='parts/poly-todo-list.html'></app-route>
-      <app-route path="routing.html" redirect='' import='parts/poly-todo-list.html'>
-        <poly-todo-list></poly-todo-list>
+-->
+    <app-router mode="auto" trailingSlash="ignore">
+      <link rel="import" href="/bower_components/app-router/app-router.csp.html">
+
+<!--      <app-route path="routing.html" redirect='index'></app-route>-->
+
+      <app-route path="routing.html" import='parts/poly-dom.html'>
+        <poly-dom></poly-dom>
+      </app-route>
+
+      <app-route path="todo" import='parts/poly-todo-list.html'>
+        <poly-todo></poly-todo>
       </app-route>
     </app-router>
   </body>
