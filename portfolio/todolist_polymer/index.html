@@ -2,40 +2,75 @@
 <html>
   <head>
     <link rel="stylesheet" href="/bower_components/material-design-lite/material.min.css" >
-    <script id="polymer-core" src="/bower_components/webcomponentsjs/webcomponents-lite.min.js" -data-url='http://en.polymerchina.org/1.0/docs/start/quick-tour.html'></script>
+    <script id="polymer-core" src="/bower_components/webcomponentsjs/webcomponents-lite.min.js" ></script>
+<!--    <base href="index.html">-->
   </head>
 
   <body>
-    <poly-el>
-      <link rel="import" href="parts/poly-el.html">
-    </poly-el>
 
-    <poly-dom>
-      <link rel="import" href="parts/poly-dom.html">
-    </poly-dom>
+    <router-nav>
+      <link rel='import' href='/bower_components/polymer/polymer.html'>
 
-    <pic-frame>
-      <link rel='import' href="parts/poly-frame.html">
-    </pic-frame>
+      <dom-module id='router-nav'>
+        <style>
+          .mdl-layout__header{
+            display: block;
+            left: 0;right: 0;
+          }
+          .mdl-navigation{
+            margin: 0 auto;
+          }
+          .mdl-layout__header .mdl-navigation__link{
+            display: inline-block;
+            display: flex;
+            padding: 20px;
+            color: white;
+            font-weight: bold;
+          }
+        </style>
+        <template>
+          <header class="mdl-layout__header">
+            <ul class="mdl-navigation">
+              <template is='dom-repeat' items='{{navbarList}}'>
+                <a class="mdl-btn btn" href="#{{item}}">
+                  <li class="mdl-navigation__link">{{item}}</li>
+                </a>
+              </template>
+            </ul>
+          </header>
+        </template>
+      </dom-module>
 
-    <poly-data>
-      <link rel="import" href="parts/poly-data-duplex.html">
-    </poly-data>
+      <script>
+        Polymer({
+          is: 'router-nav'
+          ,properties: {
+            navbarList: {
+              type: Array
+              ,value: [
+                'home'
+                ,'todo'
+              ]
+            }
+          }
+        })
+      </script>
+    </router-nav>
 
-    <poly-attr data-nua='javascript:navigator.userAgent' author='cdll'>
-      <link rel="import" href="parts/poly-attr-duplex.html">
-    </poly-attr>
+    <app-router mode="auto" trailingSlash="ignore">
+      <link rel="import" href="/bower_components/app-router/app-router.csp.html">
 
-    <poly-editable>
-      <link rel="import" href="parts/poly-editable.html">
-    </poly-editable>
+<!--      <app-route path="/\s|index\.html/i" regex redirect='home'></app-route>-->
+      <app-route path="" redirect='home'></app-route>
 
-    <poly-todo>
-      <link rel="import" href='parts/poly-todo-list.html'>
-    </poly-todo>
+      <app-route path="home" import='parts/poly-dom.html'>
+        <poly-dom></poly-dom>
+      </app-route>
 
-    <poly-iron-ajax>
-      <link rel='import' href="parts/poly-iron-ajax.html">
-    </poly-iron-ajax>
+      <app-route path="todo" import='parts/poly-todo-list.html'>
+        <poly-todo></poly-todo>
+      </app-route>
+    </app-router>
+
   </body>
 </html>
