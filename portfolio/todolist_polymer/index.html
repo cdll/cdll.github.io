@@ -3,13 +3,14 @@
   <head>
     <link rel="stylesheet" href="/bower_components/material-design-lite/material.min.css" >
     <script id="polymer-core" src="/bower_components/webcomponentsjs/webcomponents-lite.min.js" ></script>
-<!--    <base href="index.html">-->
+    <base href="">
   </head>
 
-  <body>
+  <body unresolved>
 
     <router-nav>
       <link rel='import' href='/bower_components/polymer/polymer.html'>
+      <link rel="import" href="/bower_components/app-router/app-router.csp.html">
 
       <dom-module id='router-nav'>
         <style>
@@ -32,7 +33,7 @@
           <header class="mdl-layout__header">
             <ul class="mdl-navigation">
               <template is='dom-repeat' items='{{navbarList}}'>
-                <a class="mdl-btn btn" href="#{{item}}">
+                <a class="mdl-btn btn" href="#/{{item}}">
                   <li class="mdl-navigation__link">{{item}}</li>
                 </a>
               </template>
@@ -50,6 +51,7 @@
               ,value: [
                 'home'
                 ,'todo'
+                ,'demo'
               ]
             }
           }
@@ -57,19 +59,19 @@
       </script>
     </router-nav>
 
-    <app-router mode="auto" trailingSlash="ignore">
-      <link rel="import" href="/bower_components/app-router/app-router.csp.html">
+    <app-router mode="auto" trailingslash="ignore" >
 
 <!--      <app-route path="/\s|index\.html/i" regex redirect='home'></app-route>-->
-      <app-route path="" redirect='home'></app-route>
+<!--      <app-route path="/" redirect='#/home'></app-route>-->
 
-      <app-route path="home" import='parts/poly-dom.html'>
-        <poly-dom></poly-dom>
+      <app-route path="/home" import='parts/poly-attr-duplex.html' element='poly-attr'>
       </app-route>
 
-      <app-route path="todo" import='parts/poly-todo-list.html'>
-        <poly-todo></poly-todo>
+      <app-route path="/todo" import='parts/poly-todo-list.html' element='poly-todo'>
       </app-route>
+
+      <!-- matches everything else -->
+      <app-route path="*" import="parts/poly-dom.html" element='poly-dom'></app-route>
     </app-router>
 
   </body>
