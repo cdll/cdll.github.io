@@ -49,7 +49,6 @@
       var _key= eve.keyCode|| eve.which
       if(_key== 13&& this.todoValue){
         ;this.todoValue.trim() && this.push('todoList', this.todoValue|| '');
-        console.info(this.todoList)
         this.todoValue= undefined
       }
     }
@@ -63,13 +62,12 @@
 //      })
 //      vm.listen(vm.querySelector('input'), 'keyup', 'addTodo')
       vm.pop= function(eve){
-        console.warn(vm.todoList, eve.model.index)
+//        console.warn(vm.todoList, eve.model.index)
         vm.splice('todoList', eve.model.index, 1)
       }
     }
     ,update: function(v, vv){
-      console.info(v, vv)
-      console.info(this)
+      console.info(v, vv, this)
     }
   })
 </script>

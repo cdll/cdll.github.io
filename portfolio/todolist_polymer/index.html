@@ -13,6 +13,7 @@
 
   <body unresolved>
 
+
     <router-nav>
       <link rel='import' href='/bower_components/polymer/polymer.html'>
       <link rel="import" href="/bower_components/app-router/app-router.csp.html">
@@ -44,6 +45,9 @@
               </template>
             </ul>
           </header>
+      <iron-request id='ip'>
+        <link rel='import' href="/bower_components/iron-ajax/iron-request.html">
+      </iron-request>
         </template>
       </dom-module>
 
@@ -59,6 +63,13 @@
                 ,'demo'
               ]
             }
+          }
+          ,ready: function(){
+            console.info(this, this.$.ip)
+            this.$.ip.send({
+              url: "http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js&ip="
+              ,body: {}
+            })
           }
         })
       </script>

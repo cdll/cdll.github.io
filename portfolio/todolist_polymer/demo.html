@@ -2,6 +2,7 @@
 <!doctype html author='cdll@20151202>
 <html>
   <head>
+    <meta name='viewport' content="width=device-width,user-scalable=0,initial-scale=1.0,maximum-scale=1.0" />
     <link rel="stylesheet" href="/bower_components/material-design-lite/material.min.css" >
     <script id="polymer-core" src="/bower_components/webcomponentsjs/webcomponents-lite.min.js" -data-url='http://en.polymerchina.org/1.0/docs/start/quick-tour.html'></script>
   </head>
@@ -23,7 +24,7 @@
       <link rel="import" href="parts/poly-data-duplex.html">
     </poly-data>
 
-    <poly-attr data-nua='javascript:navigator.userAgent' author='cdll'>
+    <poly-attr data-nua='javascript:navigator.userAgent' -author='cdll'>
       <link rel="import" href="parts/poly-attr-duplex.html">
     </poly-attr>
 
@@ -35,8 +36,27 @@
       <link rel="import" href='parts/poly-todo-list.html'>
     </poly-todo>
 
-    <poly-iron-ajax>
-      <link rel='import' href="parts/poly-iron-ajax.html">
-    </poly-iron-ajax>
+    <div class="">
+<!--    <template is="dom-bind" id='app'>-->
+      <iron-ajax url="/params.json"
+                 method='get'
+                 auto
+                 body=''
+                 params='{"nonce": 321}'
+                 withCredentials='true'
+                 jsonPrefix='true'
+                 onresponse=''
+                 last-response="{{res}}"></iron-ajax>
+        <template is="dom-repeat" items="[[res.ignore]]">
+          <div class="horizontal-section">
+            <h2><a href="[[url(item.id.videoId)]]" target="_blank">[[item]]</a></h2>
+            <iron-image src="[[item.snippet.thumbnails.high.url]]" width="256" height="256" sizing="cover" preload fade></iron-image>
+            <p>[[item]]</p>
+          </div>
+        </template>
+        <link rel='import' href="/bower_components/iron-ajax/iron-ajax.html">
+      </iron-ajax>
+<!--    </template>-->
+    </div>
   </body>
 </html>
