@@ -39,28 +39,50 @@
     </poly-todo>
 -->
 
-    <div class="">
-<!--    <template is="dom-bind" id='app'>-->
-      <iron-ajax url="/params.json"
+    <ajax-list>
+      <link rel='import' href="/bower_components/iron-ajax/iron-ajax.html">
+      <iron-ajax url="/bower.json"
                  method='get'
                  auto
                  body=''
                  params='{"nonce": 321}'
                  handle-as='json'
                  jsonPrefix='true'
-                 last-response="{{res}}">
-<!--                 onresponse='logger'-->
+                 onresponse='logger'
+                 last-response="{{response}}">
       </iron-ajax>
-        <template is="dom-repeat" items="{{res}}">
+      <template dom-if='{{resData.length}}'>
+        <template is="dom-repeat" items="{{response}}" replace='false'>
           <div class="horizontal-section">
             <h2><a href="{{url(item.id.videoId)}}" target="_blank">{{item}}</a></h2>
-            <iron-image src="[[item.snippet.thumbnails.high.url]]" width="256" height="256" sizing="cover" preload fade></iron-image>
-            <p>[[item]]</p>
+            <iron-image src="{{item.snippet.thumbnails.high.url}}" width="256" height="256" sizing="cover" preload fade></iron-image>
+            <p>{{item}}</p>
           </div>
         </template>
-        <link rel='import' href="/bower_components/iron-ajax/iron-ajax.html">
-<!--    </template>-->
-    </div>
+      </template>
+      <script>
+        Polymer({
+          is: 'ajax-list'
+          ,ready: function(){
+            fetch('/params.json?nonce='+(new Date()).getTime(), {
+              method: 'get'
+            })
+            .then(function(xhr, res){
+              console.info(xhr, res)
+            })
+          }
+          ,properties: {
+            resData: {
+              value: [1,2]
+              ,type: Array
+            }
+          }
+          ,logger: function(){
+            console.info(this)
+          }
+        })
+      </script>
+    </ajax-list>
 
 <!--
     <div class="">
