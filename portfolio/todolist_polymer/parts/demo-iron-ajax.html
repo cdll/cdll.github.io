@@ -3,6 +3,7 @@
 <html>
   <head>
     <meta charset="utf-8">
+    <meta name='viewport' content="width=device-width,user-scalable=0,initial-scale=1.0,maximum-scale=1.0" />
     <script src="/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
     <link rel="import" href="/bower_components/polymer/polymer.html">
     <link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
@@ -15,20 +16,21 @@
     <template id="t" is="dom-bind">
 
       <iron-ajax url="/bower.json"
-        auto
-        body=''
-        params='{}'
-        handle-as='json'
-        onresponse='handleRes'
-        last-response="{{data}}"></iron-ajax>
+                 auto
+                 body=''
+                 params='{}'
+                 handle-as='json'
+                 onresponse='handleRes'
+                 last-response="{{data}}"></iron-ajax>
 
-      <template is="dom-repeat" items="{{data}}">
-          <div><span>{{item.first}}</span> <span>{{item.last}}</span></div>
+      <template is="dom-repeat" items="{{data.authors}}">
+        <div><span>{{item}}</span> <span>{{item}}</span></div>
       </template>
 
     </template>
 
   </body>
+<!--
   <script>
     var t = document.querySelector('#t');
 
@@ -37,4 +39,5 @@
       //auto-binding template is ready.
     });
   </script>
+-->
 </html>

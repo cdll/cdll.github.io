@@ -3,13 +3,12 @@
 <html>
   <head>
     <meta name='viewport' content="width=device-width,user-scalable=0,initial-scale=1.0,maximum-scale=1.0" />
-    <link rel="styleshecale=1.0,maximum-scale=1.0" />
     <link rel="stylesheet" href="/bower_components/material-design-lite/material.min.css" >
     <script id="polymer-core" src="/bower_components/webcomponentsjs/webcomponents-lite.min.js" -data-url='http://en.polymerchina.org/1.0/docs/start/quick-tour.html'></script>
+    <link rel="import" href="/bower_components/polymer/polymer.html">
   </head>
 
   <body>
-<!--
     <poly-el>
       <link rel="import" href="parts/poly-el.html">
     </poly-el>
@@ -37,61 +36,27 @@
     <poly-todo>
       <link rel="import" href='parts/poly-todo-list.html'>
     </poly-todo>
--->
 
     <ajax-list>
       <link rel='import' href="/bower_components/iron-ajax/iron-ajax.html">
-      <iron-ajax url="/bower.json"
-                 method='get'
-                 auto
-                 body=''
-                 params='{"nonce": 321}'
-                 handle-as='json'
-                 jsonPrefix='true'
-                 onresponse='logger'
-                 last-response="{{response}}">
-      </iron-ajax>
-      <template dom-if='{{resData.length}}'>
-        <template is="dom-repeat" items="{{response}}" replace='false'>
+      <template is="dom-bind">
+        <iron-ajax url="/bower.json"
+                   method='get'
+                   auto
+                   params='{"nonce": 321}'
+                   handle-as='json'
+                   onresponse='logger'
+                   last-response="{{res}}">
+        </iron-ajax>
+        <template is="dom-repeat" items="{{res.ignore}}" replace='false'>
           <div class="horizontal-section">
-            <h2><a href="{{url(item.id.videoId)}}" target="_blank">{{item}}</a></h2>
-            <iron-image src="{{item.snippet.thumbnails.high.url}}" width="256" height="256" sizing="cover" preload fade></iron-image>
+            <h2><a href="{{res.homepage}}" >{{item}}</a></h2>
+            <iron-image src="{{res}}" width="256" height="256" sizing="cover" preload fade></iron-image>
             <p>{{item}}</p>
           </div>
         </template>
       </template>
-      <script>
-        Polymer({
-          is: 'ajax-list'
-          ,ready: function(){
-            fetch('/params.json?nonce='+(new Date()).getTime(), {
-              method: 'get'
-            })
-            .then(function(xhr, res){
-              console.info(xhr, res)
-            })
-          }
-          ,properties: {
-            resData: {
-              value: [1,2]
-              ,type: Array
-            }
-          }
-          ,logger: function(){
-            console.info(this)
-          }
-        })
-      </script>
     </ajax-list>
 
-<!--
-    <div class="">
-      <link rel="import" href="/bower_components/iron-jsonp-library/index.html" >
-      <iron-jsonp-library
-        library-url="http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js&ip="
-        notify-event="api-load"
-        library-loaded="{{remote_ip}}"></iron-jsonp-library>
-    </div>
--->
   </body>
 </html>
