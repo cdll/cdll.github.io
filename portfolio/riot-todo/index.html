@@ -1,0 +1,45 @@
+
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name='viewport' content="width=device-width,user-scalable=0,initial-scale=1.0,maximum-scale=1.0" />
+
+  </head>
+
+  <body>
+<!-- mount point -->
+    <my-tag>
+<!-- inlined tag definition -->
+<script type="riot/tag">
+  <my-tag>
+    <h3>Tag layout</h3>
+    <div class=''>{ dude }</div>
+    <inner-tag />
+    this.dude= 'bello'
+    this.on('mount', function(){
+      console.info(this)
+      this.update({
+        dude: 'halo'
+      })
+    })
+  </my-tag>
+</script>
+    </my-tag>
+
+
+<!-- <inner-tag/> is specified on external file -->
+<!--<script src="path/to/javascript/with-tags.js" type="riot/tag"></script>-->
+
+    <script src="/bower_components/riot/riot+compiler.min.js"></script>
+<script>
+riot.compile(function() {
+  // here tags are compiled and riot.mount works synchronously
+  var tags = riot.mount('*')//mount normally
+  console.info(tags)
+})
+</script>
+  </body>
+
+</html>
+
