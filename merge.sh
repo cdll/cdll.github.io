@@ -6,7 +6,7 @@ echo "--- Update master branch ---"
 git checkout master
 git pull
 echo "--- Merge changes to master branch (using 'git rebase') ---"
-git rebase develop
+git rebase dev
 git push
 echo "--- Checkout develop branch ---"
 git checkout dev
