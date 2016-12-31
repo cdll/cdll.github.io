@@ -10,85 +10,44 @@
       <link rel="import" href="./head-metas.html" name='metas'>
     </poly-metas>
   </head>
-
-  <body unresolved>
-
-
-    <router-nav>
-      <link rel='import' href='/bower_components/polymer/polymer.html'>
-      <link rel="import" href="/bower_components/app-router/app-router.csp.html">
-
-      <dom-module id='router-nav'>
-        <style>
-          .mdl-layout__header{
-            display: block;
-            left: 0;right: 0;
-          }
-          .mdl-navigation{
-            margin: 0 auto;
-          }
-          .mdl-layout__header .mdl-navigation__link{
-            display: inline-block;
-            display: flex;
-            padding: 20px;
-            color: white;
-            font-weight: bold;
-          }
-        </style>
-        <template>
-          <header class="mdl-layout__header">
-            <ul class="mdl-navigation">
-              <template is='dom-repeat' items='{{navbarList}}'>
-                <a class="mdl-btn btn" href="#/{{item}}">
-                  <li class="mdl-navigation__link">{{item}}</li>
-                </a>
-              </template>
-            </ul>
-          </header>
-      <iron-request id='ip'>
-        <link rel='import' href="/bower_components/iron-ajax/iron-request.html">
-      </iron-request>
-        </template>
-      </dom-module>
-
-      <script>
-        Polymer({
-          is: 'router-nav'
-          ,properties: {
-            navbarList: {
-              type: Array
-              ,value: [
-                'home'
-                ,'todo'
-                ,'demo'
-              ]
-            }
-          }
-          ,ready: function(){
-            console.info(this, this.$.ip)
-            this.$.ip.send({
-              url: "http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js&ip="
-              ,body: {}
-            })
-          }
-        })
-      </script>
-    </router-nav>
-
-    <app-router mode="auto" trailingslash="ignore" >
-
-<!--      <app-route path="/\s|index\.html/i" regex redirect='home'></app-route>-->
-<!--      <app-route path="/" redirect='#/home'></app-route>-->
-
-      <app-route path="/home" import='parts/poly-attr-duplex.html' element='poly-attr'>
-      </app-route>
-
-      <app-route path="/todo" import='parts/poly-todo-list.html' element='poly-todo'>
-      </app-route>
-
-      <!-- matches everything else -->
-      <app-route path="*" import="parts/poly-dom.html" element='poly-dom'></app-route>
-    </app-router>
-
+  
+  <body>
+    <poly-el>
+      <link rel="import" href="parts/poly-el.html">
+    </poly-el>
+    
+    <poly-dom>
+      <link rel="import" href="parts/poly-dom.html">
+    </poly-dom>
+    
+    <pic-frame>
+      <link rel='import' href="parts/poly-frame.html">
+<<<<<<< Updated upstream
+    </poly-frame>
+=======
+    </pic-frame>
+>>>>>>> Stashed changes
+    
+    <poly-data>
+      <link rel="import" href="parts/poly-data-duplex.html">
+    </poly-data>
+    
+<<<<<<< Updated upstream
+    <poly-attr>
+      <link rel="import" href="parts/poly-attr-duplex.html">
+    </poly-attr>
+    
+    <poly-editable>
+      <link rel="import" href="parts/poly-editable.html">
+    </poly-editable>
+    
+    <poly-todo>
+      <link rel="import" href='parts/poly-todo-list.html'>
+    </poly-todo>
+=======
+    <poly-attr data-nua='javascript:navigator.userAgent' author='cdll'>
+      <link rel="import" href="parts/poly-attr-duplex.html">
+    </poly-attr>
+>>>>>>> Stashed changes
   </body>
 </html>
