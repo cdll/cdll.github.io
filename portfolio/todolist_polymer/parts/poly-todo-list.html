@@ -37,7 +37,7 @@
       todoValue: {
         type: String
         ,value: ''
-        ,observer: 'update'
+        ,observer: 'todoValueUpdate'
       }
       ,todoList: {
         type: Array
@@ -66,8 +66,8 @@
         vm.splice('todoList', eve.model.index, 1)
       }
     }
-    ,update: function(v, vv){
-      console.info(v, vv, this)
+    ,todoValueUpdate: function(v, vv){
+      console.info(v, vv)
     }
   })
 </script>
