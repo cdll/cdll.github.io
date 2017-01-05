@@ -8,36 +8,46 @@
   </head>
 
   <body>
+    <h3 class="">all</h3>
 <!-- mount point -->
-    <my-tag>
+    <my-tag></my-tag>
+
 <!-- inlined tag definition -->
+      <!--<script src='modules/my-tag.html' type="riot/tag"></script>-->
 <script type="riot/tag">
-  <my-tag>
+  <my-tag >
+    <style scoped>
+      h3{
+        color: red;
+      }
+    </style>
+
     <h3>Tag layout</h3>
     <div class=''>{ dude }</div>
-    <inner-tag />
-    this.dude= 'bello'
-    this.on('mount', function(){
-      console.info(this)
-      this.update({
-        dude: 'halo'
+
+    <inline-tag/>
+      this.dude= 'bello'
+      this.on('mount', ()=>{
+        console.info(this)
+        this.update({
+          dude: 'halo'
+        })
       })
-    })
   </my-tag>
 </script>
-    </my-tag>
 
 
 <!-- <inner-tag/> is specified on external file -->
 <!--<script src="path/to/javascript/with-tags.js" type="riot/tag"></script>-->
 
-    <script src="/bower_components/riot/riot+compiler.min.js"></script>
+    <!--<script src="/bower_components/riot/riot+compiler.min.js"></script>-->
+    <script src="//cdn.staticfile.org/riot/3.0.5/riot+compiler.min.js"></script>
 <script>
-riot.compile(function() {
+// riot.compile(function(){
   // here tags are compiled and riot.mount works synchronously
   var tags = riot.mount('*')//mount normally
-  console.info(tags)
-})
+  // console.info(tags)
+// })
 </script>
   </body>
 

@@ -41,6 +41,6 @@
     "app-router": "~2.7.1",
     "app-storage": "~0.9.6",
     "iron-jsonp-library": "PolymerElements/iron-jsonp-library#~1.0.4",
-    "riot": "riotjs#~2.6.7"
+    "riot": "3.0"
   }
 }
