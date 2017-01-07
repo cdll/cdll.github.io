@@ -13,52 +13,11 @@
     <div data-is="my-tag"></div>
 
 <!-- inlined tag definition -->
-      <!--<script src='modules/my-tag.html' type="riot/tag"></script>-->
-<script type="riot/tag">
-  <my-tag >
-    <style scoped>
-      h3{
-        color: red;
-      }
-    </style>
-
-    <h3>Tag layout</h3>
-    <div class='' onclick='{logger}'>{ dude }</div>
-    <ul class=''>
-      <li class='' each='{el in todos}' onclick='{ranText}'>{el.content}</li>
-    </ul>
-
-    <inline-tag/>
-      this.dude= 'bello'
-      this.on('mount', ()=>{
-        var _list= []
-        Array.apply(null, { length: 10 }).forEach((el, i)=>{
-          _list.push({
-            _id: 's12s1s21'
-            ,content: 'clickme'
-          })
-        })
-        this.update({
-          dude: 'halo'
-          ,todos: _list
-        })
-      })
-      this.logger= ()=>{
-        console.info(event.target)
-      }
-      this.ranText= ()=>{
-        console.info(event.item)
-        event.item.el.content= (new Date())
-      }
-  </my-tag>
+<script type="riot/tag" src="modules/my-tag.tag.html">
 </script>
 
-
-<!-- <inner-tag/> is specified on external file -->
-<!--<script src="path/to/javascript/with-tags.js" type="riot/tag"></script>-->
-
-    <!--<script src="/bower_components/riot/riot+compiler.min.js"></script>-->
-    <script src="//cdn.staticfile.org/riot/3.0.5/riot+compiler.min.js"></script>
+    <script src="/bower_components/riot/riot+compiler.min.js"></script>
+    <!--<script src="//cdn.staticfile.org/riot/3.0.5/riot+compiler.min.js"></script>-->
 <script>
 // riot.compile(function(){
   // here tags are compiled and riot.mount works synchronously
