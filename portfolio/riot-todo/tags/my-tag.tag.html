@@ -27,10 +27,10 @@
           ,todos: _list
         })
       })
-      this.logger= ()=>{
+      logger() {
         console.info(event.target)
       }
-      this.ranText= ()=>{
+      ranText() {
         console.info(event.item)
         event.item.el.content= (new Date())
       }
