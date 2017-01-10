@@ -10,7 +10,7 @@
   <body>
     <h3 class="">all</h3>
 <!-- mount point -->
-    <div data-is="my-tag"></div>
+    <div data-is="not-found"></div>
 
 <!-- inlined tag definition -->
 <script type="riot/tag" src="tags/my-tag.tag.html">
@@ -33,11 +33,12 @@ route('search..', function(){
 })
 route('..', function(group, module, action){
   console.warn(404, group, module, action)
-  route('index', null, true)
+  riot.compile('tags/not-found.tag.html')
+  riot.mount('not-found', {})
 })
+route.start(true)
 
 riot.mount('*')
-route.start(true)
 </script>
   </body>
 
