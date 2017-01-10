@@ -18,13 +18,26 @@
 
     <script src="/bower_components/axios/dist/axios.min.js"></script>
     <script src="/bower_components/riot/riot+compiler.min.js"></script>
-    <!--<script src="//cdn.staticfile.org/riot/3.0.5/riot+compiler.min.js"></script>-->
+    <script src="/bower_components/riot-route/dist/route.min.js"></script>
 <script>
 // riot.compile(function(){
   // here tags are compiled and riot.mount works synchronously
-  var tags = riot.mount('*')//mount normally
-  console.info(tags)
+  // var tags = riot.mount('*')//mount normally
 // })
+route('index', function(){
+})
+route('login', function(){
+})
+route('search..', function(){
+  console.info(route.query())
+})
+route('..', function(group, module, action){
+  console.warn(404, group, module, action)
+  route('index', null, true)
+})
+
+riot.mount('*')
+route.start(true)
 </script>
   </body>
 
