@@ -19,7 +19,7 @@ var fs = require('fs')
 var tag= require('./tags/my-tag.tag')
 // var tag= riot.compile('./tags/my-tag.tag')
 var res= riot.render(tag, {
-  name: 'cdll'
+  dude: 'cdll'
 })
 console.info(res)
 return res

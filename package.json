@@ -6,10 +6,11 @@
     "gulp-jspm-build": "0.0.15",
     "gulp-uglify": "^2.0.0",
     "incremental-dom": "^0.3.0",
-    "riot": "^3.0.5"
+    "riot": "^3.1.0"
   },
   "scripts": {
     "start": "node console.log('start')",
-    "test": "jspm bundle ./src/js/index.js index.min.js --minify"
+    "test": "jspm bundle ./src/js/index.js index.min.js --minify",
+    "serve": "http-server . -p 8090"
   }
 }

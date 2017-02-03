@@ -1,0 +1,41 @@
+<app>
+  <style>
+
+  </style>
+
+  <div class="" data-is='{app}'></div>
+
+  <script>
+    console.info(this)
+    function App(){
+      riot.observable(this)
+      this.on('bootstrap', ()=>{
+        console.info(this)
+route('/', function(){
+  console.info('/')
+  route('/index', null, true)
+})
+// route('/index', function(){
+//   console.info('index')
+//   riot.compile('tags/my-tag.tag.html')
+// })
+// route('/login', function(){
+//   console.info('login')
+// })
+// route('/search..', function(){
+//   console.info('search', route.query())
+// })
+// route('/*', function(group, module, action){
+//   console.warn(404, group, module, action)
+//   riot.compile('tags/not-found.tag.html')
+// })
+// route.start(true)
+
+// riot.mount('*')
+      })
+    }
+
+    var app= new App()
+    app.trigger('bootstrap')
+  </script>
+</app>

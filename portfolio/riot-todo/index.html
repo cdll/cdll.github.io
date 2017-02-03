@@ -4,41 +4,29 @@
   <head>
     <meta charset="utf-8">
     <meta name='viewport' content="width=device-width,user-scalable=0,initial-scale=1.0,maximum-scale=1.0" />
+    <!--<script src="https://cdn.staticfile.org/systemjs/0.19.41/system.js"></script>-->
+    <script src="/bower_components/riot/riot+compiler.min.js"></script>
+    <script src="/bower_components/riot-route/dist/route.min.js"></script>
+    <script src="/bower_components/axios/dist/axios.min.js"></script>
 
   </head>
 
   <body>
     <h3 class="">all</h3>
 <!-- mount point -->
-    <div data-is="not-found"></div>
+    <div data-is="app"></div>
+    <my-tag></my-tag>
 
 <!-- inlined tag definition -->
-<script type="riot/tag" src="tags/my-tag.tag.html">
-</script>
+<script type="riot/tag" src="tags/app.tag.html"></script>
+<script type="riot/tag" src="tags/my-tag.tag"></script>
 
-    <script src="/bower_components/axios/dist/axios.min.js"></script>
-    <script src="/bower_components/riot/riot+compiler.min.js"></script>
-    <script src="/bower_components/riot-route/dist/route.min.js"></script>
 <script>
-// riot.compile(function(){
+riot.compile(()=>{
   // here tags are compiled and riot.mount works synchronously
-  // var tags = riot.mount('*')//mount normally
-// })
-route('index', function(){
+  // var app = riot.compile('tags/app.tag.html')//mount normally
+  var tags = riot.mount('*')//mount normally
 })
-route('login', function(){
-})
-route('search..', function(){
-  console.info(route.query())
-})
-route('..', function(group, module, action){
-  console.warn(404, group, module, action)
-  riot.compile('tags/not-found.tag.html')
-  riot.mount('not-found', {})
-})
-route.start(true)
-
-riot.mount('*')
 </script>
   </body>
 
