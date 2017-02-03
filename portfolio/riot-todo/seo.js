@@ -4,6 +4,7 @@
 var riot= require('riot')
 
 var fs = require('fs')
+var axios= require('axios')
 // require.extensions['.tag.html'] = function (module, filename) {
 //   module.exports = fs.readFileSync(filename, 'utf8')
 // }
@@ -18,8 +19,20 @@ var fs = require('fs')
 
 var tag= require('./tags/my-tag.tag')
 // var tag= riot.compile('./tags/my-tag.tag')
-var res= riot.render(tag, {
-  dude: 'cdll'
+axios('http://jiliguala.local/api/discover/guayouhui', {
+  method: 'get'
+  ,headers: {
+    version: 1
+  }
 })
-console.info(res)
-return res
+.then((res)=>{
+  // console.info(res.data)
+  var html= riot.render(tag, {
+    dude: res.data.code
+    ,todos: res.data.data
+  })
+  console.info(html)
+  return html
+}, (xhr, err)=>{
+  console.warn(23333, xhr, 666)
+})

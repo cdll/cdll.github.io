@@ -9,10 +9,9 @@
     <h3>Tag layout</h3>
     <div class='' onclick='{logger}'>{ dude }</div>
     <dl class=''>
-      <dd class='' each='{el in todos}' onclick='{ranText}'>{el}</dd>
+      <dd class='' each='{el in todos}' onclick='{ranText}'>{el._id}</dd>
     </dl>
 
-    <inline-tag/>
     <script>
       if(typeof window === 'object')
         var axios= window.axios
@@ -26,19 +25,22 @@
         })
         this.update({
           dude: 'halo'
-          //,todos: _list
+          ,todos: opts.todos
         })
-        axios('./bower.json', {
-          method: 'get'
-        })
-        .then((res)=>{
-          self.update({
-            dude: res.data.name
-            ,todos: res.data.ignore
-          })
-        }, (err)=>{
-          console.warn(err)
-        })
+        //- axios('./bower.json', {
+        //-   method: 'get'
+        //-   ,headers: {
+        //-     version: 1
+        //-   }
+        //- })
+        //- .then((res)=>{
+        //-   self.update({
+        //-     dude: res.data.name
+        //-     ,todos: res.data.ignore
+        //-   })
+        //- }, (xhr, err)=>{
+        //-   console.warn(xhr, err)
+        //- })
       })
       logger() {
         console.info(event.target)
