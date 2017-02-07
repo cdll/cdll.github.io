@@ -19,20 +19,22 @@ var axios= require('axios')
 
 var tag= require('./tags/my-tag.tag')
 // var tag= riot.compile('./tags/my-tag.tag')
-axios('http://jiliguala.local/api/discover/guayouhui', {
-  method: 'get'
-  ,headers: {
-    version: 1
-  }
-})
-.then((res)=>{
-  // console.info(res.data)
-  var html= riot.render(tag, {
-    dude: res.data.code
-    ,todos: res.data.data
-  })
-  console.info(html)
-  return html
-}, (xhr, err)=>{
-  console.warn(23333, xhr, 666)
-})
+var tag= riot.compile(tag)
+return tag
+// axios('http://localhost/api/discover/guayouhui', {
+//   method: 'get'
+//   ,headers: {
+//     version: 1
+//   }
+// })
+// .then((res)=>{
+//   // console.info(res.data)
+//   var html= riot.render(tag, {
+//     dude: res.data.code
+//     ,todos: res.data.data
+//   })
+//   console.info(html)
+//   return html
+// }, (xhr, err)=>{
+//   console.warn(23333, xhr)
+// })

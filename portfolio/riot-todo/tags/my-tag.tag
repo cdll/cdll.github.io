@@ -41,6 +41,21 @@
         //- }, (xhr, err)=>{
         //-   console.warn(xhr, err)
         //- })
+axios('http://localhost/api/discover/guayouhui', {
+  method: 'get'
+  ,headers: {
+    version: 1
+  }
+})
+.then((res)=>{
+  console.info(res.data)
+  var html= riot.update({
+    dude: res.data.code
+    ,todos: res.data.data
+  })
+}, (xhr, err)=>{
+  console.warn(666, xhr)
+})
       })
       logger() {
         console.info(event.target)
