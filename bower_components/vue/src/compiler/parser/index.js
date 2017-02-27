@@ -1,9 +1,11 @@
 /* @flow */
 
-import { decodeHTML } from 'entities'
+import { decode } from 'he'
 import { parseHTML } from './html-parser'
 import { parseText } from './text-parser'
+import { parseFilters } from './filter-parser'
 import { cached, no, camelize } from 'shared/util'
+import { isIE, isServerRendering } from 'core/util/env'
 import {
   pluckModuleFunction,
   getAndRemoveAttr,
@@ -16,14 +18,14 @@ import {
 } from '../helpers'
 
 export const dirRE = /^v-|^@|^:/
-export const forAliasRE = /(.*)\s+(?:in|of)\s+(.*)/
-export const forIteratorRE = /\(([^,]*),([^,]*)(?:,([^,]*))?\)/
+export const forAliasRE = /(.*?)\s+(?:in|of)\s+(.*)/
+export const forIteratorRE = /\((\{[^}]*\}|[^,]*),([^,]*)(?:,([^,]*))?\)/
 const bindRE = /^:|^v-bind:/
 const onRE = /^@|^v-on:/
 const argRE = /:(.*)$/
-const modifierRE = /\.[^\.]+/g
+const modifierRE = /\.[^.]+/g
 
-const decodeHTMLCached = cached(decodeHTML)
+const decodeHTMLCached = cached(decode)
 
 // configurable state
 let warn
@@ -34,7 +36,6 @@ let preTransforms
 let transforms
 let postTransforms
 let delimiters
-let seenSlots: any
 
 /**
  * Convert HTML string to AST.
@@ -51,7 +52,7 @@ export function parse (
   transforms = pluckModuleFunction(options.modules, 'transformNode')
   postTransforms = pluckModuleFunction(options.modules, 'postTransformNode')
   delimiters = options.delimiters
-  seenSlots = Object.create(null)
+
   const stack = []
   const preserveWhitespace = options.preserveWhitespace !== false
   let root
@@ -59,11 +60,22 @@ export function parse (
   let inVPre = false
   let inPre = false
   let warned = false
+
+  function endPre (element) {
+    // check pre state
+    if (element.pre) {
+      inVPre = false
+    }
+    if (platformIsPreTag(element.tag)) {
+      inPre = false
+    }
+  }
+
   parseHTML(template, {
+    warn,
     expectHTML: options.expectHTML,
     isUnaryTag: options.isUnaryTag,
-    isFromDOM: options.isFromDOM,
-    shouldDecodeTags: options.shouldDecodeTags,
+    shouldDecodeNewlines: options.shouldDecodeNewlines,
     start (tag, attrs, unary) {
       // check namespace.
       // inherit parent ns if there is one
@@ -71,7 +83,7 @@ export function parse (
 
       // handle IE svg bug
       /* istanbul ignore if */
-      if (options.isIE && ns === 'svg') {
+      if (isIE && ns === 'svg') {
         attrs = guardIESVGBug(attrs)
       }
 
@@ -87,12 +99,12 @@ export function parse (
         element.ns = ns
       }
 
-      if (process.env.VUE_ENV !== 'server' && isForbiddenTag(element)) {
+      if (isForbiddenTag(element) && !isServerRendering()) {
         element.forbidden = true
         process.env.NODE_ENV !== 'production' && warn(
           'Templates should only be responsible for mapping the state to the ' +
           'UI. Avoid placing tags with side-effects in your templates, such as ' +
-          `<${tag}>.`
+          `<${tag}>` + ', as they will not be parsed.'
         )
       }
 
@@ -116,12 +128,12 @@ export function parse (
         processFor(element)
         processIf(element)
         processOnce(element)
+        processKey(element)
 
         // determine whether this is a plain element after
         // removing structural attributes
         element.plain = !element.key && !attrs.length
 
-        processKey(element)
         processRef(element)
         processSlot(element)
         processComponent(element)
@@ -132,17 +144,19 @@ export function parse (
       }
 
       function checkRootConstraints (el) {
-        if (process.env.NODE_ENV !== 'production') {
+        if (process.env.NODE_ENV !== 'production' && !warned) {
           if (el.tag === 'slot' || el.tag === 'template') {
+            warned = true
             warn(
               `Cannot use <${el.tag}> as component root element because it may ` +
-              'contain multiple nodes:\n' + template
+              'contain multiple nodes.'
             )
           }
           if (el.attrsMap.hasOwnProperty('v-for')) {
+            warned = true
             warn(
               'Cannot use v-for on stateful component root element because ' +
-              'it renders multiple elements:\n' + template
+              'it renders multiple elements.'
             )
           }
         }
@@ -152,20 +166,30 @@ export function parse (
       if (!root) {
         root = element
         checkRootConstraints(root)
-      } else if (process.env.NODE_ENV !== 'production' && !stack.length && !warned) {
-        // allow 2 root elements with v-if and v-else
-        if ((root.attrsMap.hasOwnProperty('v-if') && element.attrsMap.hasOwnProperty('v-else'))) {
+      } else if (!stack.length) {
+        // allow root elements with v-if, v-else-if and v-else
+        if (root.if && (element.elseif || element.else)) {
           checkRootConstraints(element)
-        } else {
+          addIfCondition(root, {
+            exp: element.elseif,
+            block: element
+          })
+        } else if (process.env.NODE_ENV !== 'production' && !warned) {
           warned = true
           warn(
-            `Component template should contain exactly one root element:\n\n${template}`
+            `Component template should contain exactly one root element. ` +
+            `If you are using v-if on multiple elements, ` +
+            `use v-else-if to chain them instead.`
           )
         }
       }
       if (currentParent && !element.forbidden) {
-        if (element.else) {
-          processElse(element, currentParent)
+        if (element.elseif || element.else) {
+          processIfConditions(element, currentParent)
+        } else if (element.slotScope) { // scoped slot
+          currentParent.plain = false
+          const name = element.slotTarget || '"default"'
+          ;(currentParent.scopedSlots || (currentParent.scopedSlots = {}))[name] = element
         } else {
           currentParent.children.push(element)
           element.parent = currentParent
@@ -174,6 +198,8 @@ export function parse (
       if (!unary) {
         currentParent = element
         stack.push(element)
+      } else {
+        endPre(element)
       }
       // apply post-transforms
       for (let i = 0; i < postTransforms.length; i++) {
@@ -185,45 +211,47 @@ export function parse (
       // remove trailing whitespace
       const element = stack[stack.length - 1]
       const lastNode = element.children[element.children.length - 1]
-      if (lastNode && lastNode.type === 3 && lastNode.text === ' ') {
+      if (lastNode && lastNode.type === 3 && lastNode.text === ' ' && !inPre) {
         element.children.pop()
       }
       // pop stack
       stack.length -= 1
       currentParent = stack[stack.length - 1]
-      // check pre state
-      if (element.pre) {
-        inVPre = false
-      }
-      if (platformIsPreTag(element.tag)) {
-        inPre = false
-      }
+      endPre(element)
     },
 
     chars (text: string) {
       if (!currentParent) {
-        if (process.env.NODE_ENV !== 'production' && !warned) {
+        if (process.env.NODE_ENV !== 'production' && !warned && text === template) {
           warned = true
           warn(
-            'Component template should contain exactly one root element:\n\n' + template
+            'Component template requires a root element, rather than just text.'
           )
         }
         return
       }
+      // IE textarea placeholder bug
+      /* istanbul ignore if */
+      if (isIE &&
+          currentParent.tag === 'textarea' &&
+          currentParent.attrsMap.placeholder === text) {
+        return
+      }
+      const children = currentParent.children
       text = inPre || text.trim()
         ? decodeHTMLCached(text)
         // only preserve whitespace if its not right after a starting tag
-        : preserveWhitespace && currentParent.children.length ? ' ' : ''
+        : preserveWhitespace && children.length ? ' ' : ''
       if (text) {
         let expression
         if (!inVPre && text !== ' ' && (expression = parseText(text, delimiters))) {
-          currentParent.children.push({
+          children.push({
             type: 2,
             expression,
             text
           })
-        } else {
-          currentParent.children.push({
+        } else if (text !== ' ' || !children.length || children[children.length - 1].text !== ' ') {
+          children.push({
             type: 3,
             text
           })
@@ -259,6 +287,9 @@ function processRawAttrs (el) {
 function processKey (el) {
   const exp = getBindingAttr(el, 'key')
   if (exp) {
+    if (process.env.NODE_ENV !== 'production' && el.tag === 'template') {
+      warn(`<template> cannot be keyed. Place the key on real elements instead.`)
+    }
     el.key = exp
   }
 }
@@ -300,21 +331,58 @@ function processIf (el) {
   const exp = getAndRemoveAttr(el, 'v-if')
   if (exp) {
     el.if = exp
-  }
-  if (getAndRemoveAttr(el, 'v-else') != null) {
-    el.else = true
+    addIfCondition(el, {
+      exp: exp,
+      block: el
+    })
+  } else {
+    if (getAndRemoveAttr(el, 'v-else') != null) {
+      el.else = true
+    }
+    const elseif = getAndRemoveAttr(el, 'v-else-if')
+    if (elseif) {
+      el.elseif = elseif
+    }
   }
 }
 
-function processElse (el, parent) {
+function processIfConditions (el, parent) {
   const prev = findPrevElement(parent.children)
   if (prev && prev.if) {
-    prev.elseBlock = el
+    addIfCondition(prev, {
+      exp: el.elseif,
+      block: el
+    })
   } else if (process.env.NODE_ENV !== 'production') {
     warn(
-      `v-else used on element <${el.tag}> without corresponding v-if.`
+      `v-${el.elseif ? ('else-if="' + el.elseif + '"') : 'else'} ` +
+      `used on element <${el.tag}> without corresponding v-if.`
     )
   }
+}
+
+function findPrevElement (children: Array<any>): ASTElement | void {
+  let i = children.length
+  while (i--) {
+    if (children[i].type === 1) {
+      return children[i]
+    } else {
+      if (process.env.NODE_ENV !== 'production' && children[i].text !== ' ') {
+        warn(
+          `text "${children[i].text.trim()}" between v-if and v-else(-if) ` +
+          `will be ignored.`
+        )
+      }
+      children.pop()
+    }
+  }
+}
+
+function addIfCondition (el, condition) {
+  if (!el.ifConditions) {
+    el.ifConditions = []
+  }
+  el.ifConditions.push(condition)
 }
 
 function processOnce (el) {
@@ -326,29 +394,21 @@ function processOnce (el) {
 
 function processSlot (el) {
   if (el.tag === 'slot') {
-    if (process.env.NODE_ENV !== 'production') {
-      if (!el.attrsMap[':name'] && !el.attrsMap['v-bind:name'] && checkInFor(el)) {
-        warn(
-          'Static <slot> found inside v-for: they will not render correctly. ' +
-          'Render the list in parent scope and use a single <slot> instead.'
-        )
-      }
-    }
     el.slotName = getBindingAttr(el, 'name')
-    if (process.env.NODE_ENV !== 'production') {
-      const name = el.slotName
-      if (seenSlots[name]) {
-        warn(
-          `Duplicate ${name ? `<slot> with name ${name}` : `default <slot>`} ` +
-          `found in the same template.`
-        )
-      }
-      seenSlots[name] = true
+    if (process.env.NODE_ENV !== 'production' && el.key) {
+      warn(
+        `\`key\` does not work on <slot> because slots are abstract outlets ` +
+        `and can possibly expand into multiple elements. ` +
+        `Use the key on a wrapping element instead.`
+      )
     }
   } else {
     const slotTarget = getBindingAttr(el, 'slot')
     if (slotTarget) {
-      el.slotTarget = slotTarget
+      el.slotTarget = slotTarget === '""' ? '"default"' : slotTarget
+    }
+    if (el.tag === 'template') {
+      el.slotScope = getAndRemoveAttr(el, 'scope')
     }
   }
 }
@@ -365,9 +425,9 @@ function processComponent (el) {
 
 function processAttrs (el) {
   const list = el.attrsList
-  let i, l, name, value, arg, modifiers, isProp
+  let i, l, name, rawName, value, arg, modifiers, isProp
   for (i = 0, l = list.length; i < l; i++) {
-    name = list[i].name
+    name = rawName = list[i].name
     value = list[i].value
     if (dirRE.test(name)) {
       // mark element as dynamic
@@ -379,12 +439,19 @@ function processAttrs (el) {
       }
       if (bindRE.test(name)) { // v-bind
         name = name.replace(bindRE, '')
-        if (modifiers && modifiers.prop) {
-          isProp = true
-          name = camelize(name)
-          if (name === 'innerHtml') name = 'innerHTML'
+        value = parseFilters(value)
+        isProp = false
+        if (modifiers) {
+          if (modifiers.prop) {
+            isProp = true
+            name = camelize(name)
+            if (name === 'innerHtml') name = 'innerHTML'
+          }
+          if (modifiers.camel) {
+            name = camelize(name)
+          }
         }
-        if (isProp || platformMustUseProp(name)) {
+        if (isProp || platformMustUseProp(el.tag, el.attrsMap.type, name)) {
           addProp(el, name, value)
         } else {
           addAttr(el, name, value)
@@ -399,7 +466,10 @@ function processAttrs (el) {
         if (argMatch && (arg = argMatch[1])) {
           name = name.slice(0, -(arg.length + 1))
         }
-        addDirective(el, name, value, arg, modifiers)
+        addDirective(el, name, rawName, value, arg, modifiers)
+        if (process.env.NODE_ENV !== 'production' && name === 'model') {
+          checkForAliasModel(el, value)
+        }
       }
     } else {
       // literal attribute
@@ -408,8 +478,9 @@ function processAttrs (el) {
         if (expression) {
           warn(
             `${name}="${value}": ` +
-            'Interpolation inside attributes has been deprecated. ' +
-            'Use v-bind or the colon shorthand instead.'
+            'Interpolation inside attributes has been removed. ' +
+            'Use v-bind or the colon shorthand instead. For example, ' +
+            'instead of <div id="{{ val }}">, use <div :id="val">.'
           )
         }
       }
@@ -441,19 +512,12 @@ function parseModifiers (name: string): Object | void {
 function makeAttrsMap (attrs: Array<Object>): Object {
   const map = {}
   for (let i = 0, l = attrs.length; i < l; i++) {
-    if (process.env.NODE_ENV !== 'production' && map[attrs[i].name]) {
+    if (process.env.NODE_ENV !== 'production' && map[attrs[i].name] && !isIE) {
       warn('duplicate attribute: ' + attrs[i].name)
     }
     map[attrs[i].name] = attrs[i].value
   }
   return map
-}
-
-function findPrevElement (children: Array<any>): ASTElement | void {
-  let i = children.length
-  while (i--) {
-    if (children[i].tag) return children[i]
-  }
 }
 
 function isForbiddenTag (el): boolean {
@@ -480,4 +544,20 @@ function guardIESVGBug (attrs) {
     }
   }
   return res
+}
+
+function checkForAliasModel (el, value) {
+  let _el = el
+  while (_el) {
+    if (_el.for && _el.alias === value) {
+      warn(
+        `<${el.tag} v-model="${value}">: ` +
+        `You are binding v-model directly to a v-for iteration alias. ` +
+        `This will not be able to modify the v-for source array because ` +
+        `writing to the alias is like modifying a function local variable. ` +
+        `Consider using an array of objects and use v-model on an object property instead.`
+      )
+    }
+    _el = _el.parent
+  }
 }

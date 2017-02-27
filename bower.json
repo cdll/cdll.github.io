@@ -21,7 +21,7 @@
     "material-design-lite": "~1.1.1",
     "Swiper": "swiper#~3.1.7",
     "jquery": "~2.1.4",
-    "vue": "next",
+    "vue": "^2.2.1",
     "system.js": "~0.19.31",
     "qwest": "~4.1.1",
     "requirejs": "~2.1.22",

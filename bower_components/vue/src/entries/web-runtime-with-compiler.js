@@ -1,8 +1,11 @@
 /* @flow */
 
 import Vue from './web-runtime'
+import config from 'core/config'
+import { perf } from 'core/util/perf'
+import { query } from 'web/util/index'
 import { warn, cached } from 'core/util/index'
-import { query, shouldDecodeTags } from 'web/util/index'
+import { shouldDecodeNewlines } from 'web/util/compat'
 import { compileToFunctions } from 'web/compiler/index'
 
 const idToTemplate = cached(id => {
@@ -29,15 +32,19 @@ Vue.prototype.$mount = function (
   // resolve template/el and convert to render function
   if (!options.render) {
     let template = options.template
-    let isFromDOM = false
     if (template) {
       if (typeof template === 'string') {
         if (template.charAt(0) === '#') {
-          isFromDOM = true
           template = idToTemplate(template)
+          /* istanbul ignore if */
+          if (process.env.NODE_ENV !== 'production' && !template) {
+            warn(
+              `Template element not found or is empty: ${options.template}`,
+              this
+            )
+          }
         }
       } else if (template.nodeType) {
-        isFromDOM = true
         template = template.innerHTML
       } else {
         if (process.env.NODE_ENV !== 'production') {
@@ -46,18 +53,26 @@ Vue.prototype.$mount = function (
         return this
       }
     } else if (el) {
-      isFromDOM = true
       template = getOuterHTML(el)
     }
     if (template) {
+      /* istanbul ignore if */
+      if (process.env.NODE_ENV !== 'production' && config.performance && perf) {
+        perf.mark('compile')
+      }
+
       const { render, staticRenderFns } = compileToFunctions(template, {
-        warn,
-        isFromDOM,
-        shouldDecodeTags,
+        shouldDecodeNewlines,
         delimiters: options.delimiters
       }, this)
       options.render = render
       options.staticRenderFns = staticRenderFns
+
+      /* istanbul ignore if */
+      if (process.env.NODE_ENV !== 'production' && config.performance && perf) {
+        perf.mark('compile end')
+        perf.measure(`${this._name} compile`, 'compile', 'compile end')
+      }
     }
   }
   return mount.call(this, el, hydrating)

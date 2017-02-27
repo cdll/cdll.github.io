@@ -2,9 +2,13 @@
   "root": true,
   "parser": "babel-eslint",
   "extends": "vue",
-  "plugins": ["flow-vars"],
+  "plugins": ["flowtype"],
+  "globals": {
+    "__WEEX__": true
+  },
   "rules": {
-    "flow-vars/define-flow-type": 1,
-    "flow-vars/use-flow-type": 1
+    "no-useless-escape": 0,
+    "flowtype/define-flow-type": 1,
+    "flowtype/use-flow-type": 1
   }
 }

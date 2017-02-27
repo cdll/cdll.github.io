@@ -15,4 +15,13 @@ describe('Options methods', () => {
     vm.plus()
     expect(vm.a).toBe(2)
   })
+
+  it('should warn undefined methods', () => {
+    new Vue({
+      methods: {
+        hello: undefined
+      }
+    })
+    expect(`method "hello" has an undefined value in the component definition`).toHaveBeenWarned()
+  })
 })

@@ -37,4 +37,91 @@ describe('Global API: mixin', () => {
     })
     expect(calls).toEqual(['hello global', 'hello local'])
   })
+
+  // #3957
+  it('should work for global props', () => {
+    const Test = Vue.extend({
+      template: `<div>{{ prop }}</div>`
+    })
+
+    Vue.mixin({
+      props: ['prop']
+    })
+
+    // test child component
+    const vm = new Vue({
+      template: '<test prop="hi"></test>',
+      components: { Test }
+    }).$mount()
+
+    expect(vm.$el.textContent).toBe('hi')
+  })
+
+  // vue-loader#433
+  it('should not drop late-set render functions', () => {
+    const Test = Vue.extend({})
+    Test.options.render = h => h('div', 'hello')
+
+    Vue.mixin({})
+
+    const vm = new Vue({
+      render: h => h(Test)
+    }).$mount()
+
+    expect(vm.$el.textContent).toBe('hello')
+  })
+
+  // #4266
+  it('should not drop scopedId', () => {
+    const Test = Vue.extend({})
+    Test.options._scopeId = 'foo'
+
+    Vue.mixin({})
+
+    const vm = new Test({
+      template: '<div><p>hi</p></div>'
+    }).$mount()
+
+    expect(vm.$el.children[0].hasAttribute('foo')).toBe(true)
+  })
+
+  // #4976
+  it('should not drop late-attached custom options on existing constructors', () => {
+    const baseSpy = jasmine.createSpy('base')
+    const Base = Vue.extend({
+      beforeCreate: baseSpy
+    })
+
+    const Test = Base.extend({})
+
+    // Inject options later
+    // vue-loader and vue-hot-reload-api are doing like this
+    Test.options.computed = {
+      $style: () => 123
+    }
+
+    const spy = jasmine.createSpy('late attached')
+    Test.options.beforeCreate = Test.options.beforeCreate.concat(spy)
+
+    // Update super constructor's options
+    const mixinSpy = jasmine.createSpy('mixin')
+    Vue.mixin({
+      beforeCreate: mixinSpy
+    })
+
+    // mount the component
+    const vm = new Test({
+      template: '<div>{{ $style }}</div>'
+    }).$mount()
+
+    expect(spy.calls.count()).toBe(1)
+    expect(baseSpy.calls.count()).toBe(1)
+    expect(mixinSpy.calls.count()).toBe(1)
+    expect(vm.$el.textContent).toBe('123')
+    expect(vm.$style).toBe(123)
+
+    // Should not be dropped
+    expect(Test.options.computed.$style()).toBe(123)
+    expect(Test.options.beforeCreate).toEqual([mixinSpy, baseSpy, spy])
+  })
 })

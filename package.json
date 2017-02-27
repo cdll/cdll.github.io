@@ -5,12 +5,14 @@
     "gulp": "^3.9.1",
     "gulp-jspm-build": "0.0.15",
     "gulp-uglify": "^2.0.0",
+    "http-server": "^0.9.0",
     "incremental-dom": "^0.3.0",
-    "riot": "^3.1.0"
+    "riot": "^3.1.0",
+    "vue": "^2.2.1"
   },
   "scripts": {
     "start": "node console.log('start')",
     "test": "jspm bundle ./src/js/index.js index.min.js --minify",
-    "serve": "http-server . -p 8090"
+    "serve": "http-server . -p 8090 -verbose"
   }
 }

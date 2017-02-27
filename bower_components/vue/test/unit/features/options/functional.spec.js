@@ -22,6 +22,21 @@ describe('Options functional', () => {
     }).then(done)
   })
 
+  it('should support returning more than one root node', () => {
+    const vm = new Vue({
+      template: `<div><test></test></div>`,
+      components: {
+        test: {
+          functional: true,
+          render (h) {
+            return [h('span', 'foo'), h('span', 'bar')]
+          }
+        }
+      }
+    }).$mount()
+    expect(vm.$el.innerHTML).toBe('<span>foo</span><span>bar</span>')
+  })
+
   it('should support slots', () => {
     const vm = new Vue({
       data: { test: 'foo' },
@@ -53,7 +68,7 @@ describe('Options functional', () => {
         validate: {
           functional: true,
           props: ['field'],
-          render (h, { props, children, data: { on } }) {
+          render (h, { props, children, data: { on }}) {
             props.child = children[0]
             return h('validate-control', { props, on })
           }

@@ -1,4 +1,3 @@
-import Vue from 'vue'
 import { patch } from 'web/runtime/patch'
 import VNode from 'core/vdom/vnode'
 
@@ -43,7 +42,7 @@ function shuffle (array) {
 const inner = prop('innerHTML')
 const tag = prop('tagName')
 
-describe('children', () => {
+describe('vdom patch: children', () => {
   let vnode0
   beforeEach(() => {
     vnode0 = new VNode('p', { attrs: { id: '1' }}, [createTextVNode('hello world')])
@@ -122,9 +121,7 @@ describe('children', () => {
     expect(elm.children.length).toBe(5)
     elm = patch(vnode1, vnode2)
     expect(elm.children.length).toBe(3)
-    expect(elm.children[0].innerHTML).toBe('1')
-    expect(elm.children[1].innerHTML).toBe('2')
-    expect(elm.children[2].innerHTML).toBe('3')
+    expect(map(inner, elm.children)).toEqual(['1', '2', '3'])
   })
 
   it('should remove elements from the middle', () => {
@@ -134,10 +131,7 @@ describe('children', () => {
     expect(elm.children.length).toBe(5)
     elm = patch(vnode1, vnode2)
     expect(elm.children.length).toBe(4)
-    expect(elm.children[0].innerHTML).toBe('1')
-    expect(elm.children[1].innerHTML).toBe('2')
-    expect(elm.children[2].innerHTML).toBe('4')
-    expect(elm.children[3].innerHTML).toBe('5')
+    expect(map(inner, elm.children)).toEqual(['1', '2', '4', '5'])
   })
 
   it('should moves element forward', () => {
@@ -147,10 +141,7 @@ describe('children', () => {
     expect(elm.children.length).toBe(4)
     elm = patch(vnode1, vnode2)
     expect(elm.children.length).toBe(4)
-    expect(elm.children[0].innerHTML).toBe('2')
-    expect(elm.children[1].innerHTML).toBe('3')
-    expect(elm.children[2].innerHTML).toBe('1')
-    expect(elm.children[3].innerHTML).toBe('4')
+    expect(map(inner, elm.children)).toEqual(['2', '3', '1', '4'])
   })
 
   it('should move elements to end', () => {
@@ -160,9 +151,7 @@ describe('children', () => {
     expect(elm.children.length).toBe(3)
     elm = patch(vnode1, vnode2)
     expect(elm.children.length).toBe(3)
-    expect(elm.children[0].innerHTML).toBe('2')
-    expect(elm.children[1].innerHTML).toBe('3')
-    expect(elm.children[2].innerHTML).toBe('1')
+    expect(map(inner, elm.children)).toEqual(['2', '3', '1'])
   })
 
   it('should move element backwards', () => {
@@ -172,10 +161,7 @@ describe('children', () => {
     expect(elm.children.length).toBe(4)
     elm = patch(vnode1, vnode2)
     expect(elm.children.length).toBe(4)
-    expect(elm.children[0].innerHTML).toBe('1')
-    expect(elm.children[1].innerHTML).toBe('4')
-    expect(elm.children[2].innerHTML).toBe('2')
-    expect(elm.children[3].innerHTML).toBe('3')
+    expect(map(inner, elm.children)).toEqual(['1', '4', '2', '3'])
   })
 
   it('should swap first and last', () => {
@@ -185,10 +171,7 @@ describe('children', () => {
     expect(elm.children.length).toBe(4)
     elm = patch(vnode1, vnode2)
     expect(elm.children.length).toBe(4)
-    expect(elm.children[0].innerHTML).toBe('4')
-    expect(elm.children[1].innerHTML).toBe('2')
-    expect(elm.children[2].innerHTML).toBe('3')
-    expect(elm.children[3].innerHTML).toBe('1')
+    expect(map(inner, elm.children)).toEqual(['4', '2', '3', '1'])
   })
 
   it('should move to left and replace', () => {
@@ -198,11 +181,7 @@ describe('children', () => {
     expect(elm.children.length).toBe(5)
     elm = patch(vnode1, vnode2)
     expect(elm.children.length).toBe(5)
-    expect(elm.children[0].innerHTML).toBe('4')
-    expect(elm.children[1].innerHTML).toBe('1')
-    expect(elm.children[2].innerHTML).toBe('2')
-    expect(elm.children[3].innerHTML).toBe('3')
-    expect(elm.children[4].innerHTML).toBe('6')
+    expect(map(inner, elm.children)).toEqual(['4', '1', '2', '3', '6'])
   })
 
   it('should move to left and leaves hold', () => {
@@ -221,9 +200,7 @@ describe('children', () => {
     expect(elm.children.length).toBe(3)
     elm = patch(vnode1, vnode2)
     expect(elm.children.length).toBe(3)
-    expect(elm.children[0].innerHTML).toBe('4')
-    expect(elm.children[1].innerHTML).toBe('5')
-    expect(elm.children[2].innerHTML).toBe('3')
+    expect(map(inner, elm.children)).toEqual(['4', '5', '3'])
   })
 
   it('should move a key in non-keyed nodes with a size up', () => {
@@ -508,29 +485,5 @@ describe('children', () => {
     expect(elm.textContent).toBe('B')
     elm = patch(vnode2, vnode3)
     expect(elm.textContent).toBe('ABC')
-  })
-
-  // exposed by #3406
-  // When a static vnode is inside v-for, it's possible for the same vnode
-  // to be used in multiple places, and its element will be replaced. This
-  // causes patch errors when node ops depend on the vnode's element position.
-  it('should handle static vnodes by key', done => {
-    const vm = new Vue({
-      data: {
-        ok: true
-      },
-      template: `
-        <div>
-          <div v-for="i in 2">
-            <div v-if="ok">a</div><div>b</div><div v-if="!ok">c</div><div>d</div>
-          </div>
-        </div>
-      `
-    }).$mount()
-    expect(vm.$el.textContent).toBe('abdabd')
-    vm.ok = false
-    waitForUpdate(() => {
-      expect(vm.$el.textContent).toBe('bcdbcd')
-    }).then(done)
   })
 })

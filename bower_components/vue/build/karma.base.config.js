@@ -3,24 +3,24 @@ var webpack = require('webpack')
 
 var webpackConfig = {
   resolve: {
-    alias: Object.assign({}, alias, {
-      entities: './entity-decoder'
-    })
+    alias: alias
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.js$/,
-        loader: 'babel!eslint',
+        loader: 'babel-loader',
         exclude: /node_modules/
       }
     ]
   },
   plugins: [
     new webpack.DefinePlugin({
+      __WEEX__: false,
       'process.env': {
         NODE_ENV: '"development"',
-        TRANSITION_DURATION: process.env.SAUCE ? 200 : 50
+        TRANSITION_DURATION: process.env.SAUCE ? 500 : 50,
+        TRANSITION_BUFFER: process.env.SAUCE ? 50 : 10
       }
     })
   ],
@@ -39,5 +39,11 @@ module.exports = {
   webpack: webpackConfig,
   webpackMiddleware: {
     noInfo: true
-  }
+  },
+  plugins: [
+    'karma-jasmine',
+    'karma-mocha-reporter',
+    'karma-sourcemap-loader',
+    'karma-webpack'
+  ]
 }

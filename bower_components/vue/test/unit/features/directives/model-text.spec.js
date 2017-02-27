@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { isIE9, isAndroid } from 'web/util/index'
+import { isIE9, isAndroid } from 'core/util/env'
 
 describe('Directive v-model text', () => {
   it('should update value both ways', done => {
@@ -64,6 +64,102 @@ describe('Directive v-model text', () => {
     expect(vm.test).toBe('what')
   })
 
+  it('.number focus and typing', (done) => {
+    const vm = new Vue({
+      data: {
+        test: 0,
+        update: 0
+      },
+      template:
+        '<div>' +
+          '<input ref="input" v-model.number="test">{{ update }}' +
+          '<input ref="blur">' +
+        '</div>'
+    }).$mount()
+    document.body.appendChild(vm.$el)
+    vm.$refs.input.focus()
+    expect(vm.test).toBe(0)
+    vm.$refs.input.value = '1.0'
+    triggerEvent(vm.$refs.input, 'input')
+    expect(vm.test).toBe(1)
+    vm.update++
+    waitForUpdate(() => {
+      expect(vm.$refs.input.value).toBe('1.0')
+      vm.$refs.blur.focus()
+      vm.update++
+    }).then(() => {
+      expect(vm.$refs.input.value).toBe('1')
+    }).then(done)
+  })
+
+  it('.trim focus and typing', (done) => {
+    const vm = new Vue({
+      data: {
+        test: 'abc',
+        update: 0
+      },
+      template:
+        '<div>' +
+          '<input ref="input" v-model.trim="test" type="text">{{ update }}' +
+          '<input ref="blur"/>' +
+        '</div>'
+    }).$mount()
+    document.body.appendChild(vm.$el)
+    vm.$refs.input.focus()
+    vm.$refs.input.value = ' abc '
+    triggerEvent(vm.$refs.input, 'input')
+    expect(vm.test).toBe('abc')
+    vm.update++
+    waitForUpdate(() => {
+      expect(vm.$refs.input.value).toBe(' abc ')
+      vm.$refs.blur.focus()
+      vm.update++
+    }).then(() => {
+      expect(vm.$refs.input.value).toBe('abc')
+    }).then(done)
+  })
+
+  it('multiple inputs', (done) => {
+    const spy = jasmine.createSpy()
+    const vm = new Vue({
+      data: {
+        selections: [[1, 2, 3], [4, 5]],
+        inputList: [
+          {
+            name: 'questionA',
+            data: ['a', 'b', 'c']
+          },
+          {
+            name: 'questionB',
+            data: ['1', '2']
+          }
+        ]
+      },
+      watch: {
+        selections: spy
+      },
+      template:
+        '<div>' +
+          '<div v-for="(inputGroup, idx) in inputList">' +
+            '<div>' +
+              '<span v-for="(item, index) in inputGroup.data">' +
+                '<input v-bind:name="item" type="text" v-model.number="selections[idx][index]" v-bind:id="idx+\'-\'+index"/>' +
+                '<label>{{item}}</label>' +
+              '</span>' +
+            '</div>' +
+          '</div>' +
+          '<span ref="rs">{{selections}}</span>' +
+        '</div>'
+    }).$mount()
+    var inputs = vm.$el.getElementsByTagName('input')
+    inputs[1].value = 'test'
+    triggerEvent(inputs[1], 'input')
+    waitForUpdate(() => {
+      expect(spy).toHaveBeenCalled()
+      expect(vm.selections).toEqual([[1, 'test', 3], [4, 5]])
+    }).then(done)
+  })
+
   if (isIE9) {
     it('IE9 selectionchange', done => {
       const vm = new Vue({
@@ -108,30 +204,6 @@ describe('Directive v-model text', () => {
     })
   }
 
-  it('warn inline value attribute', () => {
-    const vm = new Vue({
-      data: {
-        test: 'foo'
-      },
-      template: '<input v-model="test" value="bar">'
-    }).$mount()
-    expect(vm.test).toBe('foo')
-    expect(vm.$el.value).toBe('foo')
-    expect('inline value attributes will be ignored').toHaveBeenWarned()
-  })
-
-  it('warn textarea inline content', function () {
-    const vm = new Vue({
-      data: {
-        test: 'foo'
-      },
-      template: '<textarea v-model="test">bar</textarea>'
-    }).$mount()
-    expect(vm.test).toBe('foo')
-    expect(vm.$el.value).toBe('foo')
-    expect('inline content inside <textarea> will be ignored').toHaveBeenWarned()
-  })
-
   it('warn invalid tag', () => {
     new Vue({
       data: {
@@ -139,7 +211,7 @@ describe('Directive v-model text', () => {
       },
       template: '<div v-model="test"></div>'
     }).$mount()
-    expect('v-model is not supported on element type: <div>').toHaveBeenWarned()
+    expect('<div v-model="test">: v-model is not supported on this element type').toHaveBeenWarned()
   })
 
   // #3468
@@ -159,5 +231,21 @@ describe('Directive v-model text', () => {
     vm.$el.value = 'b'
     triggerEvent(vm.$el, 'input')
     expect(spy).toHaveBeenCalledWith('b')
+  })
+
+  it('warn binding to v-for alias', () => {
+    new Vue({
+      data: {
+        strings: ['hi']
+      },
+      template: `
+        <div>
+          <div v-for="str in strings">
+            <input v-model="str">
+          </div>
+        </div>
+      `
+    }).$mount()
+    expect('You are binding v-model directly to a v-for iteration alias').toHaveBeenWarned()
   })
 })

@@ -1,10 +1,16 @@
+function noop () {}
+
 if (typeof console === 'undefined') {
   window.console = {
-    warn: function () {},
-    error: function () {}
+    warn: noop,
+    error: noop
   }
 }
 
+// avoid info messages during test
+console.info = noop
+
+let asserted
 function hasWarned (msg) {
   var count = console.error.calls.count()
   var args
@@ -16,18 +22,19 @@ function hasWarned (msg) {
   }
 
   function containsMsg (arg) {
-    if (arg instanceof Error) throw arg
-    return typeof arg === 'string' && arg.indexOf(msg) > -1
+    return arg.toString().indexOf(msg) > -1
   }
 }
 
 // define custom matcher for warnings
 beforeEach(() => {
+  asserted = []
   spyOn(console, 'error')
   jasmine.addMatchers({
     toHaveBeenWarned: () => {
       return {
         compare: msg => {
+          asserted = asserted.concat(msg)
           var warned = Array.isArray(msg)
             ? msg.some(hasWarned)
             : hasWarned(msg)
@@ -41,4 +48,18 @@ beforeEach(() => {
       }
     }
   })
+})
+
+afterEach(done => {
+  const warned = msg => asserted.some(assertedMsg => msg.toString().indexOf(assertedMsg) > -1)
+  let count = console.error.calls.count()
+  let args
+  while (count--) {
+    args = console.error.calls.argsFor(count)
+    if (!warned(args[0])) {
+      done.fail(`Unexpected console.error message: ${args[0]}`)
+      return
+    }
+  }
+  done()
 })

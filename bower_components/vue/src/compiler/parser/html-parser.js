@@ -10,10 +10,10 @@
  */
 
 import { makeMap, no } from 'shared/util'
-import { isNonPhrasingTag, canBeLeftOpenTag } from 'web/util/index'
+import { isNonPhrasingTag, canBeLeftOpenTag } from 'web/compiler/util'
 
 // Regular Expressions for parsing tags and attributes
-const singleAttrIdentifier = /([^\s"'<>\/=]+)/
+const singleAttrIdentifier = /([^\s"'<>/=]+)/
 const singleAttrAssign = /(?:=)/
 const singleAttrValues = [
   // attr value double quotes
@@ -37,6 +37,8 @@ const startTagOpen = new RegExp('^<' + qnameCapture)
 const startTagClose = /^\s*(\/?)>/
 const endTag = new RegExp('^<\\/' + qnameCapture + '[^>]*>')
 const doctype = /^<!DOCTYPE [^>]+>/i
+const comment = /^<!--/
+const conditionalComment = /^<!\[/
 
 let IS_REGEX_CAPTURING_BROKEN = false
 'x'.replace(/x(.)?/g, function (m, g) {
@@ -44,38 +46,38 @@ let IS_REGEX_CAPTURING_BROKEN = false
 })
 
 // Special Elements (can contain anything)
-const isSpecialTag = makeMap('script,style', true)
-
+const isScriptOrStyle = makeMap('script,style', true)
 const reCache = {}
 
-const ampRE = /&amp;/g
-const ltRE = /&lt;/g
-const gtRE = /&gt;/g
-const quoteRE = /&quot;/g
+const decodingMap = {
+  '&lt;': '<',
+  '&gt;': '>',
+  '&quot;': '"',
+  '&amp;': '&',
+  '&#10;': '\n'
+}
+const encodedAttr = /&(?:lt|gt|quot|amp);/g
+const encodedAttrWithNewLines = /&(?:lt|gt|quot|amp|#10);/g
 
-function decodeAttr (value, shouldDecodeTags) {
-  if (shouldDecodeTags) {
-    value = value.replace(ltRE, '<').replace(gtRE, '>')
-  }
-  return value.replace(ampRE, '&').replace(quoteRE, '"')
+function decodeAttr (value, shouldDecodeNewlines) {
+  const re = shouldDecodeNewlines ? encodedAttrWithNewLines : encodedAttr
+  return value.replace(re, match => decodingMap[match])
 }
 
 export function parseHTML (html, options) {
   const stack = []
   const expectHTML = options.expectHTML
   const isUnaryTag = options.isUnaryTag || no
-  const isFromDOM = options.isFromDOM
-  const shouldDecodeTags = options.shouldDecodeTags
   let index = 0
   let last, lastTag
   while (html) {
     last = html
     // Make sure we're not in a script or style element
-    if (!lastTag || !isSpecialTag(lastTag)) {
-      const textEnd = html.indexOf('<')
+    if (!lastTag || !isScriptOrStyle(lastTag)) {
+      let textEnd = html.indexOf('<')
       if (textEnd === 0) {
         // Comment:
-        if (/^<!--/.test(html)) {
+        if (comment.test(html)) {
           const commentEnd = html.indexOf('-->')
 
           if (commentEnd >= 0) {
@@ -85,7 +87,7 @@ export function parseHTML (html, options) {
         }
 
         // http://en.wikipedia.org/wiki/Conditional_comment#Downlevel-revealed_conditional_comment
-        if (/^<!\[/.test(html)) {
+        if (conditionalComment.test(html)) {
           const conditionalEnd = html.indexOf(']>')
 
           if (conditionalEnd >= 0) {
@@ -106,7 +108,7 @@ export function parseHTML (html, options) {
         if (endTagMatch) {
           const curIndex = index
           advance(endTagMatch[0].length)
-          parseEndTag(endTagMatch[0], endTagMatch[1], curIndex, index)
+          parseEndTag(endTagMatch[1], curIndex, index)
           continue
         }
 
@@ -118,16 +120,31 @@ export function parseHTML (html, options) {
         }
       }
 
-      let text
+      let text, rest, next
       if (textEnd >= 0) {
+        rest = html.slice(textEnd)
+        while (
+          !endTag.test(rest) &&
+          !startTagOpen.test(rest) &&
+          !comment.test(rest) &&
+          !conditionalComment.test(rest)
+        ) {
+          // < in plain text, be forgiving and treat it as text
+          next = rest.indexOf('<', 1)
+          if (next < 0) break
+          textEnd += next
+          rest = html.slice(textEnd)
+        }
         text = html.substring(0, textEnd)
         advance(textEnd)
-      } else {
+      }
+
+      if (textEnd < 0) {
         text = html
         html = ''
       }
 
-      if (options.chars) {
+      if (options.chars && text) {
         options.chars(text)
       }
     } else {
@@ -139,7 +156,7 @@ export function parseHTML (html, options) {
         if (stackedTag !== 'script' && stackedTag !== 'style' && stackedTag !== 'noscript') {
           text = text
             .replace(/<!--([\s\S]*?)-->/g, '$1')
-            .replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, '$1')
+            .replace(/<!\[CDATA\[([\s\S]*?)]]>/g, '$1')
         }
         if (options.chars) {
           options.chars(text)
@@ -148,11 +165,15 @@ export function parseHTML (html, options) {
       })
       index += html.length - rest.length
       html = rest
-      parseEndTag('</' + stackedTag + '>', stackedTag, index - endTagLength, index)
+      parseEndTag(stackedTag, index - endTagLength, index)
     }
 
     if (html === last) {
-      throw new Error('Error parsing template:\n\n' + html)
+      options.chars && options.chars(html)
+      if (process.env.NODE_ENV !== 'production' && !stack.length && options.warn) {
+        options.warn(`Mal-formatted tag at end of template: "${html}"`)
+      }
+      break
     }
   }
 
@@ -189,14 +210,14 @@ export function parseHTML (html, options) {
 
   function handleStartTag (match) {
     const tagName = match.tagName
-    let unarySlash = match.unarySlash
+    const unarySlash = match.unarySlash
 
     if (expectHTML) {
       if (lastTag === 'p' && isNonPhrasingTag(tagName)) {
-        parseEndTag('', lastTag)
+        parseEndTag(lastTag)
       }
       if (canBeLeftOpenTag(tagName) && lastTag === tagName) {
-        parseEndTag('', tagName)
+        parseEndTag(tagName)
       }
     }
 
@@ -215,14 +236,16 @@ export function parseHTML (html, options) {
       const value = args[3] || args[4] || args[5] || ''
       attrs[i] = {
         name: args[1],
-        value: isFromDOM ? decodeAttr(value, shouldDecodeTags) : value
+        value: decodeAttr(
+          value,
+          options.shouldDecodeNewlines
+        )
       }
     }
 
     if (!unary) {
-      stack.push({ tag: tagName, attrs: attrs })
+      stack.push({ tag: tagName, lowerCasedTag: tagName.toLowerCase(), attrs: attrs })
       lastTag = tagName
-      unarySlash = ''
     }
 
     if (options.start) {
@@ -230,16 +253,19 @@ export function parseHTML (html, options) {
     }
   }
 
-  function parseEndTag (tag, tagName, start, end) {
-    let pos
+  function parseEndTag (tagName, start, end) {
+    let pos, lowerCasedTagName
     if (start == null) start = index
     if (end == null) end = index
 
+    if (tagName) {
+      lowerCasedTagName = tagName.toLowerCase()
+    }
+
     // Find the closest opened tag of the same type
     if (tagName) {
-      const needle = tagName.toLowerCase()
       for (pos = stack.length - 1; pos >= 0; pos--) {
-        if (stack[pos].tag.toLowerCase() === needle) {
+        if (stack[pos].lowerCasedTag === lowerCasedTagName) {
           break
         }
       }
@@ -251,6 +277,13 @@ export function parseHTML (html, options) {
     if (pos >= 0) {
       // Close all the open elements, up the stack
       for (let i = stack.length - 1; i >= pos; i--) {
+        if (process.env.NODE_ENV !== 'production' &&
+            (i > pos || !tagName) &&
+            options.warn) {
+          options.warn(
+            `tag <${stack[i].tag}> has no matching end tag.`
+          )
+        }
         if (options.end) {
           options.end(stack[i].tag, start, end)
         }
@@ -259,11 +292,11 @@ export function parseHTML (html, options) {
       // Remove the open elements from the stack
       stack.length = pos
       lastTag = pos && stack[pos - 1].tag
-    } else if (tagName.toLowerCase() === 'br') {
+    } else if (lowerCasedTagName === 'br') {
       if (options.start) {
         options.start(tagName, [], true, start, end)
       }
-    } else if (tagName.toLowerCase() === 'p') {
+    } else if (lowerCasedTagName === 'p') {
       if (options.start) {
         options.start(tagName, [], false, start, end)
       }

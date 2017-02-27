@@ -3,10 +3,8 @@
  * properties to Elements.
  */
 
-import { warn } from 'core/util/index'
-import { isAndroid, isIE9 } from 'web/util/index'
-
-const modelableTagRE = /^input|select|textarea|vue-component-[0-9]+(-[0-9a-zA-Z_\-]*)?$/
+import { looseEqual, looseIndexOf } from 'shared/util'
+import { warn, isAndroid, isIE9, isIE, isEdge } from 'core/util/index'
 
 /* istanbul ignore if */
 if (isIE9) {
@@ -20,27 +18,27 @@ if (isIE9) {
 }
 
 export default {
-  bind (el, binding, vnode) {
-    if (process.env.NODE_ENV !== 'production') {
-      if (!modelableTagRE.test(vnode.tag)) {
-        warn(
-          `v-model is not supported on element type: <${vnode.tag}>. ` +
-          'If you are working with contenteditable, it\'s recommended to ' +
-          'wrap a library dedicated for that purpose inside a custom component.',
-          vnode.context
-        )
-      }
-    }
+  inserted (el, binding, vnode) {
     if (vnode.tag === 'select') {
-      setSelected(el, binding, vnode.context)
-    } else {
-      if (!isAndroid) {
-        el.addEventListener('compositionstart', onCompositionStart)
-        el.addEventListener('compositionend', onCompositionEnd)
+      const cb = () => {
+        setSelected(el, binding, vnode.context)
       }
+      cb()
       /* istanbul ignore if */
-      if (isIE9) {
-        el.vmodel = true
+      if (isIE || isEdge) {
+        setTimeout(cb, 0)
+      }
+    } else if (vnode.tag === 'textarea' || el.type === 'text') {
+      el._vModifiers = binding.modifiers
+      if (!binding.modifiers.lazy) {
+        if (!isAndroid) {
+          el.addEventListener('compositionstart', onCompositionStart)
+          el.addEventListener('compositionend', onCompositionEnd)
+        }
+        /* istanbul ignore if */
+        if (isIE9) {
+          el.vmodel = true
+        }
       }
     }
   },
@@ -49,11 +47,11 @@ export default {
       setSelected(el, binding, vnode.context)
       // in case the options rendered by v-for have changed,
       // it's possible that the value is out-of-sync with the rendered options.
-      // detect such cases and filter out values that no longer has a matchig
+      // detect such cases and filter out values that no longer has a matching
       // option in the DOM.
       const needReset = el.multiple
         ? binding.value.some(v => hasNoMatchingOption(v, el.options))
-        : hasNoMatchingOption(binding.value, el.options)
+        : binding.value !== binding.oldValue && hasNoMatchingOption(binding.value, el.options)
       if (needReset) {
         trigger(el, 'change')
       }
@@ -78,12 +76,12 @@ function setSelected (el, binding, vm) {
   for (let i = 0, l = el.options.length; i < l; i++) {
     option = el.options[i]
     if (isMultiple) {
-      selected = value.indexOf(getValue(option)) > -1
+      selected = looseIndexOf(value, getValue(option)) > -1
       if (option.selected !== selected) {
         option.selected = selected
       }
     } else {
-      if (getValue(option) === value) {
+      if (looseEqual(getValue(option), value)) {
         if (el.selectedIndex !== i) {
           el.selectedIndex = i
         }
@@ -98,7 +96,7 @@ function setSelected (el, binding, vm) {
 
 function hasNoMatchingOption (value, options) {
   for (let i = 0, l = options.length; i < l; i++) {
-    if (getValue(options[i]) === value) {
+    if (looseEqual(getValue(options[i]), value)) {
       return false
     }
   }
@@ -108,7 +106,7 @@ function hasNoMatchingOption (value, options) {
 function getValue (option) {
   return '_value' in option
     ? option._value
-    : option.value || option.text
+    : option.value
 }
 
 function onCompositionStart (e) {

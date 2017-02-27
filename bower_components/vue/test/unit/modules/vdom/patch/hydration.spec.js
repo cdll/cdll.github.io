@@ -2,7 +2,7 @@ import Vue from 'vue'
 import { patch } from 'web/runtime/patch'
 import VNode from 'core/vdom/vnode'
 
-describe('hydration', () => {
+describe('vdom patch: hydration', () => {
   let vnode0
   beforeEach(() => {
     spyOn(console, 'warn')
@@ -91,14 +91,15 @@ describe('hydration', () => {
   it('should hydrate components when server-rendered DOM tree is same as virtual DOM tree', done => {
     const dom = document.createElement('div')
     dom.setAttribute('server-rendered', 'true')
-    dom.innerHTML = '<span>foo</span><div class="b a"><span>foo qux</span></div>'
+    dom.innerHTML = '<span>foo</span><div class="b a"><span>foo qux</span></div><!---->'
     const originalNode1 = dom.children[0]
     const originalNode2 = dom.children[1]
 
     const vm = new Vue({
-      template: '<div><span>{{msg}}</span><test class="a" :msg="msg"></test></div>',
+      template: '<div><span>{{msg}}</span><test class="a" :msg="msg"></test><p v-if="ok"></p></div>',
       data: {
-        msg: 'foo'
+        msg: 'foo',
+        ok: false
       },
       components: {
         test: {
@@ -119,17 +120,59 @@ describe('hydration', () => {
     expect(vm.$el.children[1]).toBe(originalNode2)
     vm.msg = 'bar'
     waitForUpdate(() => {
-      expect(vm.$el.innerHTML).toBe('<span>bar</span><div class="b a"><span>bar qux</span></div>')
+      expect(vm.$el.innerHTML).toBe('<span>bar</span><div class="b a"><span>bar qux</span></div><!---->')
       vm.$children[0].a = 'ququx'
     }).then(() => {
-      expect(vm.$el.innerHTML).toBe('<span>bar</span><div class="b a"><span>bar ququx</span></div>')
+      expect(vm.$el.innerHTML).toBe('<span>bar</span><div class="b a"><span>bar ququx</span></div><!---->')
+      vm.ok = true
+    }).then(() => {
+      expect(vm.$el.innerHTML).toBe('<span>bar</span><div class="b a"><span>bar ququx</span></div><p></p>')
     }).then(done)
   })
 
   it('should warn failed hydration for non-matching DOM in child component', () => {
     const dom = document.createElement('div')
     dom.setAttribute('server-rendered', 'true')
+    dom.innerHTML = '<div><span></span></div>'
+
+    new Vue({
+      template: '<div><test></test></div>',
+      components: {
+        test: {
+          template: '<div><a></a></div>'
+        }
+      }
+    }).$mount(dom)
+
+    expect('not matching server-rendered content').toHaveBeenWarned()
+  })
+
+  it('should overwrite textNodes in the correct position but with mismatching text without warning', () => {
+    const dom = document.createElement('div')
+    dom.setAttribute('server-rendered', 'true')
     dom.innerHTML = '<div><span>foo</span></div>'
+
+    new Vue({
+      template: '<div><test></test></div>',
+      components: {
+        test: {
+          data () {
+            return { a: 'qux' }
+          },
+          template: '<div><span>{{a}}</span></div>'
+        }
+      }
+    }).$mount(dom)
+
+    expect('not matching server-rendered content').not.toHaveBeenWarned()
+    expect(dom.querySelector('span').textContent).toBe('qux')
+  })
+
+  it('should pick up elements with no children and populate without warning', done => {
+    const dom = document.createElement('div')
+    dom.setAttribute('server-rendered', 'true')
+    dom.innerHTML = '<div><span></span></div>'
+    const span = dom.querySelector('span')
 
     const vm = new Vue({
       template: '<div><test></test></div>',
@@ -141,9 +184,15 @@ describe('hydration', () => {
           template: '<div><span>{{a}}</span></div>'
         }
       }
-    })
+    }).$mount(dom)
 
-    vm.$mount(dom)
-    expect('not matching server-rendered content').toHaveBeenWarned()
+    expect('not matching server-rendered content').not.toHaveBeenWarned()
+    expect(span).toBe(vm.$el.querySelector('span'))
+    expect(vm.$el.innerHTML).toBe('<div><span>qux</span></div>')
+
+    vm.$children[0].a = 'foo'
+    waitForUpdate(() => {
+      expect(vm.$el.innerHTML).toBe('<div><span>foo</span></div>')
+    }).then(done)
   })
 })

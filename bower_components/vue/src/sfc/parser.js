@@ -10,7 +10,7 @@ const isSpecialTag = makeMap('script,style,template', true)
 type Attribute = {
   name: string,
   value: string
-}
+};
 
 /**
  * Parse a single-file component (*.vue) file into an SFC Descriptor Object.
@@ -22,10 +22,11 @@ export function parseComponent (
   const sfc: SFCDescriptor = {
     template: null,
     script: null,
-    styles: []
+    styles: [],
+    customBlocks: []
   }
   let depth = 0
-  let currentBlock: ?SFCBlock = null
+  let currentBlock: ?(SFCBlock | SFCCustomBlock) = null
 
   function start (
     tag: string,
@@ -34,17 +35,25 @@ export function parseComponent (
     start: number,
     end: number
   ) {
-    if (isSpecialTag(tag) && depth === 0) {
+    if (depth === 0) {
       currentBlock = {
         type: tag,
         content: '',
-        start: end
+        start: end,
+        attrs: attrs.reduce((cumulated, { name, value }) => {
+          cumulated[name] = value || true
+          return cumulated
+        }, Object.create(null))
       }
-      checkAttrs(currentBlock, attrs)
-      if (tag === 'style') {
-        sfc.styles.push(currentBlock)
-      } else {
-        sfc[tag] = currentBlock
+      if (isSpecialTag(tag)) {
+        checkAttrs(currentBlock, attrs)
+        if (tag === 'style') {
+          sfc.styles.push(currentBlock)
+        } else {
+          sfc[tag] = currentBlock
+        }
+      } else { // custom blocks
+        sfc.customBlocks.push(currentBlock)
       }
     }
     if (!unary) {
@@ -61,6 +70,9 @@ export function parseComponent (
       if (attr.name === 'scoped') {
         block.scoped = true
       }
+      if (attr.name === 'module') {
+        block.module = attr.value || true
+      }
       if (attr.name === 'src') {
         block.src = attr.value
       }
@@ -68,7 +80,7 @@ export function parseComponent (
   }
 
   function end (tag: string, start: number, end: number) {
-    if (isSpecialTag(tag) && depth === 1 && currentBlock) {
+    if (depth === 1 && currentBlock) {
       currentBlock.end = start
       let text = deindent(content.slice(currentBlock.start, currentBlock.end))
       // pad content so that linters and pre-processors can output correct
@@ -82,7 +94,7 @@ export function parseComponent (
     depth--
   }
 
-  function padContent (block: SFCBlock) {
+  function padContent (block: SFCBlock | SFCCustomBlock) {
     const offset = content.slice(0, block.start).split(splitRE).length
     const padChar = block.type === 'script' && !block.lang
       ? '//\n'

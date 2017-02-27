@@ -98,6 +98,22 @@ describe('Options props', () => {
     }).then(done)
   })
 
+  it('default value Function', () => {
+    const func = () => 132
+    const vm = new Vue({
+      props: {
+        a: {
+          type: Function,
+          default: func
+        }
+      },
+      propsData: {
+        a: undefined
+      }
+    })
+    expect(vm.a).toBe(func)
+  })
+
   it('warn object/array default values', () => {
     new Vue({
       props: {
@@ -244,6 +260,32 @@ describe('Options props', () => {
       expect(console.error.calls.count()).toBe(2)
       expect('Expected Boolean').toHaveBeenWarned()
     })
+
+    it('optional prop of any type (type: true or prop: true)', () => {
+      makeInstance(1, true)
+      expect(console.error.calls.count()).toBe(0)
+      makeInstance('any', true)
+      expect(console.error.calls.count()).toBe(0)
+      makeInstance({}, true)
+      expect(console.error.calls.count()).toBe(0)
+      makeInstance(undefined, true)
+      expect(console.error.calls.count()).toBe(0)
+      makeInstance(null, true)
+      expect(console.error.calls.count()).toBe(0)
+    })
+  })
+
+  it('should work with v-bind', () => {
+    const vm = new Vue({
+      template: `<test v-bind="{ a: 1, b: 2 }"></test>`,
+      components: {
+        test: {
+          props: ['a', 'b'],
+          template: '<div>{{ a }} {{ b }}</div>'
+        }
+      }
+    }).$mount()
+    expect(vm.$el.textContent).toBe('1 2')
   })
 
   it('should warn data fields already defined as a prop', () => {
@@ -262,6 +304,27 @@ describe('Options props', () => {
       }
     }).$mount()
     expect('already declared as a prop').toHaveBeenWarned()
+  })
+
+  it('should warn methods already defined as a prop', () => {
+    new Vue({
+      template: '<test a="1"></test>',
+      components: {
+        test: {
+          template: '<div></div>',
+          props: {
+            a: null
+          },
+          methods: {
+            a () {
+
+            }
+          }
+        }
+      }
+    }).$mount()
+    expect(`method "a" has already been defined as a prop`).toHaveBeenWarned()
+    expect(`Avoid mutating a prop directly`).toHaveBeenWarned()
   })
 
   it('treat boolean props properly', () => {
@@ -372,5 +435,56 @@ describe('Options props', () => {
     waitForUpdate(() => {
       expect(spy).not.toHaveBeenCalled()
     }).then(done)
+  })
+
+  // #4090
+  it('should not trigger wathcer on default value', done => {
+    const spy = jasmine.createSpy()
+    const vm = new Vue({
+      template: `<test :value="a" :test="b"></test>`,
+      data: {
+        a: 1,
+        b: undefined
+      },
+      components: {
+        test: {
+          template: '<div>{{ value }}</div>',
+          props: {
+            value: { type: Number },
+            test: {
+              type: Object,
+              default: () => ({})
+            }
+          },
+          watch: {
+            test: spy
+          }
+        }
+      }
+    }).$mount()
+
+    vm.a++
+    waitForUpdate(() => {
+      expect(spy).not.toHaveBeenCalled()
+      vm.b = {}
+    }).then(() => {
+      expect(spy.calls.count()).toBe(1)
+    }).then(() => {
+      vm.b = undefined
+    }).then(() => {
+      expect(spy.calls.count()).toBe(2)
+      vm.a++
+    }).then(() => {
+      expect(spy.calls.count()).toBe(2)
+    }).then(done)
+  })
+
+  it('warn reserved props', () => {
+    new Vue({
+      props: {
+        key: String
+      }
+    })
+    expect(`"key" is a reserved attribute`).toHaveBeenWarned()
   })
 })

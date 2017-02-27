@@ -1,9 +1,10 @@
 /* @flow */
 
-const simplePathRE = /^[A-Za-z_$][\w$]*(?:\.[A-Za-z_$][\w$]*|\['.*?'\]|\[".*?"\]|\[\d+\]|\[[A-Za-z_$][\w$]*\])*$/
+const fnExpRE = /^\s*([\w$_]+|\([^)]*?\))\s*=>|^function\s*\(/
+const simplePathRE = /^\s*[A-Za-z_$][\w$]*(?:\.[A-Za-z_$][\w$]*|\['.*?']|\[".*?"]|\[\d+]|\[[A-Za-z_$][\w$]*])*\s*$/
 
 // keyCode aliases
-const keyCodes = {
+const keyCodes: { [key: string]: number | Array<number> } = {
   esc: 27,
   tab: 9,
   enter: 13,
@@ -15,29 +16,42 @@ const keyCodes = {
   'delete': [8, 46]
 }
 
-const modifierCode = {
+// #4868: modifiers that prevent the execution of the listener
+// need to explicitly return null so that we can determine whether to remove
+// the listener for .once
+const genGuard = condition => `if(${condition})return null;`
+
+const modifierCode: { [key: string]: string } = {
   stop: '$event.stopPropagation();',
   prevent: '$event.preventDefault();',
-  self: 'if($event.target !== $event.currentTarget)return;'
+  self: genGuard(`$event.target !== $event.currentTarget`),
+  ctrl: genGuard(`!$event.ctrlKey`),
+  shift: genGuard(`!$event.shiftKey`),
+  alt: genGuard(`!$event.altKey`),
+  meta: genGuard(`!$event.metaKey`),
+  left: genGuard(`$event.button !== 0`),
+  middle: genGuard(`$event.button !== 1`),
+  right: genGuard(`$event.button !== 2`)
 }
 
 export function genHandlers (events: ASTElementHandlers, native?: boolean): string {
   let res = native ? 'nativeOn:{' : 'on:{'
   for (const name in events) {
-    res += `"${name}":${genHandler(events[name])},`
+    res += `"${name}":${genHandler(name, events[name])},`
   }
   return res.slice(0, -1) + '}'
 }
 
 function genHandler (
+  name: string,
   handler: ASTElementHandler | Array<ASTElementHandler>
 ): string {
   if (!handler) {
     return 'function(){}'
   } else if (Array.isArray(handler)) {
-    return `[${handler.map(genHandler).join(',')}]`
+    return `[${handler.map(handler => genHandler(name, handler)).join(',')}]`
   } else if (!handler.modifiers) {
-    return simplePathRE.test(handler.value)
+    return fnExpRE.test(handler.value) || simplePathRE.test(handler.value)
       ? handler.value
       : `function($event){${handler.value}}`
   } else {
@@ -56,25 +70,19 @@ function genHandler (
     const handlerCode = simplePathRE.test(handler.value)
       ? handler.value + '($event)'
       : handler.value
-    return 'function($event){' + code + handlerCode + '}'
+    return `function($event){${code}${handlerCode}}`
   }
 }
 
 function genKeyFilter (keys: Array<string>): string {
-  const code = keys.length === 1
-    ? normalizeKeyCode(keys[0])
-    : Array.prototype.concat.apply([], keys.map(normalizeKeyCode))
-  if (Array.isArray(code)) {
-    return `if(${code.map(c => `$event.keyCode!==${c}`).join('&&')})return;`
-  } else {
-    return `if($event.keyCode!==${code})return;`
-  }
+  return `if(${keys.map(genFilterCode).join('&&')})return null;`
 }
 
-function normalizeKeyCode (key) {
-  return (
-    parseInt(key, 10) || // number keyCode
-    keyCodes[key] || // built-in alias
-    `_k(${JSON.stringify(key)})` // custom alias
-  )
+function genFilterCode (key: string): string {
+  const keyVal = parseInt(key, 10)
+  if (keyVal) {
+    return `$event.keyCode!==${keyVal}`
+  }
+  const alias = keyCodes[key]
+  return `_k($event.keyCode,${JSON.stringify(key)}${alias ? ',' + JSON.stringify(alias) : ''})`
 }

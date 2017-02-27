@@ -1,5 +1,7 @@
 /* @flow */
 
+export const emptyObject = Object.freeze({})
+
 /**
  * Check if a string starts with $ or _
  */
@@ -23,7 +25,7 @@ export function def (obj: Object, key: string, val: any, enumerable?: boolean) {
 /**
  * Parse simple path.
  */
-const bailRE = /[^\w\.\$]/
+const bailRE = /[^\w.$]/
 export function parsePath (path: string): any {
   if (bailRE.test(path)) {
     return

@@ -1,31 +1,52 @@
 /* @flow */
 
-import config from '../config'
-import VNode, { emptyVNode } from '../vdom/vnode'
-import { normalizeChildren } from '../vdom/helpers'
 import {
-  warn, formatComponentName, bind, isObject, toObject,
-  nextTick, resolveAsset, _toString, toNumber
+  warn,
+  nextTick,
+  toNumber,
+  _toString,
+  looseEqual,
+  emptyObject,
+  handleError,
+  looseIndexOf
 } from '../util/index'
 
+import VNode, {
+  cloneVNodes,
+  createTextVNode,
+  createEmptyVNode
+} from '../vdom/vnode'
+
 import { createElement } from '../vdom/create-element'
+import { renderList } from './render-helpers/render-list'
+import { renderSlot } from './render-helpers/render-slot'
+import { resolveFilter } from './render-helpers/resolve-filter'
+import { checkKeyCodes } from './render-helpers/check-keycodes'
+import { bindObjectProps } from './render-helpers/bind-object-props'
+import { renderStatic, markOnce } from './render-helpers/render-static'
+import { resolveSlots, resolveScopedSlots } from './render-helpers/resolve-slots'
 
 export function initRender (vm: Component) {
   vm.$vnode = null // the placeholder node in parent tree
   vm._vnode = null // the root of the child tree
   vm._staticTrees = null
-  vm.$slots = resolveSlots(vm.$options._renderChildren)
-  // bind the public createElement fn to this instance
+  const parentVnode = vm.$options._parentVnode
+  const renderContext = parentVnode && parentVnode.context
+  vm.$slots = resolveSlots(vm.$options._renderChildren, renderContext)
+  vm.$scopedSlots = emptyObject
+  // bind the createElement fn to this instance
   // so that we get proper render context inside it.
-  vm.$createElement = bind(createElement, vm)
-  if (vm.$options.el) {
-    vm.$mount(vm.$options.el)
-  }
+  // args order: tag, data, children, normalizationType, alwaysNormalize
+  // internal version is used by render functions compiled from templates
+  vm._c = (a, b, c, d) => createElement(vm, a, b, c, d, false)
+  // normalization is always applied for the public version, used in
+  // user-written render functions.
+  vm.$createElement = (a, b, c, d) => createElement(vm, a, b, c, d, true)
 }
 
 export function renderMixin (Vue: Class<Component>) {
   Vue.prototype.$nextTick = function (fn: Function) {
-    nextTick(fn, this)
+    return nextTick(fn, this)
   }
 
   Vue.prototype._render = function (): VNode {
@@ -35,6 +56,15 @@ export function renderMixin (Vue: Class<Component>) {
       staticRenderFns,
       _parentVnode
     } = vm.$options
+
+    if (vm._isMounted) {
+      // clone slot nodes on re-renders
+      for (const key in vm.$slots) {
+        vm.$slots[key] = cloneVNodes(vm.$slots[key])
+      }
+    }
+
+    vm.$scopedSlots = (_parentVnode && _parentVnode.data.scopedSlots) || emptyObject
 
     if (staticRenderFns && !vm._staticTrees) {
       vm._staticTrees = []
@@ -47,21 +77,17 @@ export function renderMixin (Vue: Class<Component>) {
     try {
       vnode = render.call(vm._renderProxy, vm.$createElement)
     } catch (e) {
-      if (process.env.NODE_ENV !== 'production') {
-        warn(`Error when rendering ${formatComponentName(vm)}:`)
-      }
+      handleError(e, vm, `render function`)
+      // return error render result,
+      // or previous vnode to prevent render error causing blank component
       /* istanbul ignore else */
-      if (config.errorHandler) {
-        config.errorHandler.call(null, e, vm)
+      if (process.env.NODE_ENV !== 'production') {
+        vnode = vm.$options.renderError
+          ? vm.$options.renderError.call(vm._renderProxy, vm.$createElement, e)
+          : vm._vnode
       } else {
-        if (config._isServer) {
-          throw e
-        } else {
-          setTimeout(() => { throw e }, 0)
-        }
+        vnode = vm._vnode
       }
-      // return previous vnode to prevent render error causing blank component
-      vnode = vm._vnode
     }
     // return empty vnode in case the render function errored out
     if (!(vnode instanceof VNode)) {
@@ -72,144 +98,28 @@ export function renderMixin (Vue: Class<Component>) {
           vm
         )
       }
-      vnode = emptyVNode()
+      vnode = createEmptyVNode()
     }
     // set parent
     vnode.parent = _parentVnode
     return vnode
   }
 
-  // shorthands used in render functions
-  Vue.prototype._h = createElement
-  // toString for mustaches
-  Vue.prototype._s = _toString
-  // number conversion
+  // internal render helpers.
+  // these are exposed on the instance prototype to reduce generated render
+  // code size.
+  Vue.prototype._o = markOnce
   Vue.prototype._n = toNumber
-
-  // render static tree by index
-  Vue.prototype._m = function renderStatic (
-    index: number,
-    isInFor?: boolean
-  ): VNode | VNodeChildren {
-    let tree = this._staticTrees[index]
-    // if has already-rendered static tree and not inside v-for,
-    // we can reuse the same tree by indentity.
-    if (tree && !isInFor) {
-      return tree
-    }
-    // otherwise, render a fresh tree.
-    tree = this._staticTrees[index] = this.$options.staticRenderFns[index].call(this._renderProxy)
-    if (Array.isArray(tree)) {
-      for (let i = 0; i < tree.length; i++) {
-        tree[i].isStatic = true
-        tree[i].key = `__static__${index}_${i}`
-      }
-    } else {
-      tree.isStatic = true
-      tree.key = `__static__${index}`
-    }
-    return tree
-  }
-
-  // filter resolution helper
-  const identity = _ => _
-  Vue.prototype._f = function resolveFilter (id) {
-    return resolveAsset(this.$options, 'filters', id, true) || identity
-  }
-
-  // render v-for
-  Vue.prototype._l = function renderList (
-    val: any,
-    render: () => VNode
-  ): ?Array<VNode> {
-    let ret: ?Array<VNode>, i, l, keys, key
-    if (Array.isArray(val)) {
-      ret = new Array(val.length)
-      for (i = 0, l = val.length; i < l; i++) {
-        ret[i] = render(val[i], i)
-      }
-    } else if (typeof val === 'number') {
-      ret = new Array(val)
-      for (i = 0; i < val; i++) {
-        ret[i] = render(i + 1, i)
-      }
-    } else if (isObject(val)) {
-      keys = Object.keys(val)
-      ret = new Array(keys.length)
-      for (i = 0, l = keys.length; i < l; i++) {
-        key = keys[i]
-        ret[i] = render(val[key], key, i)
-      }
-    }
-    return ret
-  }
-
-  // apply v-bind object
-  Vue.prototype._b = function bindProps (
-    vnode: VNodeWithData,
-    value: any,
-    asProp?: boolean) {
-    if (value) {
-      if (!isObject(value)) {
-        process.env.NODE_ENV !== 'production' && warn(
-          'v-bind without argument expects an Object or Array value',
-          this
-        )
-      } else {
-        if (Array.isArray(value)) {
-          value = toObject(value)
-        }
-        const data: any = vnode.data
-        for (const key in value) {
-          if (key === 'class' || key === 'style') {
-            data[key] = value[key]
-          } else {
-            const hash = asProp || config.mustUseProp(key)
-              ? data.domProps || (data.domProps = {})
-              : data.attrs || (data.attrs = {})
-            hash[key] = value[key]
-          }
-        }
-      }
-    }
-  }
-
-  // expose v-on keyCodes
-  Vue.prototype._k = function getKeyCodes (key: string): any {
-    return config.keyCodes[key]
-  }
-}
-
-export function resolveSlots (
-  renderChildren: ?VNodeChildren
-): { [key: string]: Array<VNode> } {
-  const slots = {}
-  if (!renderChildren) {
-    return slots
-  }
-  const children = normalizeChildren(renderChildren) || []
-  const defaultSlot = []
-  let name, child
-  for (let i = 0, l = children.length; i < l; i++) {
-    child = children[i]
-    if (child.data && (name = child.data.slot)) {
-      delete child.data.slot
-      const slot = (slots[name] || (slots[name] = []))
-      if (child.tag === 'template') {
-        slot.push.apply(slot, child.children)
-      } else {
-        slot.push(child)
-      }
-    } else {
-      defaultSlot.push(child)
-    }
-  }
-  // ignore single whitespace
-  if (defaultSlot.length && !(
-    defaultSlot.length === 1 &&
-    defaultSlot[0].text === ' '
-  )) {
-    slots.default = defaultSlot
-  }
-  return slots
+  Vue.prototype._s = _toString
+  Vue.prototype._l = renderList
+  Vue.prototype._t = renderSlot
+  Vue.prototype._q = looseEqual
+  Vue.prototype._i = looseIndexOf
+  Vue.prototype._m = renderStatic
+  Vue.prototype._f = resolveFilter
+  Vue.prototype._k = checkKeyCodes
+  Vue.prototype._b = bindObjectProps
+  Vue.prototype._v = createTextVNode
+  Vue.prototype._e = createEmptyVNode
+  Vue.prototype._u = resolveScopedSlots
 }

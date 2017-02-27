@@ -1,10 +1,16 @@
 import config from '../config'
+import { noop } from 'shared/util'
 
-let warn
+let warn = noop
+let tip = noop
 let formatComponentName
 
 if (process.env.NODE_ENV !== 'production') {
   const hasConsole = typeof console !== 'undefined'
+  const classifyRE = /(?:^|[-_])(\w)/g
+  const classify = str => str
+    .replace(classifyRE, c => c.toUpperCase())
+    .replace(/[-_]/g, '')
 
   warn = (msg, vm) => {
     if (hasConsole && (!config.silent)) {
@@ -14,22 +20,40 @@ if (process.env.NODE_ENV !== 'production') {
     }
   }
 
-  formatComponentName = vm => {
-    if (vm.$root === vm) {
-      return 'root instance'
+  tip = (msg, vm) => {
+    if (hasConsole && (!config.silent)) {
+      console.warn(`[Vue tip]: ${msg} ` + (
+        vm ? formatLocation(formatComponentName(vm)) : ''
+      ))
     }
-    const name = vm._isVue
+  }
+
+  formatComponentName = (vm, includeFile) => {
+    if (vm.$root === vm) {
+      return '<Root>'
+    }
+    let name = vm._isVue
       ? vm.$options.name || vm.$options._componentTag
       : vm.name
-    return name ? `component <${name}>` : `anonymous component`
+
+    const file = vm._isVue && vm.$options.__file
+    if (!name && file) {
+      const match = file.match(/([^/\\]+)\.vue$/)
+      name = match && match[1]
+    }
+
+    return (
+      (name ? `<${classify(name)}>` : `<Anonymous>`) +
+      (file && includeFile !== false ? ` at ${file}` : '')
+    )
   }
 
   const formatLocation = str => {
-    if (str === 'anonymous component') {
+    if (str === `<Anonymous>`) {
       str += ` - use the "name" option for better debugging messages.`
     }
-    return `(found in ${str})`
+    return `\n(found in ${str})`
   }
 }
 
-export { warn, formatComponentName }
+export { warn, tip, formatComponentName }
