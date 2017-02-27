@@ -52,7 +52,7 @@ var _paths= (function(){
     })
     return res
   }
-  return !location.href.match(/\.com/i)? getPath('prd'): getPath('devpaths')
+  return location.href.match(/\.com/i)? getPath('prd'): getPath('devpaths')
 })()
 
 var config= {
