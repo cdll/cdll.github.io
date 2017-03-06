@@ -1,7 +1,11 @@
 
-require(['/src/js/require.config.js'], function(cfg){
-  require.config(cfg)
-  require(['/bower_components/vue/dist/vue.min.js', "/bower_components/qwest/qwest.min.js"], function(Vue, ajax){
+require(['/src/js/require.config.js'], function(config){
+  require.config(config)
+
+  require([
+    'vue'
+    ,"qwest"
+  ], function(Vue, ajax){
     var vm= new Vue({
       el: '.robot',
       data: {

@@ -44,15 +44,19 @@ var _paths= (function(){
       dev: "/bower_components/material-design-lite/material.min"
       ,prd: '//cdn.staticfile.org/material-design-lite/1.3.0/material.min'
     }
+    ,vue: {
+      dev: '/bower_components/vue/dist/vue.min.js'
+      ,prd: '//cdn.staticfile.org/vue/2.2.1/vue.min'
+    }
   }
   function getPath(key){
     var res= {}
-    libpaths.forEach(function(el, i){
-      console.info(el, i)
-    })
+    for(var el in libpaths){
+      res[el]= libpaths[el][key]
+    }
     return res
   }
-  return location.href.match(/\.com/i)? getPath('prd'): getPath('devpaths')
+  return location.href.match(/\.com|\.io/i)? getPath('prd'): getPath('dev')
 })()
 
 var config= {
