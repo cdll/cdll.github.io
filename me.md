@@ -1,15 +1,15 @@
 ````javascript
 var man= new Object({
   init: {
-    name: '梁鑫伟'
-    ,enName: 'David Leon'
-    ,sex: 'male'
+    '姓名': '梁鑫伟'
+    ,name: 'David Leon'
+    ,gender: 'male'
     ,birth: '1991-08'
     ,from: '广西柳州'
     ,tel: 18521534116
     ,living: '上海徐汇'
     ,graduation: '沈阳建筑大学（计算机科学与技术 2014届 本科）'
-    ,blog: 'https://github.com/cdll/blog/issues'
+    ,blog: 'https://github.com/cdll/blog'
   }
   ,detail: [
     {
