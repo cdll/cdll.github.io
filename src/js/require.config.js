@@ -45,7 +45,7 @@ var _paths= (function(){
       ,prd: '//cdn.staticfile.org/material-design-lite/1.3.0/material.min'
     }
     ,vue: {
-      dev: '/bower_components/vue/dist/vue.min.js'
+      dev: '/bower_components/vue/dist/vue.min'
       ,prd: '//cdn.staticfile.org/vue/2.2.1/vue.min'
     }
   }
