@@ -1,8 +1,9 @@
-/* name: Ajax
-/* @params: method, url, data, success, type
-/* @return: json, script
-/* @author: cdll
-/*/
+/**
+ * @name: Ajax
+ * @argument: method, url, data, success, type
+ * @return: json, script
+ * @author: cdll
+ */
 function Ajax(method, url, data, success, type){
   if(type){
     if(type== 'script'){
@@ -36,13 +37,14 @@ function Ajax(method, url, data, success, type){
   }
   //存储函数（或函数名），每当 readyState 属性改变时，就会调用该函数
   xhr.onreadystatechange = function(){
-    /*
-    0: 请求未初始化
-    1: 服务器连接已建立
-    2: 请求已接收
-    3: 请求处理中
-    4: 请求已完成，且响应已就绪
-    */
+    /**
+     * 
+     * 0: 请求未初始化
+     * 1: 服务器连接已建立
+     * 2: 请求已接收
+     * 3: 请求处理中
+     * 4: 请求已完成，且响应已就绪
+     */
     if(xhr.readyState == 4){
       if(xhr.status == 200){
         success && success(xhr.responseText);
