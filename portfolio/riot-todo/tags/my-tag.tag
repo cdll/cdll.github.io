@@ -1,22 +1,28 @@
 
   <my-tag >
     <style scoped>
+      :scope{
+        background: lightcyan;padding: 1em;
+      }
+      *{
+        margin: 0;padding: 0;
+      }
       h3{
         color: red;
+      }
+      dl{
+        line-height: 1.5em;
       }
     </style>
 
     <h3>Tag layout</h3>
-    <div class='' onclick='{logger}'>{ dude }</div>
+    <center class='' onclick='{logger}'>{ dude }</center>
     <dl class=''>
-      <dd class='' each='{el in todos}' onclick='{ranText}'>{el._id}</dd>
+      <dd class='' each='{k, v in todos}' riot-click='{ranText}'>{v}: {k}</dd>
     </dl>
 
     <script>
-      if(typeof window === 'object')
-        var axios= window.axios
-      else
-        var axios= require('axios')
+      var axios= (typeof window === 'object')? window.axios: require('axios')
       this.on('mount', ()=>{
         var self= this
         var _list= []
@@ -27,35 +33,21 @@
           dude: 'halo'
           ,todos: opts.todos
         })
-        //- axios('./bower.json', {
-        //-   method: 'get'
-        //-   ,headers: {
-        //-     version: 1
-        //-   }
-        //- })
-        //- .then((res)=>{
-        //-   self.update({
-        //-     dude: res.data.name
-        //-     ,todos: res.data.ignore
-        //-   })
-        //- }, (xhr, err)=>{
-        //-   console.warn(xhr, err)
-        //- })
-axios('http://localhost/api/discover/guayouhui', {
-  method: 'get'
-  ,headers: {
-    version: 1
-  }
-})
-.then((res)=>{
-  console.info(res.data)
-  var html= riot.update({
-    dude: res.data.code
-    ,todos: res.data.data
-  })
-}, (xhr, err)=>{
-  console.warn(666, xhr)
-})
+        axios({
+          method: 'get'
+          ,url: '/bower.json'
+          ,headers: {
+            version: 1
+          }
+        })
+        .then((res)=>{
+          self.update({
+            dude: res.data.name
+            ,todos: res.data.ignore
+          })
+        }, (xhr, err)=>{
+          console.warn(xhr, err)
+        })
       })
       logger() {
         console.info(event.target)
