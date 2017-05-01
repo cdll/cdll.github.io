@@ -1,33 +1,35 @@
 <app>
   <style>
-    *{
-      margin: 0;padding: 0;
+    :scope{
+      border: .9px solid lightpink;
+      margin: 1rem;
     }
   </style>
 
-  <div class="" data--is='{app}'>666</div>
+  <div class="" data-is='{app}'>loading...</div>
 
   <script>
-    console.info(this)
+    //console.info(333, this)
     function App(){
       riot.observable(this)
+      self.app= 'my-tag'
       this.on('bootstrap', ()=>{
-        console.info(this)
-route('/', function(){
+        console.info('bs', this)
+route('/', ()=>{
   console.info('/')
   route('/index', null, true)
 })
-// route('/index', function(){
+// route('/index', ()=>{
 //   console.info('index')
 //   riot.compile('tags/my-tag.tag.html')
 // })
-// route('/login', function(){
+// route('/login', ()=>{
 //   console.info('login')
 // })
-// route('/search..', function(){
+// route('/search..', ()=>{
 //   console.info('search', route.query())
 // })
-// route('/*', function(group, module, action){
+// route('/*', (group, module, action)=>{
 //   console.warn(404, group, module, action)
 //   riot.compile('tags/not-found.tag.html')
 // })

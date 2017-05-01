@@ -4,36 +4,36 @@
   <head>
     <meta charset="utf-8">
     <meta name='viewport' content="width=device-width,user-scalable=0,initial-scale=1.0,maximum-scale=1.0" />
-    <script src="https://cdn.staticfile.org/systemjs/0.19.41/system.js"></script>
+    <base href="">
+
     <script src="/bower_components/riot/riot+compiler.min.js"></script>
     <script src="/bower_components/riot-route/dist/route.min.js"></script>
     <script src="/bower_components/axios/dist/axios.min.js"></script>
+
+    <style>
+      *{
+        margin: 0;padding: 0;
+      }
+    </style>
 
   </head>
 
   <body>
     <h3 class="">all</h3>
 <!-- mount point -->
-    <!--<div data-is="my-tag"></div>-->
-    <app></app>
-
-<!-- inlined tag definition -->
-<!--<script type="riot/tag" src="tags/app.tag.html"></script>-->
-<script type="riot/tag" src="tags/my-tag.tag"></script>
+    <div data-is="app"></div>
 
     <script>
-riot.compile(()=>{
+riot.compile(undefined=>{
   // here tags are compiled and riot.mount works synchronously
-  // var app = riot.compile('tags/my-tag.tag')//mount normally
-
-  riot.tag('app', `<div class="" data-is='{tagName}'></div>`, function(opts){
-    var tag_name= riot.observable()
-    this.tagName= 'my-tag'
-    this.on('mount', (opts)=>{
-      console.info(opts)
-    })
+  var app = riot.compile('tags/app.tag', res=>{
+    console.info(1, event)
+    riot.mount('*')
   })
-  tags = riot.mount('*', {dude: 321})//mount normally
+  var myTag = riot.compile('tags/my-tag.tag', res=>{
+    console.info(2, event)
+    riot.mount('*')
+  })
 })
     </script>
   </body>

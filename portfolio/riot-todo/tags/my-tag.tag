@@ -4,9 +4,6 @@
       :scope{
         background: lightcyan;padding: 1em;
       }
-      *{
-        margin: 0;padding: 0;
-      }
       h3{
         color: red;
       }
@@ -16,15 +13,15 @@
     </style>
 
     <h3>Tag layout</h3>
-    <center class='' onclick='{logger}'>{ dude }</center>
+    <center class='' riot-click='{logger}'>{ dude }</center>
     <dl class=''>
       <dd class='' each='{k, v in todos}' riot-click='{ranText}'>{v}: {k}</dd>
     </dl>
 
     <script>
       var axios= (typeof window === 'object')? window.axios: require('axios')
-      this.on('mount', ()=>{
-        var self= this
+
+      this.on('before-mount', undefined=>{
         var _list= []
         Array.apply(null, { length: 10 }).forEach((el, i)=>{
           _list.push('clickme')
@@ -40,14 +37,14 @@
             version: 1
           }
         })
-        .then((res)=>{
-          self.update({
+        .then(res=>{
+          setTimeout(undefined=>{
+          this.update({
             dude: res.data.name
             ,todos: res.data.ignore
           })
-        }, (xhr, err)=>{
-          console.warn(xhr, err)
-        })
+          }, 1000)
+        }, err=>console.warn(err))
       })
       logger() {
         console.info(event.target)
