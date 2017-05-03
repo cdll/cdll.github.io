@@ -15,7 +15,7 @@
     <h3>Tag layout</h3>
     <center class='' riot-click='{logger}'>{ dude }</center>
     <dl class=''>
-      <dd class='' each='{k, v in todos}' riot-click='{ranText}'>{v}: {k}</dd>
+      <dd class='' each='{v, k in todos}' riot-click='{ranText}'>{k}: {v}</dd>
     </dl>
 
     <script>
@@ -24,11 +24,11 @@
       this.on('before-mount', undefined=>{
         var _list= []
         Array.apply(null, { length: 10 }).forEach((el, i)=>{
-          _list.push('clickme')
+          _list.push(`clickme: ${i}`)
         })
         this.update({
           dude: 'halo'
-          ,todos: opts.todos
+          ,todos: _list//opts.todos
         })
         axios({
           method: 'get'
@@ -41,15 +41,15 @@
           setTimeout(undefined=>{
           this.update({
             dude: res.data.name
-            ,todos: res.data.ignore
+            ,todos: res.data.dependencies
           })
           }, 1000)
         }, err=>console.warn(err))
       })
-      logger() {
+      this.logger= function(){
         console.info(event.target)
       }
-      ranText() {
+      this.ranText= function(){
         console.info(event.item)
         event.item.el= (new Date())
       }
