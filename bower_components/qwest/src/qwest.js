@@ -1,10 +1,11 @@
-/*! qwest 4.1.1 (https://github.com/pyrsmk/qwest) */
+/*! qwest 4.4.5 (https://github.com/pyrsmk/qwest) */
 
 module.exports = function() {
 
-	var global = window || this,
+	var global = typeof window != 'undefined' ? window : self,
 		pinkyswear = require('pinkyswear'),
 		jparam = require('jquery-param'),
+		defaultOptions = {},
 		// Default response type for XDR in auto mode
 		defaultXdrResponseType = 'json',
 		// Default data type
@@ -28,13 +29,25 @@ module.exports = function() {
 		method = method.toUpperCase();
 		data = data || null;
 		options = options || {};
+		for(var name in defaultOptions) {
+			if(!(name in options)) {
+				if(typeof defaultOptions[name] == 'object' && typeof options[name] == 'object') {
+					for(var name2 in defaultOptions[name]) {
+						options[name][name2] = defaultOptions[name][name2];
+					}
+				}
+				else {
+					options[name] = defaultOptions[name];
+				}
+			}
+		}
 
 		// Define variables
 		var nativeResponseParsing = false,
 			crossOrigin,
 			xhr,
 			xdr = false,
-			timeoutInterval,
+			timeout,
 			aborted = false,
 			attempts = 0,
 			headers = {},
@@ -42,7 +55,8 @@ module.exports = function() {
 				text: '*/*',
 				xml: 'text/xml',
 				json: 'application/json',
-				post: 'application/x-www-form-urlencoded'
+				post: 'application/x-www-form-urlencoded',
+				document: 'text/html'
 			},
 			accept = {
 				text: '*/*',
@@ -50,18 +64,20 @@ module.exports = function() {
 				json: 'application/json; q=1.0, text/*; q=0.8, */*; q=0.1'
 			},
 			i, j,
-			serialized,
 			response,
 			sending = false,
-			delayed = false,
-			timeout_start,
 
 		// Create the promise
 		promise = pinkyswear(function(pinky) {
 			pinky.abort = function() {
-				if(xhr) {
-					xhr.abort();
-					--requests;
+				if(!aborted) {
+					if(xhr && xhr.readyState != 4) { // https://stackoverflow.com/questions/7287706/ie-9-javascript-error-c00c023f
+						xhr.abort();
+					}
+					if(sending) {
+						--requests;
+						sending = false;
+					}
 					aborted = true;
 				}
 			};
@@ -75,17 +91,23 @@ module.exports = function() {
 					request_stack.push(pinky);
 					return;
 				}
+				// Verify if the request has not been previously aborted
+				if(aborted) {
+					if(request_stack.length) {
+						request_stack.shift().send();
+					}
+					return;
+				}
+				// The sending is running
 				++requests;
 				sending = true;
-				// Start the chrono
-				timeout_start = new Date().getTime();
 				// Get XHR object
 				xhr = getXHR();
 				if(crossOrigin) {
 					if(!('withCredentials' in xhr) && global.XDomainRequest) {
 						xhr = new XDomainRequest(); // CORS with IE8/9
 						xdr = true;
-						if(method!='GET' && method!='POST') {
+						if(method != 'GET' && method != 'POST') {
 							method = 'POST';
 						}
 					}
@@ -109,17 +131,21 @@ module.exports = function() {
 					}
 				}
 				// Verify if the response type is supported by the current browser
-				if(xhr2 && options.responseType != 'document' && options.responseType!='auto') { // Don't verify for 'document' since we're using an internal routine
+				if(xhr2 && options.responseType != 'auto') {
 					try {
 						xhr.responseType = options.responseType;
-						nativeResponseParsing = (xhr.responseType==options.responseType);
+						nativeResponseParsing = (xhr.responseType == options.responseType);
 					}
-					catch(e){}
+					catch(e) {}
 				}
 				// Plug response handler
 				if(xhr2 || xdr) {
 					xhr.onload = handleResponse;
 					xhr.onerror = handleError;
+					// http://cypressnorth.com/programming/internet-explorer-aborting-ajax-requests-fixed/
+					if(xdr) {
+						xhr.onprogress = function() {};
+					}
 				}
 				else {
 					xhr.onreadystatechange = function() {
@@ -127,6 +153,20 @@ module.exports = function() {
 							handleResponse();
 						}
 					};
+				}
+				// Plug timeout
+				if(options.async) {
+					if('timeout' in xhr) {
+						xhr.timeout = options.timeout;
+						xhr.ontimeout = handleTimeout;
+					}
+					else {
+						timeout = setTimeout(handleTimeout, options.timeout);
+					}
+				}
+				// http://cypressnorth.com/programming/internet-explorer-aborting-ajax-requests-fixed/
+				else if(xdr) {
+					xhr.ontimeout = function() {};
 				}
 				// Override mime type to ensure the response is well parsed
 				if(options.responseType != 'auto' && 'overrideMimeType' in xhr) {
@@ -138,10 +178,6 @@ module.exports = function() {
 				}
 				// Send request
 				if(xdr) {
-					// http://cypressnorth.com/programming/internet-explorer-aborting-ajax-requests-fixed/
-					xhr.onprogress = function(){};
-					xhr.ontimeout = function(){};
-					xhr.onerror = function(){};
 					// https://developer.mozilla.org/en-US/docs/Web/API/XDomainRequest
 					setTimeout(function() {
 						xhr.send(method != 'GET'? data : null);
@@ -156,42 +192,30 @@ module.exports = function() {
 
 		// Handle the response
 		handleResponse = function() {
-			// Prepare
 			var i, responseType;
-			--requests;
+			// Stop sending state
 			sending = false;
-			// Verify timeout state
-			// --- https://stackoverflow.com/questions/7287706/ie-9-javascript-error-c00c023f
-			if(new Date().getTime()-timeout_start >= options.timeout) {
-				if(!options.attempts || ++attempts!=options.attempts) {
-					promise.send();
-				}
-				else {
-					promise(false, [new Error('Timeout ('+url+')'), xhr, response]);
-				}
-				return;
-			}
+			clearTimeout(timeout);
 			// Launch next stacked request
 			if(request_stack.length) {
 				request_stack.shift().send();
 			}
+			// Verify if the request has not been previously aborted
+			if(aborted) {
+				return;
+			}
+			// Decrease the number of requests
+			--requests;
 			// Handle response
 			try{
 				// Process response
-				if(nativeResponseParsing && 'response' in xhr && xhr.response!==null) {
+				if(nativeResponseParsing) {
+					if('response' in xhr && xhr.response === null) {
+						throw 'The request response is empty';
+					}
 					response = xhr.response;
 				}
-				else if(options.responseType == 'document') {
-					var frame = document.createElement('iframe');
-					frame.style.display = 'none';
-					document.body.appendChild(frame);
-					frame.contentDocument.open();
-					frame.contentDocument.write(xhr.response);
-					frame.contentDocument.close();
-					response = frame.contentDocument;
-					document.body.removeChild(frame);
-				}
-				else{
+				else {
 					// Guess response type
 					responseType = options.responseType;
 					if(responseType == 'auto') {
@@ -203,7 +227,7 @@ module.exports = function() {
 							if(ct.indexOf(mimeTypes.json)>-1) {
 								responseType = 'json';
 							}
-							else if(ct.indexOf(mimeTypes.xml)>-1) {
+							else if(ct.indexOf(mimeTypes.xml) > -1) {
 								responseType = 'xml';
 							}
 							else {
@@ -220,7 +244,7 @@ module.exports = function() {
 										response = JSON.parse(xhr.responseText);
 									}
 									else {
-										response = eval('('+xhr.responseText+')');
+										response = new Function('return (' + xhr.responseText + ')')();
 									}
 								}
 								catch(e) {
@@ -256,7 +280,7 @@ module.exports = function() {
 				// Late status code verification to allow passing data when, per example, a 409 is returned
 				// --- https://stackoverflow.com/questions/10046972/msie-returns-status-code-of-1223-for-ajax-request
 				if('status' in xhr && !/^2|1223/.test(xhr.status)) {
-					throw xhr.status+' ('+xhr.statusText+')';
+					throw xhr.status + ' (' + xhr.statusText + ')';
 				}
 				// Fulfilled
 				promise(true, [xhr, response]);
@@ -268,25 +292,42 @@ module.exports = function() {
 		},
 
 		// Handle errors
-		handleError = function(e) {
-			--requests;
-			promise(false, [new Error('Connection aborted'), xhr, null]);
+		handleError = function(message) {
+			if(!aborted) {
+				message = typeof message == 'string' ? message : 'Connection aborted';
+				promise.abort();
+				promise(false, [new Error(message), xhr, null]);
+			}
+		},
+			
+		// Handle timeouts
+		handleTimeout = function() {
+			if(!aborted) {
+				if(!options.attempts || ++attempts != options.attempts) {
+					xhr.abort();
+					sending = false;
+					promise.send();
+				}
+				else {
+					handleError('Timeout (' + url + ')');
+				}
+			}
 		};
 
 		// Normalize options
-		options.async = 'async' in options?!!options.async:true;
-		options.cache = 'cache' in options?!!options.cache:false;
-		options.dataType = 'dataType' in options?options.dataType.toLowerCase():defaultDataType;
-		options.responseType = 'responseType' in options?options.responseType.toLowerCase():'auto';
+		options.async = 'async' in options ? !!options.async : true;
+		options.cache = 'cache' in options ? !!options.cache : false;
+		options.dataType = 'dataType' in options ? options.dataType.toLowerCase() : defaultDataType;
+		options.responseType = 'responseType' in options ? options.responseType.toLowerCase() : 'auto';
 		options.user = options.user || '';
 		options.password = options.password || '';
 		options.withCredentials = !!options.withCredentials;
-		options.timeout = 'timeout' in options?parseInt(options.timeout,10):30000;
-		options.attempts = 'attempts' in options?parseInt(options.attempts,10):1;
+		options.timeout = 'timeout' in options ? parseInt(options.timeout, 10) : 30000;
+		options.attempts = 'attempts' in options ? parseInt(options.attempts, 10) : 1;
 
 		// Guess if we're dealing with a cross-origin request
 		i = url.match(/\/\/(.+?)\//);
-		crossOrigin = i && (i[1]?i[1]!=location.host:false);
+		crossOrigin = i && (i[1] ? i[1] != location.host : false);
 
 		// Prepare data
 		if('ArrayBuffer' in global && data instanceof ArrayBuffer) {
@@ -301,12 +342,14 @@ module.exports = function() {
 		else if('FormData' in global && data instanceof FormData) {
 			options.dataType = 'formdata';
 		}
-		switch(options.dataType) {
-			case 'json':
-				data = (data !== null ? JSON.stringify(data) : data);
-				break;
-			case 'post':
-				data = jparam(data);
+		if(data !== null) {
+			switch(options.dataType) {
+				case 'json':
+					data = JSON.stringify(data);
+					break;
+				case 'post':
+					data = jparam(data);
+			}
 		}
 
 		// Prepare headers
@@ -326,7 +369,7 @@ module.exports = function() {
 			}
 		}
 		if(!headers.Accept) {
-			headers.Accept = (options.responseType in accept)?accept[options.responseType]:'*/*';
+			headers.Accept = (options.responseType in accept) ? accept[options.responseType] : '*/*';
 		}
 		if(!crossOrigin && !('X-Requested-With' in headers)) { // (that header breaks in legacy browsers with CORS)
 			headers['X-Requested-With'] = 'XMLHttpRequest';
@@ -359,20 +402,22 @@ module.exports = function() {
 			// Create a new promise to handle all requests
 			return pinkyswear(function(pinky) {
 				// Basic request method
-				var createMethod = function(method) {
-					return function(url, data, options, before) {
-						++loading;
-						promises.push(qwest(method, pinky.base + url, data, options, before).then(function(xhr, response) {
-							values.push(arguments);
-							if(!--loading) {
-								pinky(true, values.length == 1 ? values[0] : [values]);
-							}
-						}, function() {
-							pinky(false, arguments);
-						}));
-						return pinky;
+				var method_index = -1,
+					createMethod = function(method) {
+						return function(url, data, options, before) {
+							var index = ++method_index;
+							++loading;
+							promises.push(qwest(method, pinky.base + url, data, options, before).then(function(xhr, response) {
+								values[index] = arguments;
+								if(!--loading) {
+									pinky(true, values.length == 1 ? values[0] : [values]);
+								}
+							}, function() {
+								pinky(false, arguments);
+							}));
+							return pinky;
+						};
 					};
-				};
 				// Define external API
 				pinky.get = createMethod('GET');
 				pinky.post = createMethod('POST');
@@ -381,14 +426,22 @@ module.exports = function() {
 				pinky['catch'] = function(f) {
 					return pinky.then(null, f);
 				};
+				pinky.complete = function(f) {
+					var func = function() {
+						f(); // otherwise arguments will be passed to the callback
+					};
+					return pinky.then(func, func);
+				};
 				pinky.map = function(type, url, data, options, before) {
 					return createMethod(type.toUpperCase()).call(this, url, data, options, before);
 				};
+				// Populate methods from external object
 				for(var prop in q) {
 					if(!(prop in pinky)) {
 						pinky[prop] = q[prop];
 					}
 				}
+				// Set last methods
 				pinky.send = function() {
 					for(var i=0, j=promises.length; i<j; ++i) {
 						promises[i].send();
@@ -424,6 +477,10 @@ module.exports = function() {
 			xhr2: xhr2,
 			limit: function(by) {
 				limit = by;
+				return q;
+			},
+			setDefaultOptions: function(options) {
+				defaultOptions = options;
 				return q;
 			},
 			setDefaultXdrResponseType: function(type) {

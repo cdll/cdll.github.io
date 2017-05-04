@@ -19,7 +19,7 @@
   "bugs": {
     "url": "https://github.com/pyrsmk/qwest/issues"
   },
-  "homepage": "http://dreamysource.fr/product/qwest",
+  "homepage": "http://dreamysource.io/project/qwest",
   "ignore": [
     ".git/",
     ".gitignore",
@@ -28,15 +28,15 @@
     "Gruntfile.js",
     "package.json"
   ],
-  "version": "4.1.1",
-  "_release": "4.1.1",
+  "version": "4.4.5",
+  "_release": "4.4.5",
   "_resolution": {
     "type": "version",
-    "tag": "4.1.1",
-    "commit": "55d3042ba174a26e831a35a568aa9bb7b559fa03"
+    "tag": "4.4.5",
+    "commit": "96a4ed8212fa015c520595599462fd1d7f8b99c8"
   },
-  "_source": "git://github.com/pyrsmk/qwest.git",
-  "_target": "~4.1.1",
+  "_source": "https://github.com/pyrsmk/qwest.git",
+  "_target": "^4.4.5",
   "_originalSource": "qwest",
   "_direct": true
 }

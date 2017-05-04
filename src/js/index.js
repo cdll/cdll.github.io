@@ -13,27 +13,52 @@
 
 let mdl= require('mdl')
 let ajax= require('qwest')
-console.info(ajax, mdl)
-//ajax.get(
-//  'https://api.github.com/users/cdll/repos'
-//  ,null
-//  ,{
-//    headers: {
-//      Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
-//      ,'Upgrade-Insecure-Requests': 1
-//      ,nonce: (new Date()).getTime()
-//    }
-//    ,dataType: 'application/jsonp'
-//  }
-//)
-//.then(function(xhr, res){
-//  console.info(xhr, res)
-//})
-//.catch(function(xhr, res, err){
-//  console.warn(xhr, res, err)
-//})
 
-setTimeout(()=>{
-  let Vue= require('vue')
-  console.info('Vue:', Vue.version)
-}, 0)
+console.info(ajax, mdl)
+// ajax.get(
+//   'https://api.github.com/users/cdll/repos'
+//   ,{}
+//   ,{
+//     cache: true
+//   }
+// )
+// .then(function(xhr, res){
+//   console.info(res)
+// }, function(xhr, res, err){
+//   console.warn(err)
+// })
+
+window.riot= require('riot')
+
+let axios= require('axios')
+axios({
+  url: "https://api.github.com/users/cdll/repos"
+  // ,params: {}
+  // ,options: {
+  //   header: {
+  //     cache: false
+  //   }
+  // }
+})
+.then(res=>{
+  console.info(res)
+
+  riot.compile("src/mod/github-repo.tag", tag=>{
+    riot.mount("*", {
+      repos: res.data
+    })
+  })
+}, err=>{
+  return axios({
+    url: "/bower.json"
+  })
+})
+.then(res=>{
+  console.info(res)
+
+  riot.compile("src/mod/github-repo.tag", tag=>{
+    riot.mount("*", {
+      repos: res.data.dependencies
+    })
+  })
+})

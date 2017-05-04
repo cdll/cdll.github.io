@@ -1,4 +1,4 @@
-qwest 4.1.1
+qwest 4.4.5
 ============
 
 Qwest is a simple ajax library based on `promises` and that supports `XmlHttpRequest2` special data like `ArrayBuffer`, `Blob` and `FormData`.
@@ -12,12 +12,7 @@ bower install qwest
 jam install qwest
 ```
 
-What's new in 4.0?
-------------------
-
-- call `abort()` to abort an async request
-- group requests
-- `complete()` has been removed
+Qwest is also available via CDNJS : https://cdnjs.com/libraries/qwest
 
 Quick examples
 --------------
@@ -53,6 +48,9 @@ qwest.`method`(`url`, `data`, `options`, `before`)
 	 })
 	 .catch(function(e, xhr, response) {
 		// Process the error
+	 })
+	 .complete(function() {
+	 	// Always run
 	 });
 ```
 
@@ -68,7 +66,7 @@ The available `options` are :
 - password : the password to access to the URL, if needed
 - headers : javascript object containing headers to be sent
 - withCredentials : `false` by default; sends [credentials](http://www.w3.org/TR/XMLHttpRequest2/#user-credentials) with your XHR2 request ([more info in that post](https://dev.opera.com/articles/xhr2/#xhrcredentials))
-- timeout : the timeout for the request in ms; `30000` by default
+- timeout : the timeout for the request in ms; `30000` by default (allowed only in async mode)
 - attempts : the total number of times to attempt the request through timeouts; 1 by default; if you want to remove the limit set it to `null`
 
 You can change the default data type with :
@@ -94,6 +92,18 @@ qwest.get('example.com', {async: false})
 	 	// Blah blah
 	 })
 	 .send();
+```
+
+Since service APIs often need the same type of request, you can set default options for all of your requests with :
+
+```js
+qwest.setDefaultOptions({
+	dataType: 'arraybuffer',
+	responseType: 'json',
+	headers: {
+		'My-Header': 'Some-Value'
+	}
+});
 ```
 
 Group requests
@@ -270,7 +280,7 @@ Last notes
 - the default `Content-Type` header for a `POST` request is `application/x-www-form-urlencoded`, for `post` and `xhr2` data types
 - if you want to set or get raw data, set `dataType` option to `text`
 - as stated on [StackOverflow](https://stackoverflow.com/questions/8464262/access-is-denied-error-on-xdomainrequest), XDomainRequest forbid HTTPS requests from HTTP scheme and vice versa
-- IE8 only supports basic request methods
+- XDomainRequest only supports `GET` and `POST` methods
 
 License
 -------
