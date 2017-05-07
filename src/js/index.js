@@ -1,5 +1,7 @@
 'use strict'
 
+require('/config.js')
+
 //let Mock= require('/bower_components/mockjs/dist/mock-min.js')
 //console.info(Mock)
 //var data= Mock.mock({

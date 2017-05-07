@@ -43,6 +43,7 @@
     "iron-jsonp-library": "PolymerElements/iron-jsonp-library#~1.0.4",
     "riot": "^3.4.4",
     "axios": "^0.15.3",
-    "riot-route": "^3.0.2"
+    "riot-route": "^3.0.2",
+    "es6-promise": "^4.0.5"
   }
 }
