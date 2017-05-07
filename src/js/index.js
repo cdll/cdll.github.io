@@ -1,7 +1,5 @@
 'use strict'
 
-require('/config.js')
-
 //let Mock= require('/bower_components/mockjs/dist/mock-min.js')
 //console.info(Mock)
 //var data= Mock.mock({
@@ -14,9 +12,9 @@ require('/config.js')
 //console.log(JSON.stringify(data))
 
 let mdl= require('mdl')
-let ajax= require('qwest')
+// let ajax= require('qwest')
 
-console.info(ajax, mdl)
+console.info(mdl)
 // ajax.get(
 //   'https://api.github.com/users/cdll/repos'
 //   ,{}
@@ -34,7 +32,9 @@ window.riot= require('riot')
 
 let axios= require('axios')
 axios({
-  url: "https://api.github.com/users/cdll/repos"
+  // url: "https://api.github.com/users/cdll/repos"
+  url: "https://api.github.com/users/cdll"
+  // url: "/github.json"
   // ,params: {}
   // ,options: {
   //   header: {
@@ -43,7 +43,7 @@ axios({
   // }
 })
 .then(res=>{
-  console.info(res)
+  console.info(res.data)
 
   riot.compile("src/mod/github-repo.tag", tag=>{
     riot.mount("*", {
@@ -54,13 +54,13 @@ axios({
   return axios({
     url: "/bower.json"
   })
-})
-.then(res=>{
-  console.info(res)
+  .then(res=>{
+    console.info(res)
 
-  riot.compile("src/mod/github-repo.tag", tag=>{
-    riot.mount("*", {
-      repos: res.data.dependencies
+    riot.compile("src/mod/github-repo.tag", tag=>{
+      riot.mount("*", {
+        repos: res.data.dependencies
+      })
     })
   })
 })
