@@ -44,6 +44,7 @@
     "riot": "^3.4.4",
     "axios": "^0.15.3",
     "riot-route": "^3.0.2",
-    "es6-promise": "^4.0.5"
+    "es6-promise": "^4.0.5",
+    "sw-toolbox": "^3.6.1"
   }
 }

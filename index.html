@@ -130,8 +130,8 @@
     </footer>
 
     <script src="/bower_components/es6-promise/es6-promise.auto.min.js"></script>
-    <script src="/bower_components/system.js/dist/system.js" ></script>
-    <script src='/config.js' onload="System.import('/src/js/index.js')" ></script>
+    <script src="/bower_components/system.js/dist/system.js"  onload="System.import('/config.js').then(config=>System.import('/src/js/index.js'))"></script>
+    <!--<script src='/config.js' onload="System.import('/src/js/index.js')" ></script>-->
 
   </body>
 </html>

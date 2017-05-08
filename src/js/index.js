@@ -11,6 +11,9 @@
 //})
 //console.log(JSON.stringify(data))
 
+if(navigator.serviceWorker instanceof Object)
+  navigator.serviceWorker.register("/cdll.sw.js")
+
 let mdl= require('mdl')
 // let ajax= require('qwest')
 
@@ -33,8 +36,8 @@ window.riot= require('riot')
 let axios= require('axios')
 axios({
   // url: "https://api.github.com/users/cdll/repos"
-  url: "https://api.github.com/users/cdll"
-  // url: "/github.json"
+  // url: "https://api.github.com/users/cdll"
+  url: "/github.json"
   // ,params: {}
   // ,options: {
   //   header: {
@@ -46,9 +49,9 @@ axios({
   console.info(res.data)
 
   riot.compile("src/mod/github-repo.tag", tag=>{
-    riot.mount("*", {
-      repos: res.data
-    })
+    // riot.mount("*", {
+    //   repos: res.data
+    // })
   })
 }, err=>{
   return axios({
