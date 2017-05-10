@@ -13,23 +13,28 @@ toolbox.router.get(/\.html$/, self.toolbox.fastest, {
         ,maxEntries: 100
     }
 })
-toolbox.router.get(/\.js$/, self.toolbox.fastest, {
+toolbox.router.get(/\/bower_components\/[\S]+\.*$/, self.toolbox.fastest, {
     cache: {
-        name: "scripts"
-        ,maxEntries: 100
+        name: 'bower_components'
+        ,maxEntries: 10
     }
 })
-// toolbox.router.get(/\.sw\.js$/, self.toolbox.networkfirst, {
-// })
+toolbox.router.get(/\/config\.js$|\/src\/[\S]+\.js$/, self.toolbox.fastest, {
+    cache: {
+        name: "scripts"
+        ,maxEntries: 10
+    }
+})
+toolbox.router.get(/cdll\.sw\.js$/, self.toolbox.networkfirst, {})
 toolbox.router.get(/\.json$/, self.toolbox.fastest, {
     cache: {
         name: "datas"
-        ,maxEntries: 100
+        ,maxEntries: 10
     }
 })
 toolbox.router.get(/\.css$/, self.toolbox.fastest, {
     cache: {
         name: "styles"
-        ,maxEntries: 100
+        ,maxEntries: 10
     }
 })

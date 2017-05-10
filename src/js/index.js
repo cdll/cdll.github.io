@@ -11,8 +11,18 @@
 //})
 //console.log(JSON.stringify(data))
 
-if(navigator.serviceWorker instanceof Object)
-  navigator.serviceWorker.register("/cdll.sw.js")
+if(navigator.serviceWorker instanceof Object){
+  let service_version= '0.0.5'
+  // let _worker= new Worker()
+  navigator.serviceWorker.register(`/cdll.sw.js?v=${service_version}`)
+  navigator.serviceWorker.getRegistration().then(res=>{
+    // console.info(window.rr= res)
+    if(res) res.onupdatefound= function(){
+      res.unregister()
+      console.info(233)
+    }
+  })
+}
 
 let mdl= require('mdl')
 // let ajax= require('qwest')

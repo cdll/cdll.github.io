@@ -15,7 +15,7 @@
       self.app= 'my-tag'
       this.on('bootstrap', ()=>{
         console.info('bs', this)
-route('/', ()=>{
+route('/', (group, module, action)=>{
   console.info('/')
   route('/index', null, true)
 })
