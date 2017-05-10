@@ -1,18 +1,18 @@
 'use strict'
 
-//let Mock= require('/bower_components/mockjs/dist/mock-min.js')
-//console.info(Mock)
-//var data= Mock.mock({
+// const Mock= require('Mock')
+// console.info(Mock)
+// var data= Mock({
 //  'list|1-10': [
 //    {
 //      'id|+1': 1
 //    }
 //  ]
-//})
-//console.log(JSON.stringify(data))
+// })
+// console.log(JSON.stringify(data))
 
 if(navigator.serviceWorker instanceof Object){
-  let service_version= '0.0.5'
+  let service_version= '0.0.4'
   // let _worker= new Worker()
   navigator.serviceWorker.register(`/cdll.sw.js?v=${service_version}`)
   navigator.serviceWorker.getRegistration().then(res=>{

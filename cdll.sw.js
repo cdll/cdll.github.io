@@ -1,13 +1,13 @@
 
 importScripts('/bower_components/sw-toolbox/sw-toolbox.js')
 
-toolbox.router.get("/", self.toolbox.fastest, {
-    cahce: {
-        name: "index"
-        ,maxEntries: 10
-    }
-})
-toolbox.router.get(/\.html$/, self.toolbox.fastest, {
+// toolbox.router.get("/", self.toolbox.fastest, {
+//     cahce: {
+//         name: "index"
+//         ,maxEntries: 10
+//     }
+// })
+toolbox.router.get(/\/|\.html$/, self.toolbox.fastest, {
     cache: {
         name: "pages"
         ,maxEntries: 100
