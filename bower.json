@@ -24,7 +24,7 @@
     "vue": "^2.2.1",
     "system.js": "^0.20.12",
     "qwest": "^4.4.5",
-    "requirejs": "~2.1.22",
+    "requirejs": "^2.3.3",
     "incremental-dom": "~0.3.3",
     "angular": "angular2#~1.5.3",
     "angular-route": "~1.5.3",
@@ -45,6 +45,7 @@
     "axios": "^0.15.3",
     "riot-route": "^3.0.2",
     "es6-promise": "^4.0.5",
-    "sw-toolbox": "^3.6.1"
+    "sw-toolbox": "^3.6.1",
+    "js-md5": "md5#^0.4.2"
   }
 }

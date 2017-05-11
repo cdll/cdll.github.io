@@ -1,21 +1,15 @@
 
 importScripts('/bower_components/sw-toolbox/sw-toolbox.js')
 
-// toolbox.router.get("/", self.toolbox.fastest, {
-//     cahce: {
-//         name: "index"
-//         ,maxEntries: 10
-//     }
-// })
-toolbox.router.get(/\/|\.html$/, self.toolbox.fastest, {
+toolbox.router.get(/\/$|\.html$/, self.toolbox.fastest, {
     cache: {
         name: "pages"
-        ,maxEntries: 100
+        ,maxEntries: 10
     }
 })
 toolbox.router.get(/\/bower_components\/[\S]+\.*$/, self.toolbox.fastest, {
     cache: {
-        name: 'bower_components'
+        name: 'bowers'
         ,maxEntries: 10
     }
 })
@@ -25,14 +19,14 @@ toolbox.router.get(/\/config\.js$|\/src\/[\S]+\.js$/, self.toolbox.fastest, {
         ,maxEntries: 10
     }
 })
-toolbox.router.get(/cdll\.sw\.js$/, self.toolbox.networkfirst, {})
+toolbox.router.get(/\/cdll\.sw\.js$/, self.toolbox.networkFirst, {})
 toolbox.router.get(/\.json$/, self.toolbox.fastest, {
     cache: {
         name: "datas"
         ,maxEntries: 10
     }
 })
-toolbox.router.get(/\.css$/, self.toolbox.fastest, {
+toolbox.router.get(/\/src[\S]+\.css$/, self.toolbox.fastest, {
     cache: {
         name: "styles"
         ,maxEntries: 10

@@ -18,5 +18,6 @@ System.config({
     ,axios: "/bower_components/axios/dist/axios.min.js"
     ,riot: "/bower_components/riot/riot+compiler.min.js"
     ,swiper: '/bower_components/Swiper/dist/js/swiper.min.js'
+    ,md5: '/bower_components/js-md5/build/md5.min.js'
   }
 })

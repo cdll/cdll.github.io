@@ -11,16 +11,24 @@
 // })
 // console.log(JSON.stringify(data))
 
+window.riot= require('riot')
+
+const axios= require('axios')
+
 if(navigator.serviceWorker instanceof Object){
-  let service_version= '0.0.4'
-  // let _worker= new Worker()
-  navigator.serviceWorker.register(`/cdll.sw.js?v=${service_version}`)
-  navigator.serviceWorker.getRegistration().then(res=>{
-    // console.info(window.rr= res)
-    if(res) res.onupdatefound= function(){
-      res.unregister()
-      console.info(233)
-    }
+  let swFile= '/cdll.sw.js'
+  axios(`${swFile}?${new Date().getTime()}`)
+  .then(res=>{
+    const md5= require('md5')
+    let service_version= md5(res.data)
+
+    navigator.serviceWorker.register(`${swFile}?v=${service_version}`)
+    navigator.serviceWorker.getRegistration().then(res=>{
+      if(res) res.onupdatefound= function(){
+        res.unregister()
+        console.warn('~cdll.sw.js unregisted~')
+      }
+    })
   })
 }
 
@@ -41,9 +49,6 @@ console.info(mdl)
 //   console.warn(err)
 // })
 
-window.riot= require('riot')
-
-let axios= require('axios')
 axios({
   // url: "https://api.github.com/users/cdll/repos"
   // url: "https://api.github.com/users/cdll"
