@@ -16,18 +16,19 @@ window.riot= require('riot')
 const axios= require('axios')
 
 if(navigator.serviceWorker instanceof Object){
-  let swFile= '/cdll.sw.js'
-  axios(`${swFile}?${new Date().getTime()}`)
+  let sw_file= '/cdll.sw.js'
+  axios(`${sw_file}?${new Date().getTime()}`)
   .then(res=>{
     const md5= require('md5')
     let service_version= md5(res.data)
 
-    navigator.serviceWorker.register(`${swFile}?v=${service_version}`)
-    navigator.serviceWorker.getRegistration().then(res=>{
+    navigator.serviceWorker.getRegistration()
+    .then(res=>{
       if(res) res.onupdatefound= function(){
         res.unregister()
         console.warn('~cdll.sw.js unregisted~')
       }
+      else navigator.serviceWorker.register(`${sw_file}?v=${service_version}`)
     })
   })
 }
