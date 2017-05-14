@@ -23,8 +23,15 @@
     <h3 class="">all</h3>
 <!-- mount point -->
     <div data-is="app"></div>
+    <div data-is='footer' class="" hiddens>
+      <a class="btn" >hidden footer {msg}</a>
+    </div>
 
     <script>
+  riot.tag('footer', document.querySelector(), opts=>{
+    this.msg= 'dude'
+    console.info(opts)
+  })
 riot.compile(undefined=>{
   // here tags are compiled and riot.mount works synchronously
   var app = riot.compile('tags/app.tag', res=>{

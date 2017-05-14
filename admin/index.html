@@ -50,18 +50,7 @@
     <div class="main-view" ng-view="" vue-if=0></div>
 <!--    <router-view></router-view>-->
 
-    <script src="/bower_components/system.js/dist/system.js" on-load="System.import('./src/vueApp.js?'+(new Date()).getTime());" data-main='./src/ngApp.js'></script>
-    <script sr>
-  System.config({
-    baseUrl: '/admin'
-    ,map: {
-      traceur: '/bower_components/traceur/traceur.min.js'
-      ,vue: 'vue-loader.js'
-    }
-  })
-  //System.import('./src/ngApp.js')
-  System.import('./src/vueApp.js?'+(new Date()).getTime())
-    </script>
+    <script src="/bower_components/system.js/dist/system.js" onload="System.import('/config.js').then(System.import('./src/vueApp.js?'+(new Date()).getTime()))" ></script>
 
   </body>
 </html>
