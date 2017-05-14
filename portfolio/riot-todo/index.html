@@ -23,24 +23,25 @@
     <h3 class="">all</h3>
 <!-- mount point -->
     <div data-is="app"></div>
-    <div data-is='footer' class="" hiddens>
+    <center data-is='footer' class="" hidden='{!opts}'>
       <a class="btn" >hidden footer {msg}</a>
-    </div>
+    </center>
 
     <script>
-  riot.tag('footer', document.querySelector(), opts=>{
-    this.msg= 'dude'
-    console.info(opts)
-  })
+      riot.tag('footer', false, opts=>{
+        this.msg= 'tada'
+        console.info(344, opts)
+      })
 riot.compile(undefined=>{
   // here tags are compiled and riot.mount works synchronously
   var app = riot.compile('tags/app.tag', res=>{
     console.info(1, event)
-    riot.mount('*')
+    riot.mount('app')
   })
   var myTag = riot.compile('tags/my-tag.tag', res=>{
     console.info(2, event)
-    riot.mount('*')
+    // riot.mount('my-tag')
+  riot.mount('*')
   })
 })
     </script>
