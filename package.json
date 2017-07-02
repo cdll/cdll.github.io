@@ -34,7 +34,8 @@
   "scripts": {
     "start": "node console.log('start')",
     "test": "jspm bundle ./src/js/index.js index.min.js --minify",
-    "serve": "http-server . -p 8090 -verbose -S -C ~/github/server.pem -K ~/github/privkey.pem"
+    "serve": "http-server . -p 8090 -verbose"
+    ,"dude": " -S -C ~/github/server.pem -K ~/github/privkey.pem"
   },
   "dependencies": {
     "axios": "^0.15.3",
