@@ -26,7 +26,7 @@
       }
     }
     ,components: {
-      'AppNav': require('nav.vue')
+      'AppNav': require('./nav.vue')
     }
   }
 </script>

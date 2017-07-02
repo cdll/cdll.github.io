@@ -9,7 +9,7 @@ gulp.task('wp', [], ()=>{
 
   let webpackConfig= `./webpack.config.js`
   delete require.cache[require.resolve(webpackConfig)]
-  process.env.NODE_ENV= 'prod'
+  process.env.NODE_ENV= 'production'
   return gulp.src('index.html')
   .pipe(plumber())
   .pipe(webpack(require(webpackConfig)))
@@ -35,7 +35,8 @@ gulp.task('vue', [], ()=>{
     './app.js'
   ])
   // return gulp.src(['./es/main.es.js'])
-  return rollup({//.pipe(rollup({
+  //.pipe(rollup({
+  return rollup({
     entry: 'es/main.es.js'
     // ,dest: './app.js'
     // ,sourcemaps: true
