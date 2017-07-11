@@ -17,8 +17,7 @@
     "incremental-dom": "^0.3.0",
     "keycode": "^2.1.8",
     "postcss": "^5.2.16",
-    "pug": "^2.0.0-beta11",
-    "riot": "^3.4.0",
+    "pug": "^2.0.0-rc.2",
     "rollup-plugin-css-only": "^0.2.0",
     "rollup-plugin-postcss": "^0.2.0",
     "rollup-plugin-vue2": "^0.8.0",
@@ -34,15 +33,15 @@
   "scripts": {
     "start": "node console.log('start')",
     "test": "jspm bundle ./src/js/index.js index.min.js --minify",
-    "serve": "http-server . -p 8090 -verbose"
-    ,"dude": " -S -C ~/github/server.pem -K ~/github/privkey.pem"
+    "serve": "http-server . -p 8090 -verbose",
+    "dude": " -S -C ~/github/server.pem -K ~/github/privkey.pem"
   },
   "dependencies": {
     "axios": "^0.15.3",
     "mdi": "^1.8.36",
     "muse-ui": "^2.0.2",
-    "riot": "^3.4.0",
-    "vue": "^2.2.5",
+    "riot": "^3.6.1",
+    "vue": "^2.3.4",
     "vue-router": "^2.3.0",
     "vuex": "^2.2.1"
   }

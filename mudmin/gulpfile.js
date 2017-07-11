@@ -4,12 +4,17 @@ var gulp= require('gulp')
 var plumber= require('gulp-plumber')
 
 // https://github.com/rodzzlessa24/vue-webgulp/blob/master/gulpfile.js
-gulp.task('wp', [], ()=>{
+gulp.task('wp', [
+], ()=>{
+  let genEnv= function(){
+    if((/prod/i).test(gulp.env.e))
+    process.env.NODE_ENV= 'production'
+    return ''
+  }()
   let webpack= require('webpack-stream')
 
   let webpackConfig= `./webpack.config.js`
   delete require.cache[require.resolve(webpackConfig)]
-  process.env.NODE_ENV= 'production'
   return gulp.src('index.html')
   .pipe(plumber())
   .pipe(webpack(require(webpackConfig)))

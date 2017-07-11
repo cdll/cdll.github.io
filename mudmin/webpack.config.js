@@ -3,7 +3,7 @@ const path= require('path')
 const webpack= require('webpack')
 
 // https://github.com/rodzzlessa24/vue-webgulp/blob/master/webpack.config.js
-var config= {
+module.exports= {
   entry: {
     app: `es/main.es.js`
   }
@@ -48,7 +48,7 @@ var config= {
       ,'bower_components'
     ]
     ,alias: {
-      'vue$': 'vue/dist/vue.common.js'
+      'vue$': 'vue/dist/vue.min.js'
     }
   }
   ,plugins: [
@@ -90,5 +90,3 @@ var config= {
 //     ,productionSourceMap: true
 //   }
 // }
-
-module.exports= config
