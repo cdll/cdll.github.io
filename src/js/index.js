@@ -34,9 +34,9 @@ if(navigator.serviceWorker instanceof Object){
 }
 
 let mdl= require('mdl')
-// let ajax= require('qwest')
-
 console.info(mdl)
+
+// let ajax= require('qwest')
 // ajax.get(
 //   'https://api.github.com/users/cdll/repos'
 //   ,{}
@@ -52,8 +52,8 @@ console.info(mdl)
 
 axios({
   // url: "https://api.github.com/users/cdll/repos"
-  // url: "https://api.github.com/users/cdll"
-  url: "/github.json"
+  url: "https://api.github.com/users/cdll"
+  // url: "/github.json"
   // ,params: {}
   // ,options: {
   //   header: {
@@ -82,4 +82,14 @@ axios({
       })
     })
   })
+})
+
+axios({
+  method: 'get'
+  ,url: `http://ip.taobao.com/service/getIpInfo.php?ip=${'115.156.238.114'}`
+  ,headers: {
+    mode: 'no-cors'
+    ,cache: 'default'
+    ,credentials: "include"
+  }
 })
