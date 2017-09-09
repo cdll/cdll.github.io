@@ -84,12 +84,12 @@ axios({
   })
 })
 
-axios({
-  method: 'get'
-  ,url: `http://ip.taobao.com/service/getIpInfo.php?ip=${'115.156.238.114'}`
-  ,headers: {
-    mode: 'no-cors'
-    ,cache: 'default'
-    ,credentials: "include"
-  }
-})
+// axios({
+//   method: 'get'
+//   ,url: `http://ip.taobao.com/service/getIpInfo.php?ip=${'115.156.238.114'}`
+//   ,headers: {
+//     mode: 'no-cors'
+//     ,cache: 'default'
+//     ,credentials: "include"
+//   }
+// })
