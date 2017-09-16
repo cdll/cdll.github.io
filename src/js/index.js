@@ -15,23 +15,23 @@ window.riot= require('riot')
 
 const axios= require('axios')
 
-if(navigator.serviceWorker instanceof Object){
-  let sw_file= '/cdll.sw.js'
-  axios(`${sw_file}?${new Date().getTime()}`)
-  .then(res=>{
-    const md5= require('md5')
-    let service_version= md5(res.data)
+// if(navigator.serviceWorker&& /https/i.test(location.protocol)){
+//   let sw_file= '/cdll.sw.js'
+//   axios(`${sw_file}?${new Date().getTime()}`)
+//   .then(res=>{
+//     const md5= require('md5')
+//     let service_version= md5(res.data)
 
-    navigator.serviceWorker.getRegistration()
-    .then(res=>{
-      if(res) res.onupdatefound= function(){
-        res.unregister()
-        console.warn('~cdll.sw.js unregisted~')
-      }
-      else navigator.serviceWorker.register(`${sw_file}?v=${service_version}`)
-    })
-  })
-}
+//     navigator.serviceWorker.getRegistration()
+//     .then(res=>{
+//       if(res) res.onupdatefound= function(){
+//         res.unregister()
+//         console.warn('~cdll.sw.js unregisted~')
+//       }
+//       else navigator.serviceWorker.register(`${sw_file}?v=${service_version}`)
+//     })
+//   })
+// }
 
 let mdl= require('mdl')
 console.info(mdl)
@@ -64,10 +64,15 @@ axios({
 .then(res=>{
   console.info(res.data)
 
-  riot.compile("src/mod/github-repo.tag", tag=>{
-    // riot.mount("*", {
-    //   repos: res.data
-    // })
+  axios({
+    url: res.data.repos_url
+  })
+  .then(res=>{
+    riot.compile("src/mod/github-repo.tag", function(tag){
+      riot.mount("github-repo", {
+        repos: res.data
+      })
+    })
   })
 }, err=>{
   return axios({
@@ -76,13 +81,39 @@ axios({
   .then(res=>{
     console.info(res)
 
-    riot.compile("src/mod/github-repo.tag", tag=>{
+    riot.compile("src/mod/github-repo.tag", function(tag){
       riot.mount("*", {
         repos: res.data.dependencies
       })
     })
   })
 })
+
+riot.tag('friend-link', false, function(opts){
+  this.friendlinks= [
+    {
+      name: 'Stefory'
+      ,url: 'http://stefory.github.io'
+    }
+    ,{
+      name: 'Mindfarer'
+      ,url: 'http://farer.org'
+    }
+    ,{
+      name: '大菜FE'
+      ,url: 'http://icaife.github.io'
+    }
+    ,{
+      name: 'Slarker'
+      ,url: 'http://slarker.me'
+    }
+    ,{
+      name: '司徒正美'
+      ,url: 'http://www.cnblogs.com/rubylouvre'
+    }
+  ]
+})
+riot.mount('friend-link')
 
 // axios({
 //   method: 'get'

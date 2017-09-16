@@ -69,23 +69,13 @@
       <div class="footer-container mdl-grid">
         <hr>
         <div class="mdl-cell mdl-cell--3-col">
-          <div class='row'>
+          <div class='row' data-is='friend-link'>
             <h4>友情链接：</h4>
-            <a class='center-block' href='http://stefory.github.io/' target="_blank">
-              <button class='mdl-button mdl-color-text--blue-grey-50'><i>Stefory</i></button>
-            </a>
-            <a class='center-block' href='http://farer.org/' target="_blank">
-              <button class='mdl-button mdl-color-text--blue-grey-50'><i>Mindfarer</i></button>
-            </a>
-            <a class='center-block' href='http://icaife.github.io/' target="_blank">
-              <button class='mdl-button mdl-color-text--blue-grey-50'><i>大菜FE</i></button>
-            </a>
-            <a class='center-block' href='http://slarker.me/' target="_blank">
-              <button class='mdl-button mdl-color-text--blue-grey-50'><i>Slarker</i></button>
-            </a>
-            <a class='center-block' href='http://www.cnblogs.com/rubylouvre/' target="_blank">
-              <button class='mdl-button mdl-color-text--blue-grey-50'><i>司徒正美</i></button>
-            </a>
+            <virtual each='{el in friendlinks}' hidden>
+              <a class='center-block' riot-href='{el.url}' target="_blank">
+                <button class='mdl-button mdl-color-text--blue-grey-50'><i>{ el.name }</i></button>
+              </a>
+            </virtual>
           </div>
         </div>
         <div class="mdl-cell mdl-cell--3-col">

@@ -9,10 +9,12 @@
       padding: .5rem;
     }
   </style>
-  <p class="text-dark" each="{v, k in opts.repos}"><big>{k}: </big>{v}</p>
+
+  <section class="text-dark" each='{repo in opts.repos}' key='{repo.created_at}'>
+    <a class="" riot-href='{repo.html_url}'><big>{repo.name}</big></a>
+  </section>
 
   <script>
     console.info(opts.repos)
-    this.repos= opts.repos
   </script>
 </github-repo>
