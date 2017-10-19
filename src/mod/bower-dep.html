@@ -8,11 +8,11 @@
     }
   </style>
 
-  <section class="text-dark" each='{repo in opts.repos}' key='{repo.created_at}' if='{!repo.fork}'>
-    <a class="" riot-href='{repo.html_url}'><big>{repo.name}</big></a>
+  <section class="text-dark" each='{dep in opts.deps}' key='{dep}'  >
+    <a class="" riot-href='{dep}'><big>{dep}</big></a>
   </section>
 
   <script>
-    console.info(opts.repos)
+    console.info(opts.deps)
   </script>
 </github-repo>

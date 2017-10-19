@@ -50,42 +50,10 @@ console.info(mdl)
 //   console.warn(err)
 // })
 
-axios({
-  // url: "https://api.github.com/users/cdll/repos"
-  url: "https://api.github.com/users/cdll"
-  // url: "/github.json"
-  // ,params: {}
-  // ,options: {
-  //   header: {
-  //     cache: false
-  //   }
-  // }
-})
-.then(res=>{
-  console.info(res.data)
-
-  axios({
-    url: res.data.repos_url
-  })
-  .then(res=>{
-    riot.compile("src/mod/github-repo.tag", function(tag){
-      riot.mount("github-repo", {
-        repos: res.data
-      })
-    })
-  })
-}, err=>{
-  return axios({
-    url: "/bower.json"
-  })
-  .then(res=>{
-    console.info(res)
-
-    riot.compile("src/mod/github-repo.tag", function(tag){
-      riot.mount("*", {
-        repos: res.data.dependencies
-      })
-    })
+riot.tag('body', false, function(opts){
+  // console.warn(opts)
+  this.update({
+    mainComp: opts.mainComp|| ''
   })
 })
 
@@ -114,6 +82,50 @@ riot.tag('friend-link', false, function(opts){
   ]
 })
 riot.mount('friend-link')
+
+axios({
+  // url: "https://api.github.com/users/cdll/repos"
+  url: "https://api.github.com/users/cdll"
+  // url: "/github.json"
+  // ,params: {}
+  // ,options: {
+  //   header: {
+  //     cache: false
+  //   }
+  // }
+})
+.then(res=>{
+  console.info(res.data)
+  axios({
+    url: res.data.repos_url
+  })
+  .then(res=>{
+    riot.mount('body', {
+      mainComp: 'github-repo'
+    })
+    riot.compile("src/mod/github-repo.tag", function(tag){
+      riot.mount("github-repo", {
+        repos: res.data
+      })
+    })
+  })
+}, err=>{
+  axios({
+    url: "/bower.json"
+  })
+  .then(res=>{
+    riot.mount('body', {
+      mainComp: 'bower-deps'
+    })
+    console.info(res.data)
+    
+    riot.compile("src/mod/github-repo.tag", function(tag){
+      riot.mount("bower-deps", {
+        deps: res.data.dependencies
+      })
+    })
+  }, err=>console.warn(err))
+})
 
 // axios({
 //   method: 'get'

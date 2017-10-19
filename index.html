@@ -62,16 +62,16 @@
     </header>
 
     <div class="mdl-layout__content clear">
-      <div class="" data-is="github-repo"></div>
+      <div class="loading-spinner" riot-data-is="{mainComp}"></div>
     </div>
     <!-- FOOTER  -->
     <footer class="-footer-index">
       <div class="footer-container mdl-grid">
         <hr>
         <div class="mdl-cell mdl-cell--3-col">
-          <div class='row' data-is='friend-link'>
+          <div class='row' data-is='friend-link' hiddens='{!isMounted}'>
             <h4>友情链接：</h4>
-            <virtual each='{el in friendlinks}' hidden>
+            <virtual each='{el in friendlinks}'>
               <a class='center-block' riot-href='{el.url}' target="_blank">
                 <button class='mdl-button mdl-color-text--blue-grey-50'><i>{ el.name }</i></button>
               </a>
