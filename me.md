@@ -12,7 +12,7 @@
 
 **毕业院校：** 沈阳建筑大学（计算机科学与技术） ``2014届 本科``  
 
-**技术分享：** [blog](https://github.com/cdll/blog/issues)  
+**笔记分享：** [blog](https://github.com/cdll/blog/issues)  
 
 >
 
