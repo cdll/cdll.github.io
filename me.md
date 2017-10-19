@@ -48,8 +48,17 @@ habit: 习惯使用各版本ps、各类ide快捷键，习惯使用右手敲击�
 
 ## 工作经历 ##
 
+**上海璞毅网络**
+[2015/10~至今](http://www.jiliguala.com 'http://www.jiliguala.com')
+`WEB前端工程师`
+
+````
+叽里呱啦APP招Web前端工程师！
+欢迎来聊聊(mailTo: david@jiliguala.com)👏
+````
+
 **苏州联康**
-[2014/10~至今](http://www.lkhealth.cn 'http://www.lkhealth.cn')
+[2014/10~2015/10](http://www.lkhealth.cn 'http://www.lkhealth.cn')
 `WEB前端工程师`
 
 ````
