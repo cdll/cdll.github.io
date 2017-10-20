@@ -50,38 +50,44 @@ console.info(mdl)
 //   console.warn(err)
 // })
 
-riot.tag('body', false, function(opts){
-  // console.warn(opts)
+riot.tag('friend-link', false, function(opts){
   this.update({
-    mainComp: opts.mainComp|| ''
+    friendlinks: [
+      {
+        name: 'Stefory'
+        ,url: 'http://stefory.github.io'
+      }
+      ,{
+        name: 'Mindfarer'
+        ,url: 'http://farer.org'
+      }
+      ,{
+        name: '大菜FE'
+        ,url: 'http://icaife.github.io'
+      }
+      ,{
+        name: 'Slarker'
+        ,url: 'http://slarker.me'
+      }
+      ,{
+        name: '司徒正美'
+        ,url: 'http://www.cnblogs.com/rubylouvre'
+      }
+    ]
   })
 })
+// riot.compile('src/mod/friend-link.html', function(tag){
+  riot.mount('friend-link', {})
+// })
 
-riot.tag('friend-link', false, function(opts){
-  this.friendlinks= [
-    {
-      name: 'Stefory'
-      ,url: 'http://stefory.github.io'
-    }
-    ,{
-      name: 'Mindfarer'
-      ,url: 'http://farer.org'
-    }
-    ,{
-      name: '大菜FE'
-      ,url: 'http://icaife.github.io'
-    }
-    ,{
-      name: 'Slarker'
-      ,url: 'http://slarker.me'
-    }
-    ,{
-      name: '司徒正美'
-      ,url: 'http://www.cnblogs.com/rubylouvre'
-    }
-  ]
+riot.tag('body', false, function(opts){
+  console.warn(window.app= this)
+  this.on('mount', res=>{
+    this.update({
+      isMounted: true
+    })
+  })
 })
-riot.mount('friend-link')
 
 axios({
   // url: "https://api.github.com/users/cdll/repos"
@@ -110,7 +116,7 @@ axios({
     })
   })
 }, err=>{
-  axios({
+  return axios({
     url: "/bower.json"
   })
   .then(res=>{
@@ -119,8 +125,8 @@ axios({
     })
     console.info(res.data)
     
-    riot.compile("src/mod/github-repo.tag", function(tag){
-      riot.mount("bower-deps", {
+    riot.compile("src/mod/bower-dep.html", function(tag){
+      riot.mount("bower-dep", {
         deps: res.data.dependencies
       })
     })

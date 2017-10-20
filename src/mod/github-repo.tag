@@ -13,6 +13,6 @@
   </section>
 
   <script>
-    console.info(opts.repos)
+    // console.info(opts.repos)
   </script>
 </github-repo>
