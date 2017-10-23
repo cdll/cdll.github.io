@@ -78,59 +78,58 @@ console.info(mdl)
 // })
 riot.compile('src/mod/friend-link.html', function(tag){
   riot.mount('friend-link', {})
-  
-  riot.tag('body', false, function(opts){
-    console.warn(window.app= this)
-    this.on('mount', res=>{
-      this.update({
-        isMounted: true
-      })
-    })
-  })
-  axios({
-    // url: "https://api.github.com/users/cdll/repos"
-    url: "https://api.github.com/users/cdll"
-    // url: "/github.json"
-    // ,params: {}
-    // ,options: {
-    //   header: {
-    //     cache: false
-    //   }
-    // }
-  })
-  .then(res=>{
-  //   console.info(res.data)
-  //   axios({
-  //     url: res.data.repos_url
-  //   })
-  //   .then(res=>{
-  //     riot.mount('body', {
-  //       mainComp: 'github-repo'
-  //     })
-  //     riot.compile("src/mod/github-repo.tag", function(tag){
-  //       riot.mount("github-repo", {
-  //         repos: res.data
-  //       })
-  //     })
-  //   })
-  // }, err=>{
-    axios({
-      url: "/bower.json"
-    })
-    .then(res=>{
-      riot.mount('body', {
-        mainComp: 'bower-deps'
-      })
-      
-      riot.compile("src/mod/bower-dep.html", function(tag){
-        riot.mount("bower-dep", {
-          deps: res.data.dependencies
-        })
-      })
-    }, err=>console.warn(err))
-  })
 })
 
+riot.tag('body', false, function(opts){
+  console.warn(window.app= this)
+  this.on('mount', res=>{
+    this.update({
+      isMounted: true
+    })
+  })
+})
+axios({
+  // url: "https://api.github.com/users/cdll/repos"
+  url: "https://api.github.com/users/cdll"
+  // url: "/github.json"
+  // ,params: {}
+  // ,options: {
+  //   header: {
+  //     cache: false
+  //   }
+  // }
+})
+.then(res=>{
+//   console.info(res.data)
+  axios({
+    url: res.data.repos_url
+  })
+  .then(res=>{
+    riot.mount('body', {
+      mainComp: 'github-repo'
+    })
+    riot.compile("src/mod/github-repo.tag", function(tag){
+      riot.mount("github-repo", {
+        repos: res.data
+      })
+    })
+  })
+}, err=>{
+  axios({
+    url: "/bower.json"
+  })
+  .then(res=>{
+    riot.mount('body', {
+      mainComp: 'bower-deps'
+    })
+    
+    riot.compile("src/mod/bower-dep.html", function(tag){
+      riot.mount("bower-dep", {
+        deps: res.data.dependencies
+      })
+    })
+  }, err=>console.warn(err))
+})
 
 // axios({
 //   method: 'get'
