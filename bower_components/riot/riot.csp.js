@@ -1,4 +1,4 @@
-/* Riot v3.7.3, @license MIT */
+/* Riot v3.8.1, @license MIT */
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
 	typeof define === 'function' && define.amd ? define(['exports'], factory) :
@@ -39,223 +39,13 @@ var RE_BOOL_ATTRS = /^(?:disabled|checked|readonly|required|allowfullscreen|auto
 var IE_VERSION = (WIN && WIN.document || {}).documentMode | 0;
 
 /**
- * Specialized function for looping an array-like collection with `each={}`
- * @param   { Array } list - collection of items
- * @param   {Function} fn - callback function
- * @returns { Array } the array looped
- */
-function each(list, fn) {
-  var len = list ? list.length : 0;
-  var i = 0;
-  for (; i < len; i++) { fn(list[i], i); }
-  return list
-}
-
-/**
- * Check whether an array contains an item
- * @param   { Array } array - target array
- * @param   { * } item - item to test
- * @returns { Boolean } -
- */
-function contains(array, item) {
-  return array.indexOf(item) !== -1
-}
-
-/**
- * Convert a string containing dashes to camel case
- * @param   { String } str - input string
- * @returns { String } my-string -> myString
- */
-function toCamel(str) {
-  return str.replace(/-(\w)/g, function (_, c) { return c.toUpperCase(); })
-}
-
-/**
- * Faster String startsWith alternative
- * @param   { String } str - source string
- * @param   { String } value - test string
- * @returns { Boolean } -
- */
-function startsWith(str, value) {
-  return str.slice(0, value.length) === value
-}
-
-/**
- * Helper function to set an immutable property
- * @param   { Object } el - object where the new property will be set
- * @param   { String } key - object key where the new property will be stored
- * @param   { * } value - value of the new property
- * @param   { Object } options - set the propery overriding the default options
- * @returns { Object } - the initial object
- */
-function defineProperty(el, key, value, options) {
-  Object.defineProperty(el, key, extend({
-    value: value,
-    enumerable: false,
-    writable: false,
-    configurable: true
-  }, options));
-  return el
-}
-
-/**
- * Function returning always a unique identifier
- * @returns { Number } - number from 0...n
- */
-var uid = (function() {
-  var i = 0;
-  return function () { return ++i; }
-})();
-
-/**
- * Short alias for Object.getOwnPropertyDescriptor
- */
-var getPropDescriptor = function (o, k) { return Object.getOwnPropertyDescriptor(o, k); };
-
-/**
- * Extend any object with other properties
- * @param   { Object } src - source object
- * @returns { Object } the resulting extended object
- *
- * var obj = { foo: 'baz' }
- * extend(obj, {bar: 'bar', foo: 'bar'})
- * console.log(obj) => {bar: 'bar', foo: 'bar'}
- *
- */
-function extend(src) {
-  var obj;
-  var i = 1;
-  var args = arguments;
-  var l = args.length;
-
-  for (; i < l; i++) {
-    if (obj = args[i]) {
-      for (var key in obj) {
-        // check if this property of the source object could be overridden
-        if (isWritable(src, key))
-          { src[key] = obj[key]; }
-      }
-    }
-  }
-  return src
-}
-
-var misc = Object.freeze({
-	each: each,
-	contains: contains,
-	toCamel: toCamel,
-	startsWith: startsWith,
-	defineProperty: defineProperty,
-	uid: uid,
-	getPropDescriptor: getPropDescriptor,
-	extend: extend
-});
-
-/**
- * Check if the passed argument is a boolean attribute
- * @param   { String } value -
- * @returns { Boolean } -
- */
-function isBoolAttr(value) {
-  return RE_BOOL_ATTRS.test(value)
-}
-
-/**
- * Check if passed argument is a function
- * @param   { * } value -
- * @returns { Boolean } -
- */
-function isFunction(value) {
-  return typeof value === T_FUNCTION
-}
-
-/**
- * Check if passed argument is an object, exclude null
- * NOTE: use isObject(x) && !isArray(x) to excludes arrays.
- * @param   { * } value -
- * @returns { Boolean } -
- */
-function isObject(value) {
-  return value && typeof value === T_OBJECT // typeof null is 'object'
-}
-
-/**
- * Check if passed argument is undefined
- * @param   { * } value -
- * @returns { Boolean } -
- */
-function isUndefined(value) {
-  return typeof value === T_UNDEF
-}
-
-/**
- * Check if passed argument is a string
- * @param   { * } value -
- * @returns { Boolean } -
- */
-function isString(value) {
-  return typeof value === T_STRING
-}
-
-/**
- * Check if passed argument is empty. Different from falsy, because we dont consider 0 or false to be blank
- * @param { * } value -
- * @returns { Boolean } -
- */
-function isBlank(value) {
-  return isNil(value) || value === ''
-}
-
-/**
- * Check against the null and undefined values
- * @param   { * }  value -
- * @returns {Boolean} -
- */
-function isNil(value) {
-  return isUndefined(value) || value === null
-}
-
-/**
- * Check if passed argument is a kind of array
- * @param   { * } value -
- * @returns { Boolean } -
- */
-function isArray(value) {
-  return Array.isArray(value) || value instanceof Array
-}
-
-/**
- * Check whether object's property could be overridden
- * @param   { Object }  obj - source object
- * @param   { String }  key - object property
- * @returns { Boolean } true if writable
- */
-function isWritable(obj, key) {
-  var descriptor = getPropDescriptor(obj, key);
-  return isUndefined(obj[key]) || descriptor && descriptor.writable
-}
-
-
-var check = Object.freeze({
-	isBoolAttr: isBoolAttr,
-	isFunction: isFunction,
-	isObject: isObject,
-	isUndefined: isUndefined,
-	isString: isString,
-	isBlank: isBlank,
-	isNil: isNil,
-	isArray: isArray,
-	isWritable: isWritable
-});
-
-/**
  * Shorter and fast way to select multiple nodes in the DOM
  * @param   { String } selector - DOM selector
  * @param   { Object } ctx - DOM node where the targets of our search will is located
  * @returns { Object } dom nodes found
  */
 function $$(selector, ctx) {
-  return Array.prototype.slice.call((ctx || document).querySelectorAll(selector))
+  return [].slice.call((ctx || document).querySelectorAll(selector))
 }
 
 /**
@@ -285,18 +75,18 @@ function createDOMPlaceholder() {
 }
 
 /**
- * Check if a DOM node is an svg tag
+ * Check if a DOM node is an svg tag or part of an svg
  * @param   { HTMLElement }  el - node we want to test
  * @returns {Boolean} true if it's an svg node
  */
 function isSvg(el) {
-  return !!el.ownerSVGElement
+  var owner = el.ownerSVGElement;
+  return !!owner || owner === null
 }
 
 /**
  * Create a generic DOM node
  * @param   { String } name - name of the DOM node we want to create
- * @param   { Boolean } isSvg - true if we need to use an svg node
  * @returns { Object } DOM node just created
  */
 function mkEl(name) {
@@ -307,16 +97,22 @@ function mkEl(name) {
  * Set the inner html of any DOM node SVGs included
  * @param { Object } container - DOM node where we'll inject new html
  * @param { String } html - html to inject
+ * @param { Boolean } isSvg - svg tags should be treated a bit differently
  */
 /* istanbul ignore next */
-function setInnerHTML(container, html) {
-  if (!isUndefined(container.innerHTML))
-    { container.innerHTML = html; }
-    // some browsers do not support innerHTML on the SVGs tags
-  else {
-    var doc = new DOMParser().parseFromString(html, 'application/xml');
-    var node = container.ownerDocument.importNode(doc.documentElement, true);
+function setInnerHTML(container, html, isSvg) {
+  // innerHTML is not supported on svg tags so we neet to treat them differently
+  if (isSvg) {
+    var node = container.ownerDocument.importNode(
+      new DOMParser()
+        .parseFromString(("<svg xmlns=\"" + SVG_NS + "\">" + html + "</svg>"), 'application/xml')
+        .documentElement,
+      true
+    );
+
     container.appendChild(node);
+  } else {
+    container.innerHTML = html;
   }
 }
 
@@ -460,7 +256,7 @@ if (WIN) {
     if (userNode) {
       if (userNode.id) { newNode.id = userNode.id; }
       userNode.parentNode.replaceChild(newNode, userNode);
-    } else { document.getElementsByTagName('head')[0].appendChild(newNode); }
+    } else { document.head.appendChild(newNode); }
 
     return newNode
   }))();
@@ -502,7 +298,9 @@ var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 
 
 
 
-
+function unwrapExports (x) {
+	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
+}
 
 function createCommonjsModule(fn, module) {
 	return module = { exports: {} }, fn(module, module.exports), module.exports;
@@ -511,9 +309,7 @@ function createCommonjsModule(fn, module) {
 var csp_tmpl = createCommonjsModule(function (module, exports) {
 (function (global, factory) {
 	factory(exports);
-}(commonjsGlobal, (function (exports) { 'use strict';
-
-function InfiniteChecker (maxIterations) {
+}(commonjsGlobal, (function (exports) { function InfiniteChecker (maxIterations) {
   if (this instanceof InfiniteChecker) {
     this.maxIterations = maxIterations;
     this.count = 0;
@@ -735,7 +531,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 	  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	*/
-	"use strict";
 	var comment_handler_1 = __webpack_require__(1);
 	var parser_1 = __webpack_require__(3);
 	var jsx_parser_1 = __webpack_require__(11);
@@ -817,7 +612,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
 	var syntax_1 = __webpack_require__(2);
 	var CommentHandler = (function () {
 	    function CommentHandler() {
@@ -976,7 +770,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 2 */
 /***/ function(module, exports) {
 
-	"use strict";
 	exports.Syntax = {
 	    AssignmentExpression: 'AssignmentExpression',
 	    AssignmentPattern: 'AssignmentPattern',
@@ -1050,7 +843,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
 	var assert_1 = __webpack_require__(4);
 	var messages_1 = __webpack_require__(5);
 	var error_handler_1 = __webpack_require__(6);
@@ -4026,7 +3818,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	// This is only to have a better contract semantic, i.e. another safety net
 	// to catch a logic error. The condition shall be fulfilled in normal case.
 	// Do NOT use this to enforce a certain condition on any user input.
-	"use strict";
 	function assert(condition, message) {
 	    /* istanbul ignore if */
 	    if (!condition) {
@@ -4040,8 +3831,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 5 */
 /***/ function(module, exports) {
 
-	"use strict";
-	// Error messages should be identical to V8.
 	exports.Messages = {
 	    UnexpectedToken: 'Unexpected token %0',
 	    UnexpectedTokenIllegal: 'Unexpected token ILLEGAL',
@@ -4097,7 +3886,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 6 */
 /***/ function(module, exports) {
 
-	"use strict";
 	var ErrorHandler = (function () {
 	    function ErrorHandler() {
 	        this.errors = [];
@@ -4166,7 +3954,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 7 */
 /***/ function(module, exports) {
 
-	"use strict";
 	(function (Token) {
 	    Token[Token["BooleanLiteral"] = 1] = "BooleanLiteral";
 	    Token[Token["EOF"] = 2] = "EOF";
@@ -4198,7 +3985,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
 	var assert_1 = __webpack_require__(4);
 	var messages_1 = __webpack_require__(5);
 	var character_1 = __webpack_require__(9);
@@ -5394,8 +5180,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 9 */
 /***/ function(module, exports) {
 
-	"use strict";
-	// See also tools/generate-unicode-regex.js.
 	var Regex = {
 	    // Unicode v8.0.0 NonAsciiIdentifierStart:
 	    NonAsciiIdentifierStart: /[\xAA\xB5\xBA\xC0-\xD6\xD8-\xF6\xF8-\u02C1\u02C6-\u02D1\u02E0-\u02E4\u02EC\u02EE\u0370-\u0374\u0376\u0377\u037A-\u037D\u037F\u0386\u0388-\u038A\u038C\u038E-\u03A1\u03A3-\u03F5\u03F7-\u0481\u048A-\u052F\u0531-\u0556\u0559\u0561-\u0587\u05D0-\u05EA\u05F0-\u05F2\u0620-\u064A\u066E\u066F\u0671-\u06D3\u06D5\u06E5\u06E6\u06EE\u06EF\u06FA-\u06FC\u06FF\u0710\u0712-\u072F\u074D-\u07A5\u07B1\u07CA-\u07EA\u07F4\u07F5\u07FA\u0800-\u0815\u081A\u0824\u0828\u0840-\u0858\u08A0-\u08B4\u0904-\u0939\u093D\u0950\u0958-\u0961\u0971-\u0980\u0985-\u098C\u098F\u0990\u0993-\u09A8\u09AA-\u09B0\u09B2\u09B6-\u09B9\u09BD\u09CE\u09DC\u09DD\u09DF-\u09E1\u09F0\u09F1\u0A05-\u0A0A\u0A0F\u0A10\u0A13-\u0A28\u0A2A-\u0A30\u0A32\u0A33\u0A35\u0A36\u0A38\u0A39\u0A59-\u0A5C\u0A5E\u0A72-\u0A74\u0A85-\u0A8D\u0A8F-\u0A91\u0A93-\u0AA8\u0AAA-\u0AB0\u0AB2\u0AB3\u0AB5-\u0AB9\u0ABD\u0AD0\u0AE0\u0AE1\u0AF9\u0B05-\u0B0C\u0B0F\u0B10\u0B13-\u0B28\u0B2A-\u0B30\u0B32\u0B33\u0B35-\u0B39\u0B3D\u0B5C\u0B5D\u0B5F-\u0B61\u0B71\u0B83\u0B85-\u0B8A\u0B8E-\u0B90\u0B92-\u0B95\u0B99\u0B9A\u0B9C\u0B9E\u0B9F\u0BA3\u0BA4\u0BA8-\u0BAA\u0BAE-\u0BB9\u0BD0\u0C05-\u0C0C\u0C0E-\u0C10\u0C12-\u0C28\u0C2A-\u0C39\u0C3D\u0C58-\u0C5A\u0C60\u0C61\u0C85-\u0C8C\u0C8E-\u0C90\u0C92-\u0CA8\u0CAA-\u0CB3\u0CB5-\u0CB9\u0CBD\u0CDE\u0CE0\u0CE1\u0CF1\u0CF2\u0D05-\u0D0C\u0D0E-\u0D10\u0D12-\u0D3A\u0D3D\u0D4E\u0D5F-\u0D61\u0D7A-\u0D7F\u0D85-\u0D96\u0D9A-\u0DB1\u0DB3-\u0DBB\u0DBD\u0DC0-\u0DC6\u0E01-\u0E30\u0E32\u0E33\u0E40-\u0E46\u0E81\u0E82\u0E84\u0E87\u0E88\u0E8A\u0E8D\u0E94-\u0E97\u0E99-\u0E9F\u0EA1-\u0EA3\u0EA5\u0EA7\u0EAA\u0EAB\u0EAD-\u0EB0\u0EB2\u0EB3\u0EBD\u0EC0-\u0EC4\u0EC6\u0EDC-\u0EDF\u0F00\u0F40-\u0F47\u0F49-\u0F6C\u0F88-\u0F8C\u1000-\u102A\u103F\u1050-\u1055\u105A-\u105D\u1061\u1065\u1066\u106E-\u1070\u1075-\u1081\u108E\u10A0-\u10C5\u10C7\u10CD\u10D0-\u10FA\u10FC-\u1248\u124A-\u124D\u1250-\u1256\u1258\u125A-\u125D\u1260-\u1288\u128A-\u128D\u1290-\u12B0\u12B2-\u12B5\u12B8-\u12BE\u12C0\u12C2-\u12C5\u12C8-\u12D6\u12D8-\u1310\u1312-\u1315\u1318-\u135A\u1380-\u138F\u13A0-\u13F5\u13F8-\u13FD\u1401-\u166C\u166F-\u167F\u1681-\u169A\u16A0-\u16EA\u16EE-\u16F8\u1700-\u170C\u170E-\u1711\u1720-\u1731\u1740-\u1751\u1760-\u176C\u176E-\u1770\u1780-\u17B3\u17D7\u17DC\u1820-\u1877\u1880-\u18A8\u18AA\u18B0-\u18F5\u1900-\u191E\u1950-\u196D\u1970-\u1974\u1980-\u19AB\u19B0-\u19C9\u1A00-\u1A16\u1A20-\u1A54\u1AA7\u1B05-\u1B33\u1B45-\u1B4B\u1B83-\u1BA0\u1BAE\u1BAF\u1BBA-\u1BE5\u1C00-\u1C23\u1C4D-\u1C4F\u1C5A-\u1C7D\u1CE9-\u1CEC\u1CEE-\u1CF1\u1CF5\u1CF6\u1D00-\u1DBF\u1E00-\u1F15\u1F18-\u1F1D\u1F20-\u1F45\u1F48-\u1F4D\u1F50-\u1F57\u1F59\u1F5B\u1F5D\u1F5F-\u1F7D\u1F80-\u1FB4\u1FB6-\u1FBC\u1FBE\u1FC2-\u1FC4\u1FC6-\u1FCC\u1FD0-\u1FD3\u1FD6-\u1FDB\u1FE0-\u1FEC\u1FF2-\u1FF4\u1FF6-\u1FFC\u2071\u207F\u2090-\u209C\u2102\u2107\u210A-\u2113\u2115\u2118-\u211D\u2124\u2126\u2128\u212A-\u2139\u213C-\u213F\u2145-\u2149\u214E\u2160-\u2188\u2C00-\u2C2E\u2C30-\u2C5E\u2C60-\u2CE4\u2CEB-\u2CEE\u2CF2\u2CF3\u2D00-\u2D25\u2D27\u2D2D\u2D30-\u2D67\u2D6F\u2D80-\u2D96\u2DA0-\u2DA6\u2DA8-\u2DAE\u2DB0-\u2DB6\u2DB8-\u2DBE\u2DC0-\u2DC6\u2DC8-\u2DCE\u2DD0-\u2DD6\u2DD8-\u2DDE\u3005-\u3007\u3021-\u3029\u3031-\u3035\u3038-\u303C\u3041-\u3096\u309B-\u309F\u30A1-\u30FA\u30FC-\u30FF\u3105-\u312D\u3131-\u318E\u31A0-\u31BA\u31F0-\u31FF\u3400-\u4DB5\u4E00-\u9FD5\uA000-\uA48C\uA4D0-\uA4FD\uA500-\uA60C\uA610-\uA61F\uA62A\uA62B\uA640-\uA66E\uA67F-\uA69D\uA6A0-\uA6EF\uA717-\uA71F\uA722-\uA788\uA78B-\uA7AD\uA7B0-\uA7B7\uA7F7-\uA801\uA803-\uA805\uA807-\uA80A\uA80C-\uA822\uA840-\uA873\uA882-\uA8B3\uA8F2-\uA8F7\uA8FB\uA8FD\uA90A-\uA925\uA930-\uA946\uA960-\uA97C\uA984-\uA9B2\uA9CF\uA9E0-\uA9E4\uA9E6-\uA9EF\uA9FA-\uA9FE\uAA00-\uAA28\uAA40-\uAA42\uAA44-\uAA4B\uAA60-\uAA76\uAA7A\uAA7E-\uAAAF\uAAB1\uAAB5\uAAB6\uAAB9-\uAABD\uAAC0\uAAC2\uAADB-\uAADD\uAAE0-\uAAEA\uAAF2-\uAAF4\uAB01-\uAB06\uAB09-\uAB0E\uAB11-\uAB16\uAB20-\uAB26\uAB28-\uAB2E\uAB30-\uAB5A\uAB5C-\uAB65\uAB70-\uABE2\uAC00-\uD7A3\uD7B0-\uD7C6\uD7CB-\uD7FB\uF900-\uFA6D\uFA70-\uFAD9\uFB00-\uFB06\uFB13-\uFB17\uFB1D\uFB1F-\uFB28\uFB2A-\uFB36\uFB38-\uFB3C\uFB3E\uFB40\uFB41\uFB43\uFB44\uFB46-\uFBB1\uFBD3-\uFD3D\uFD50-\uFD8F\uFD92-\uFDC7\uFDF0-\uFDFB\uFE70-\uFE74\uFE76-\uFEFC\uFF21-\uFF3A\uFF41-\uFF5A\uFF66-\uFFBE\uFFC2-\uFFC7\uFFCA-\uFFCF\uFFD2-\uFFD7\uFFDA-\uFFDC]|\uD800[\uDC00-\uDC0B\uDC0D-\uDC26\uDC28-\uDC3A\uDC3C\uDC3D\uDC3F-\uDC4D\uDC50-\uDC5D\uDC80-\uDCFA\uDD40-\uDD74\uDE80-\uDE9C\uDEA0-\uDED0\uDF00-\uDF1F\uDF30-\uDF4A\uDF50-\uDF75\uDF80-\uDF9D\uDFA0-\uDFC3\uDFC8-\uDFCF\uDFD1-\uDFD5]|\uD801[\uDC00-\uDC9D\uDD00-\uDD27\uDD30-\uDD63\uDE00-\uDF36\uDF40-\uDF55\uDF60-\uDF67]|\uD802[\uDC00-\uDC05\uDC08\uDC0A-\uDC35\uDC37\uDC38\uDC3C\uDC3F-\uDC55\uDC60-\uDC76\uDC80-\uDC9E\uDCE0-\uDCF2\uDCF4\uDCF5\uDD00-\uDD15\uDD20-\uDD39\uDD80-\uDDB7\uDDBE\uDDBF\uDE00\uDE10-\uDE13\uDE15-\uDE17\uDE19-\uDE33\uDE60-\uDE7C\uDE80-\uDE9C\uDEC0-\uDEC7\uDEC9-\uDEE4\uDF00-\uDF35\uDF40-\uDF55\uDF60-\uDF72\uDF80-\uDF91]|\uD803[\uDC00-\uDC48\uDC80-\uDCB2\uDCC0-\uDCF2]|\uD804[\uDC03-\uDC37\uDC83-\uDCAF\uDCD0-\uDCE8\uDD03-\uDD26\uDD50-\uDD72\uDD76\uDD83-\uDDB2\uDDC1-\uDDC4\uDDDA\uDDDC\uDE00-\uDE11\uDE13-\uDE2B\uDE80-\uDE86\uDE88\uDE8A-\uDE8D\uDE8F-\uDE9D\uDE9F-\uDEA8\uDEB0-\uDEDE\uDF05-\uDF0C\uDF0F\uDF10\uDF13-\uDF28\uDF2A-\uDF30\uDF32\uDF33\uDF35-\uDF39\uDF3D\uDF50\uDF5D-\uDF61]|\uD805[\uDC80-\uDCAF\uDCC4\uDCC5\uDCC7\uDD80-\uDDAE\uDDD8-\uDDDB\uDE00-\uDE2F\uDE44\uDE80-\uDEAA\uDF00-\uDF19]|\uD806[\uDCA0-\uDCDF\uDCFF\uDEC0-\uDEF8]|\uD808[\uDC00-\uDF99]|\uD809[\uDC00-\uDC6E\uDC80-\uDD43]|[\uD80C\uD840-\uD868\uD86A-\uD86C\uD86F-\uD872][\uDC00-\uDFFF]|\uD80D[\uDC00-\uDC2E]|\uD811[\uDC00-\uDE46]|\uD81A[\uDC00-\uDE38\uDE40-\uDE5E\uDED0-\uDEED\uDF00-\uDF2F\uDF40-\uDF43\uDF63-\uDF77\uDF7D-\uDF8F]|\uD81B[\uDF00-\uDF44\uDF50\uDF93-\uDF9F]|\uD82C[\uDC00\uDC01]|\uD82F[\uDC00-\uDC6A\uDC70-\uDC7C\uDC80-\uDC88\uDC90-\uDC99]|\uD835[\uDC00-\uDC54\uDC56-\uDC9C\uDC9E\uDC9F\uDCA2\uDCA5\uDCA6\uDCA9-\uDCAC\uDCAE-\uDCB9\uDCBB\uDCBD-\uDCC3\uDCC5-\uDD05\uDD07-\uDD0A\uDD0D-\uDD14\uDD16-\uDD1C\uDD1E-\uDD39\uDD3B-\uDD3E\uDD40-\uDD44\uDD46\uDD4A-\uDD50\uDD52-\uDEA5\uDEA8-\uDEC0\uDEC2-\uDEDA\uDEDC-\uDEFA\uDEFC-\uDF14\uDF16-\uDF34\uDF36-\uDF4E\uDF50-\uDF6E\uDF70-\uDF88\uDF8A-\uDFA8\uDFAA-\uDFC2\uDFC4-\uDFCB]|\uD83A[\uDC00-\uDCC4]|\uD83B[\uDE00-\uDE03\uDE05-\uDE1F\uDE21\uDE22\uDE24\uDE27\uDE29-\uDE32\uDE34-\uDE37\uDE39\uDE3B\uDE42\uDE47\uDE49\uDE4B\uDE4D-\uDE4F\uDE51\uDE52\uDE54\uDE57\uDE59\uDE5B\uDE5D\uDE5F\uDE61\uDE62\uDE64\uDE67-\uDE6A\uDE6C-\uDE72\uDE74-\uDE77\uDE79-\uDE7C\uDE7E\uDE80-\uDE89\uDE8B-\uDE9B\uDEA1-\uDEA3\uDEA5-\uDEA9\uDEAB-\uDEBB]|\uD869[\uDC00-\uDED6\uDF00-\uDFFF]|\uD86D[\uDC00-\uDF34\uDF40-\uDFFF]|\uD86E[\uDC00-\uDC1D\uDC20-\uDFFF]|\uD873[\uDC00-\uDEA1]|\uD87E[\uDC00-\uDE1D]/,
@@ -5452,7 +5236,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
 	var syntax_1 = __webpack_require__(2);
 	var ArrayExpression = (function () {
 	    function ArrayExpression(elements) {
@@ -6071,8 +5854,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-/* istanbul ignore next */
 	var __extends = (this && this.__extends) || function (d, b) {
 	    for (var p in b) { if (b.hasOwnProperty(p)) { d[p] = b[p]; } }
 	    function __() { this.constructor = d; }
@@ -6625,7 +6406,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	// Generated by generate-xhtml-entities.js. DO NOT MODIFY!
-	"use strict";
 	exports.XHTMLEntities = {
 	    quot: '\u0022',
 	    amp: '\u0026',
@@ -6886,7 +6666,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 13 */
 /***/ function(module, exports) {
 
-	"use strict";
 	exports.JSXSyntax = {
 	    JSXAttribute: 'JSXAttribute',
 	    JSXClosingElement: 'JSXClosingElement',
@@ -6906,7 +6685,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
 	var jsx_syntax_1 = __webpack_require__(13);
 	var JSXClosingElement = (function () {
 	    function JSXClosingElement(name) {
@@ -7009,7 +6787,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
 	var scanner_1 = __webpack_require__(8);
 	var error_handler_1 = __webpack_require__(6);
 	var token_1 = __webpack_require__(7);
@@ -8343,6 +8120,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 })));
 });
 
+unwrapExports(csp_tmpl);
 var csp_tmpl_1 = csp_tmpl.tmpl;
 var csp_tmpl_2 = csp_tmpl.brackets;
 
@@ -8471,6 +8249,226 @@ var observable$1 = function(el) {
   return el
 
 };
+
+/**
+ * Check if the passed argument is a boolean attribute
+ * @param   { String } value -
+ * @returns { Boolean } -
+ */
+function isBoolAttr(value) {
+  return RE_BOOL_ATTRS.test(value)
+}
+
+/**
+ * Check if passed argument is a function
+ * @param   { * } value -
+ * @returns { Boolean } -
+ */
+function isFunction(value) {
+  return typeof value === T_FUNCTION
+}
+
+/**
+ * Check if passed argument is an object, exclude null
+ * NOTE: use isObject(x) && !isArray(x) to excludes arrays.
+ * @param   { * } value -
+ * @returns { Boolean } -
+ */
+function isObject(value) {
+  return value && typeof value === T_OBJECT // typeof null is 'object'
+}
+
+/**
+ * Check if passed argument is undefined
+ * @param   { * } value -
+ * @returns { Boolean } -
+ */
+function isUndefined(value) {
+  return typeof value === T_UNDEF
+}
+
+/**
+ * Check if passed argument is a string
+ * @param   { * } value -
+ * @returns { Boolean } -
+ */
+function isString(value) {
+  return typeof value === T_STRING
+}
+
+/**
+ * Check if passed argument is empty. Different from falsy, because we dont consider 0 or false to be blank
+ * @param { * } value -
+ * @returns { Boolean } -
+ */
+function isBlank(value) {
+  return isNil(value) || value === ''
+}
+
+/**
+ * Check against the null and undefined values
+ * @param   { * }  value -
+ * @returns {Boolean} -
+ */
+function isNil(value) {
+  return isUndefined(value) || value === null
+}
+
+/**
+ * Check if passed argument is a kind of array
+ * @param   { * } value -
+ * @returns { Boolean } -
+ */
+function isArray(value) {
+  return Array.isArray(value) || value instanceof Array
+}
+
+/**
+ * Check whether object's property could be overridden
+ * @param   { Object }  obj - source object
+ * @param   { String }  key - object property
+ * @returns { Boolean } true if writable
+ */
+function isWritable(obj, key) {
+  var descriptor = getPropDescriptor(obj, key);
+  return isUndefined(obj[key]) || descriptor && descriptor.writable
+}
+
+
+var check = Object.freeze({
+	isBoolAttr: isBoolAttr,
+	isFunction: isFunction,
+	isObject: isObject,
+	isUndefined: isUndefined,
+	isString: isString,
+	isBlank: isBlank,
+	isNil: isNil,
+	isArray: isArray,
+	isWritable: isWritable
+});
+
+/**
+ * Specialized function for looping an array-like collection with `each={}`
+ * @param   { Array } list - collection of items
+ * @param   {Function} fn - callback function
+ * @returns { Array } the array looped
+ */
+function each(list, fn) {
+  var len = list ? list.length : 0;
+  var i = 0;
+  for (; i < len; i++) { fn(list[i], i); }
+  return list
+}
+
+/**
+ * Check whether an array contains an item
+ * @param   { Array } array - target array
+ * @param   { * } item - item to test
+ * @returns { Boolean } -
+ */
+function contains(array, item) {
+  return array.indexOf(item) !== -1
+}
+
+/**
+ * Convert a string containing dashes to camel case
+ * @param   { String } str - input string
+ * @returns { String } my-string -> myString
+ */
+function toCamel(str) {
+  return str.replace(/-(\w)/g, function (_, c) { return c.toUpperCase(); })
+}
+
+/**
+ * Faster String startsWith alternative
+ * @param   { String } str - source string
+ * @param   { String } value - test string
+ * @returns { Boolean } -
+ */
+function startsWith(str, value) {
+  return str.slice(0, value.length) === value
+}
+
+/**
+ * Helper function to set an immutable property
+ * @param   { Object } el - object where the new property will be set
+ * @param   { String } key - object key where the new property will be stored
+ * @param   { * } value - value of the new property
+ * @param   { Object } options - set the propery overriding the default options
+ * @returns { Object } - the initial object
+ */
+function defineProperty(el, key, value, options) {
+  Object.defineProperty(el, key, extend({
+    value: value,
+    enumerable: false,
+    writable: false,
+    configurable: true
+  }, options));
+  return el
+}
+
+/**
+ * Function returning always a unique identifier
+ * @returns { Number } - number from 0...n
+ */
+var uid = (function() {
+  var i = -1;
+  return function () { return ++i; }
+})();
+
+
+/**
+ * Warn a message via console
+ * @param   {String} message - warning message
+ */
+function warn(message) {
+  if (console && console.warn) { console.warn(message); }
+}
+
+/**
+ * Short alias for Object.getOwnPropertyDescriptor
+ */
+var getPropDescriptor = function (o, k) { return Object.getOwnPropertyDescriptor(o, k); };
+
+/**
+ * Extend any object with other properties
+ * @param   { Object } src - source object
+ * @returns { Object } the resulting extended object
+ *
+ * var obj = { foo: 'baz' }
+ * extend(obj, {bar: 'bar', foo: 'bar'})
+ * console.log(obj) => {bar: 'bar', foo: 'bar'}
+ *
+ */
+function extend(src) {
+  var obj;
+  var i = 1;
+  var args = arguments;
+  var l = args.length;
+
+  for (; i < l; i++) {
+    if (obj = args[i]) {
+      for (var key in obj) {
+        // check if this property of the source object could be overridden
+        if (isWritable(src, key))
+          { src[key] = obj[key]; }
+      }
+    }
+  }
+  return src
+}
+
+var misc = Object.freeze({
+	each: each,
+	contains: contains,
+	toCamel: toCamel,
+	startsWith: startsWith,
+	defineProperty: defineProperty,
+	uid: uid,
+	warn: warn,
+	getPropDescriptor: getPropDescriptor,
+	extend: extend
+});
 
 var settings$1 = extend(Object.create(csp_tmpl_2.settings), {
   skipAnonymousTags: true,
@@ -8659,7 +8657,7 @@ function updateExpression(expr) {
   // if this expression has the update method it means it can handle the DOM changes by itself
   if (expr.update) { return expr.update() }
 
-  var context = isToggle && !isAnonymous ? extend(Object.create(this), this.parent) : this;
+  var context = isToggle && !isAnonymous ? inheritParentProps.call(this) : this;
 
   // ...it seems to be a simple expression so we try to calculate its value
   value = csp_tmpl_1(expr.expr, context);
@@ -8770,8 +8768,7 @@ var IfExpr = {
     if (this.value && !this.current) { // insert
       this.current = this.pristine.cloneNode(true);
       this.stub.parentNode.insertBefore(this.current, this.stub);
-      this.expressions = [];
-      parseExpressions.apply(this.tag, [this.current, this.expressions, true]);
+      this.expressions = parseExpressions.apply(this.tag, [this.current, true]);
     } else if (!this.value && this.current) { // remove
       unmountAll(this.expressions);
       if (this.current._tag) {
@@ -9114,54 +9111,52 @@ function _each(dom, parent, expr) {
  * Walk the tag DOM to detect the expressions to evaluate
  * @this Tag
  * @param   { HTMLElement } root - root tag where we will start digging the expressions
- * @param   { Array } expressions - empty array where the expressions will be added
  * @param   { Boolean } mustIncludeRoot - flag to decide whether the root must be parsed as well
- * @returns { Object } an object containing the root noode and the dom tree
+ * @returns { Array } all the expressions found
  */
-function parseExpressions(root, expressions, mustIncludeRoot) {
+function parseExpressions(root, mustIncludeRoot) {
   var this$1 = this;
 
-  var tree = {parent: {children: expressions}};
+  var expressions = [];
 
-  walkNodes(root, function (dom, ctx) {
+  walkNodes(root, function (dom) {
     var type = dom.nodeType;
-    var parent = ctx.parent;
     var attr;
-    var expr;
     var tagImpl;
 
-    if (!mustIncludeRoot && dom === root) { return {parent: parent} }
+    if (!mustIncludeRoot && dom === root) { return }
 
     // text node
     if (type === 3 && dom.parentNode.tagName !== 'STYLE' && csp_tmpl_1.hasExpr(dom.nodeValue))
-      { parent.children.push({dom: dom, expr: dom.nodeValue}); }
+      { expressions.push({dom: dom, expr: dom.nodeValue}); }
 
-    if (type !== 1) { return ctx } // not an element
+    if (type !== 1) { return }
 
     var isVirtual = dom.tagName === 'VIRTUAL';
 
     // loop. each does it's own thing (for now)
     if (attr = getAttr(dom, LOOP_DIRECTIVE)) {
       if(isVirtual) { setAttr(dom, 'loopVirtual', true); } // ignore here, handled in _each
-      parent.children.push(_each(dom, this$1, attr));
+      expressions.push(_each(dom, this$1, attr));
       return false
     }
 
     // if-attrs become the new parent. Any following expressions (either on the current
     // element, or below it) become children of this expression.
     if (attr = getAttr(dom, CONDITIONAL_DIRECTIVE)) {
-      parent.children.push(Object.create(IfExpr).init(dom, this$1, attr));
+      expressions.push(Object.create(IfExpr).init(dom, this$1, attr));
       return false
     }
 
-    if (expr = getAttr(dom, IS_DIRECTIVE)) {
-      if (csp_tmpl_1.hasExpr(expr)) {
-        parent.children.push({
+    if (attr = getAttr(dom, IS_DIRECTIVE)) {
+      if (csp_tmpl_1.hasExpr(attr)) {
+        expressions.push({
           isRtag: true,
-          expr: expr,
+          expr: attr,
           dom: dom,
           attrs: [].slice.call(dom.attributes)
         });
+
         return false
       }
     }
@@ -9169,6 +9164,7 @@ function parseExpressions(root, expressions, mustIncludeRoot) {
     // if this is a tag, stop traversing here.
     // we ignore the root, since parseExpressions is called while we're mounting that root
     tagImpl = getTag(dom);
+
     if(isVirtual) {
       if(getAttr(dom, 'virtualized')) {dom.parentElement.removeChild(dom); } // tag created, remove from dom
       if(!tagImpl && !getAttr(dom, 'virtualized') && !getAttr(dom, 'loopVirtual'))  // ok to create virtual tag
@@ -9176,7 +9172,9 @@ function parseExpressions(root, expressions, mustIncludeRoot) {
     }
 
     if (tagImpl && (dom !== root || mustIncludeRoot)) {
-      if(isVirtual && !getAttr(dom, IS_DIRECTIVE)) { // handled in update
+      if(isVirtual) { // handled in update
+        if (getAttr(dom, IS_DIRECTIVE))
+          { warn(("Virtual tags shouldn't be used together with the \"" + IS_DIRECTIVE + "\" attribute - https://github.com/riot/riot/issues/2511")); }
         // can not remove attribute like directives
         // so flag for removal after creation to prevent maximum stack error
         setAttr(dom, 'virtualized', true);
@@ -9185,9 +9183,10 @@ function parseExpressions(root, expressions, mustIncludeRoot) {
           {root: dom, parent: this$1},
           dom.innerHTML
         );
-        parent.children.push(tag); // no return, anonymous tag, keep parsing
+
+        expressions.push(tag); // no return, anonymous tag, keep parsing
       } else {
-        parent.children.push(
+        expressions.push(
           initChildTag(
             tagImpl,
             {
@@ -9205,13 +9204,11 @@ function parseExpressions(root, expressions, mustIncludeRoot) {
     // attribute expressions
     parseAttributes.apply(this$1, [dom, dom.attributes, function (attr, expr) {
       if (!expr) { return }
-      parent.children.push(expr);
+      expressions.push(expr);
     }]);
+  });
 
-    // whatever the parent is, all child elements get the same parent.
-    // If this element had an if-attr, that's the parent for all child elements
-    return {parent: parent}
-  }, tree);
+  return expressions
 }
 
 /**
@@ -9333,7 +9330,7 @@ function mkdom(tmpl, html, isSvg$$1) {
   if (tblTags.test(tagName))
     { el = specialTags(el, tmpl, tagName); }
   else
-    { setInnerHTML(el, tmpl); }
+    { setInnerHTML(el, tmpl, isSvg$$1); }
 
   return el
 }
@@ -9542,7 +9539,7 @@ function unregister$1(name) {
   __TAG_IMPL[name] = null;
 }
 
-var version$1 = 'v3.7.3';
+var version$1 = 'v3.8.1';
 
 
 var core = Object.freeze({
@@ -9571,10 +9568,10 @@ function updateOpts(isLoop, parent, isAnonymous, opts, instAttrs) {
   // (and only this case) we don't need to do updateOpts, because the regular parse
   // will update those attrs. Plus, isAnonymous tags don't need opts anyway
   if (isLoop && isAnonymous) { return }
-  var ctx = !isAnonymous && isLoop ? this : parent || this;
+  var ctx = isLoop ? inheritParentProps.call(this) : parent || this;
 
   each(instAttrs, function (attr) {
-    if (attr.expr) { updateAllExpressions.call(ctx, [attr.expr]); }
+    if (attr.expr) { updateExpression.call(ctx, attr.expr); }
     // normalize the attribute names
     opts[toCamel(attr.name).replace(ATTRS_PREFIX, '')] = attr.expr ? attr.expr.value : attr.value;
   });
@@ -9805,7 +9802,7 @@ function createTag(impl, conf, innerHTML) {
     if (!skipAnonymous) { tag.trigger('before-mount'); }
 
     // parse layout after init. fn may calculate args for nested custom tags
-    parseExpressions.apply(tag, [dom, expressions, isAnonymous]);
+    each(parseExpressions.apply(tag, [dom, isAnonymous]), function (e) { return expressions.push(e); });
 
     tag.update(item);
 
@@ -9841,7 +9838,6 @@ function createTag(impl, conf, innerHTML) {
     var el = tag.root;
     var p = el.parentNode;
     var tagIndex = __TAGS_CACHE.indexOf(tag);
-    var ptag;
 
     if (!skipAnonymous) { tag.trigger('before-unmount'); }
 
@@ -9860,33 +9856,23 @@ function createTag(impl, conf, innerHTML) {
       });
     });
 
-    // remove tag tag instance from the global virtualDom variable
-    if (tagIndex !== -1)
-      { __TAGS_CACHE.splice(tagIndex, 1); }
+    // remove tag instance from the global tags cache collection
+    if (tagIndex !== -1) { __TAGS_CACHE.splice(tagIndex, 1); }
 
-    if (p || isVirtual) {
-      if (parent) {
-        ptag = getImmediateCustomParentTag(parent);
+    // clean up the parent tags object
+    if (parent && !isAnonymous) {
+      var ptag = getImmediateCustomParentTag(parent);
 
-        if (isVirtual) {
-          Object.keys(tag.tags).forEach(function (tagName) {
-            arrayishRemove(ptag.tags, tagName, tag.tags[tagName]);
-          });
-        } else {
-          arrayishRemove(ptag.tags, tagName, tag);
-          // remove from _parent too
-          if(parent !== ptag) {
-            arrayishRemove(parent.tags, tagName, tag);
-          }
-        }
+      if (isVirtual) {
+        Object
+          .keys(tag.tags)
+          .forEach(function (tagName) { return arrayishRemove(ptag.tags, tagName, tag.tags[tagName]); });
       } else {
-        // remove the tag contents
-        setInnerHTML(el, '');
+        arrayishRemove(ptag.tags, tagName, tag);
       }
-
-      if (p && !mustKeepRoot) { p.removeChild(el); }
     }
 
+    // unmount all the virtual directives
     if (tag.__.virts) {
       each(tag.__.virts, function (v) {
         if (v.parentNode) { v.parentNode.removeChild(v); }
@@ -9896,6 +9882,11 @@ function createTag(impl, conf, innerHTML) {
     // allow expressions to unmount themselves
     unmountAll(expressions);
     each(instAttrs, function (a) { return a.expr && a.expr.unmount && a.expr.unmount(); });
+
+    // clear the tag html if it's necessary
+    if (mustKeepRoot) { setInnerHTML(el, ''); }
+    // otherwise detach the root tag from the DOM
+    else if (p) { p.removeChild(el); }
 
     // custom internal unmount function to avoid relying on the observable
     if (tag.__.onUnmount) { tag.__.onUnmount(); }
@@ -10063,7 +10054,7 @@ function arrayishRemove(obj, key, value, ensureArray) {
     if (index !== -1) { obj[key].splice(index, 1); }
     if (!obj[key].length) { delete obj[key]; }
     else if (obj[key].length === 1 && !ensureArray) { obj[key] = obj[key][0]; }
-  } else
+  } else if (obj[key] === value)
     { delete obj[key]; } // otherwise just delete the key
 }
 
@@ -10142,6 +10133,16 @@ function makeVirtual(src, target) {
 }
 
 /**
+ * Return a temporary context containing also the parent properties
+ * @this Tag
+ * @param { Tag } - temporary tag context containing all the parent properties
+ */
+function inheritParentProps() {
+  if (this.parent) { return extend(Object.create(this), this.parent) }
+  return this
+}
+
+/**
  * Move virtual tag and all child nodes
  * @this Tag
  * @param { Node } src  - the node that will do the inserting
@@ -10199,6 +10200,7 @@ var tags = Object.freeze({
 	mountTo: mountTo,
 	makeReplaceVirtual: makeReplaceVirtual,
 	makeVirtual: makeVirtual,
+	inheritParentProps: inheritParentProps,
 	moveVirtual: moveVirtual,
 	selectTags: selectTags
 });
