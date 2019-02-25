@@ -11,7 +11,7 @@
 // })
 // console.log(JSON.stringify(data))
 
-window.riot= require('riot')
+window.riot= require('riotc').default
 
 const axios= require('axios')
 
@@ -76,7 +76,7 @@ console.info(mdl)
 //     ]
 //   })
 // })
-riot.compile('src/mod/friend-link.html', function(tag){
+riot.compile('src/es/friend-link.html', function(tag){
   riot.mount('friend-link', {})
 })
 
@@ -108,7 +108,7 @@ axios({
     riot.mount('body', {
       mainComp: 'github-repo'
     })
-    riot.compile("src/mod/github-repo.tag", function(tag){
+    riot.compile("src/es/github-repo.tag", function(tag){
       riot.mount("github-repo", {
         repos: res.data
       })
@@ -123,7 +123,7 @@ axios({
       mainComp: 'bower-deps'
     })
     
-    riot.compile("src/mod/bower-dep.html", function(tag){
+    riot.compile("src/es/bower-dep.html", function(tag){
       riot.mount("bower-dep", {
         deps: res.data.dependencies
       })
@@ -131,12 +131,12 @@ axios({
   }, err=>console.warn(err))
 })
 
-// axios({
-//   method: 'get'
-//   ,url: `http://ip.taobao.com/service/getIpInfo.php?ip=${'115.156.238.114'}`
-//   ,headers: {
-//     mode: 'no-cors'
-//     ,cache: 'default'
-//     ,credentials: "include"
-//   }
-// })
+axios({
+  method: 'get'
+  ,url: `http://ip.taobao.com/service/getIpInfo.php?ip=${'115.156.238.114'}`
+  ,headers: {
+    mode: 'no-cors'
+    ,cache: 'default'
+    ,credentials: "include"
+  }
+})

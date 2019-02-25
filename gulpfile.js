@@ -1,8 +1,8 @@
 
 var gulp= require('gulp')
 
-var jspm= require('gulp-jspm-build')
 gulp.task('jspm', [], function(){
+  var jspm= require('gulp-jspm-build')
   return jspm({
     bundles: [
       {
@@ -16,15 +16,15 @@ gulp.task('jspm', [], function(){
     }
     ,systemSfx: true
     ,configOverride:{
-//      baseUrl: '/'
+    // baseUrl: '/'
     }
   })
   .pipe(gulp.dest('./admin/src'))
 })
 
-var browserSync= require('browser-sync').create()
-var reload= browserSync.reload
 gulp.task('serve', [], function(){
+  var browserSync= require('browser-sync').create()
+  var reload= browserSync.reload
   browserSync.init({
     server: './'
   })
