@@ -5,6 +5,12 @@
     [active]{
       color: red;
     }
+    .text-info{
+      color: lightblue;
+    }
+    .text-warning{
+      color: lightsalmon;
+    }
   </style>
   <template>
     <p class="">
@@ -13,7 +19,7 @@
     <center class=''>
       {{nua}}
     </center>
-    <div class="" data-active={{active}}>{{active}}, im here~</div>
+    <div class="" class$='{{txtColor}}'>{{active}}, im here~</div>
   </template>
 </dom-module>
 
@@ -23,7 +29,7 @@
     ,properties: {
       author: {
         type: String,
-        value: 'clld'
+        value: 'cdll'
       }
       ,nua: {
         value: navigator.userAgent
@@ -31,12 +37,18 @@
       ,active: {
         value: true
       }
+      ,txtColor: {
+        computed: 'computeActive(active)'
+      }
     }
     ,ready: function(){
       var self= this
       setInterval(function(){
         self.active= !self.active
       }, 1000)
+    }
+    ,computeActive: function(_a){
+  return _a? 'text-info': 'text-warning'
     }
   })
 </script>

@@ -7,4 +7,10 @@ npm-debug.log
 # IDE cache
 .vscode
 .cache
+
+*.log
+/.vscode/
 .brackets.json
+
+node_modules/
+_bower_components/

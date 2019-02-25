@@ -4,41 +4,47 @@
   <head>
     <meta charset="utf-8">
     <meta name='viewport' content="width=device-width,user-scalable=0,initial-scale=1.0,maximum-scale=1.0" />
+    <base href="">
+
+    <script src="/bower_components/es6-promise/es6-promise.auto.min.js"></script>
+    <script src="/bower_components/axios/dist/axios.min.js"></script>
+    <script src="/bower_components/riot/riot+compiler.min.js"></script>
+    <script src="/bower_components/riot-route/dist/route.min.js"></script>
+
+    <style>
+      *{
+        margin: 0;padding: 0;
+      }
+    </style>
 
   </head>
 
   <body>
+    <h3 class="">all</h3>
 <!-- mount point -->
-    <my-tag>
-<!-- inlined tag definition -->
-<script type="riot/tag">
-  <my-tag>
-    <h3>Tag layout</h3>
-    <div class=''>{ dude }</div>
-    <inner-tag />
-    this.dude= 'bello'
-    this.on('mount', function(){
-      console.info(this)
-      this.update({
-        dude: 'halo'
+    <div data-is="app"></div>
+    <center data-is='footer' class="" hidden='{!opts}'>
+      <a class="btn" >hidden footer {msg}</a>
+    </center>
+
+    <script>
+      riot.tag('footer', false, opts=>{
+        this.msg= 'tada'
+        console.info(344, opts)
       })
-    })
-  </my-tag>
-</script>
-    </my-tag>
-
-
-<!-- <inner-tag/> is specified on external file -->
-<!--<script src="path/to/javascript/with-tags.js" type="riot/tag"></script>-->
-
-    <script src="/bower_components/riot/riot+compiler.min.js"></script>
-<script>
-riot.compile(function() {
+riot.compile(undefined=>{
   // here tags are compiled and riot.mount works synchronously
-  var tags = riot.mount('*')//mount normally
-  console.info(tags)
+  var app = riot.compile('tags/app.tag', res=>{
+    console.info(1, event)
+    riot.mount('app')
+  })
+  var myTag = riot.compile('tags/my-tag.tag', res=>{
+    console.info(2, event)
+    // riot.mount('my-tag')
+  riot.mount('*')
+  })
 })
-</script>
+    </script>
   </body>
 
 </html>

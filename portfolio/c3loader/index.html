@@ -5,71 +5,55 @@
       height: 100%;
       top: 100px;
     }
-    p {
-      width: 0px;
-      height: 10px;
-      background: red;
+    .spin-loading{
+      display: inline-block;
+      width: 4em;
+      height: 4em;
+      background: none;
       margin: 0 auto;
-      border-radius: 999px;
+      border-radius: 50%;
+      position: relative;
+      top: 50%;
 
-      animation: loading 6s linear infinite;
+      animation: loading 3s linear infinite;
+    }
+    .spin-loading:before{
+      display: block; content: ''; border: 1em solid lightblue;border-radius: 50%;
+      position: absolute;top: 0;left: 0;
+      width: 0;height: 0;
+      animation: poping 1s ease-in-out infinite;
+    }
+    .spin-loading:after{
+      display: block; content: ''; border: 1em solid lightpink;border-radius: 50%;
+      position: absolute;bottom: 0;right: 0;
+      width: 0;height: 0;
+      animation: poping 1s ease-in-out infinite;
     }
 
     @keyframes loading {
       0% {
-        width: 0px;
-        background-color: red;
-      }
-      10%{
-        width: 100px;
-      }
-      20%{
-        width: 0px;
-        background-color: red;
-      }
-      25%{
-        width: 0px;
-        background-color: blue;
-      }
-      35%{
-        width: 100px;
-      }
-      45%{
-        width: 0px;
-        background-color: blue;
-      }
-      50%{
-        width: 0;
-        background-color: green;
-      }
-      60%{
-        width: 100px;
-      }
-      70%{
-        width: 0px;
-        background-color: green;
-      }
-      75%{
-        width: 0px;
-        background-color: yellow;
-      }
-      85%{
-        width: 100px;
-      }
-      95%{
-        width: 0px;
-        background-color: yellow;
+        transform: rotate(0deg);
       }
       100% {
-        width: 0px;
-        background-color: red;
+        transform: rotate(720deg);
+      }
+    }
+    @keyframes poping {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.25);
+      }
+      100% {
+        transform: scale(1);
       }
     }
   </style>
 </head>
 
 <body>
-  <div class="loader">
-    <p></p>
-  </div>
+  <center class="loader">
+    <span class="spin-loading"></span>
+  </center>
 </body>

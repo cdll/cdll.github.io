@@ -1,7 +1,11 @@
 
-require(['/src/js/require.config.js'], function(cfg){
-  require.config(cfg)
-  require(['/bower_components/vue/dist/vue.min.js', "/bower_components/qwest/qwest.min.js"], function(Vue, ajax){
+require(['/src/js/require.config.js'], function(config){
+  require.config(config)
+
+  require([
+    'vue'
+    ,"qwest"
+  ], function(Vue, ajax){
     var vm= new Vue({
       el: '.robot',
       data: {
@@ -14,7 +18,7 @@ require(['/src/js/require.config.js'], function(cfg){
       ,methods: {
         enterSearch: function(e){
           if(e.which== 13&& !!vm.input.trim()){
-            require(["/bower_components/qwest/qwest.min.js"], function(ajax){
+            require(["qwest"], function(ajax){
               ajax.map('options', 'https://www.tuling123.com/openapi/api?key='+ vm.$data.turning_key+ '&info='+ vm.input)
               .then(function(res, xhr){
                 vm.status= res.code

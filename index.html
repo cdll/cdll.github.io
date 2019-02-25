@@ -1,5 +1,6 @@
+
 <!DOCTYPE html author='cdll@20140819' detail='https://api.github.com/users/cdll/repos'>
-<html class="mdl-layout__container">
+<html class="mdl-layout__container_">
 
   <head>
     <meta charset='utf-8'>
@@ -11,9 +12,10 @@
 
     <link rel="shortcut icon" href="/img/cdbg_1010.png" mce_href="/favicon.ico" type="image/x-icon">
 
-    <link rel="stylesheet" type="text/css" href="/src/css/style_index.css">
+    <link rel="stylesheet" type="text/css" href="/src/css/index.css">
 
     <title>C.D.Leon</title>
+    <script src="/bower_components/system.js/dist/system.js"  onload="System.import('/config.js').then(function(config){System.import('/src/js/index.js')}, function(err){console.warn(err)})"></script>
   </head>
 
   <body class="mdl-layout mdl-layout--fixed-header">
@@ -21,7 +23,7 @@
     <header class="mdl-layout__header mdl-layout__header--waterfall">
       <div class='mdl-layout__header-row'>
         <!-- MDL Spinner Component -->
-        <div class="mdl-layout-title mdl-spinner mdl-js-spinner is-active"></div>
+        <div class="mdl-layout-title mdl-spinner mdl-js-spinner is-active_"></div>
         <a class="mdl-navigation__link" href='/'>
           <span>C.D.LL</span>
         </a>
@@ -59,29 +61,21 @@
       </div>
     </header>
 
-    <div class="mdl-layout__content clear"></div>
+    <div class="mdl-layout__content clear">
+      <div class="loading-spinner" riot-data-is="{opts.mainComp}"></div>
+    </div>
     <!-- FOOTER  -->
     <footer class="-footer-index">
       <div class="footer-container mdl-grid">
         <hr>
         <div class="mdl-cell mdl-cell--3-col">
-          <div class='row'>
-            <h4>友情链接：</h4>
-            <a class='center-block' href='http://stefory.github.io/' target="_blank">
-              <p class=''><i>Stefory</i></p>
-            </a>
-            <a class='center-block' href='http://farer.org/' target="_blank">
-              <p class=''><i>Mindfarer</i></p>
-            </a>
-            <a class='center-block' href='http://icaife.github.io/' target="_blank">
-              <p class=''><i>大菜FE</i></p>
-            </a>
-            <a class='center-block' href='http://slarker.me/' target="_blank">
-              <p class=''><i>Slarker</i></p>
-            </a>
-            <a class='center-block' href='http://www.cnblogs.com/rubylouvre/' target="_blank">
-              <p class=''><i>司徒正美</i></p>
-            </a>
+          <div class='row' data-is='friend-link' >
+            <!-- <h4>友情链接：</h4>
+            <virtual each='{el in friendlinks}'>
+              <a class='center-block' riot-href='{el.url}' target="_blank">
+                <button class='mdl-button mdl-color-text--blue-grey-50'><i>{ el.name }</i></button>
+              </a>
+            </virtual> -->
           </div>
         </div>
         <div class="mdl-cell mdl-cell--3-col">
@@ -94,23 +88,18 @@
             <a href=''><i class="fa fa-wechat fa-lg"></i></a>
             <a href='https://github.com/cdll'><i class="fa fa-github fa-lg"></i></a>
             <a href='http://steamcommunity.com/id/cdell/'><i class="fa fa-steam-square fa-lg"></i></a>
-            <br/>
+            <!--<br>-->
             <i class="fa fa-qrcode fa-lg"></i>
           </div>
         </div>
         <div class="mdl-cell mdl-cell--3-col">
           <div class='row'>
             <h4>友情社区：</h4>
-<!--
-            <a class="center-block" href='https://cnodejs.org/' target="_blank">
+
+            <!-- <a class="center-block" href='https://cnodejs.org/' target="_blank">
               <p class=''><i>Nodejs中文社区</i></p>
-            </a>
--->
-<!--
-            <a class="center-block" href='http://www.avalon.org.cn/' target="_blank">
-              <p class=''><i>Avalonjs中文社区</i></p>
-            </a>
--->
+            </a> -->
+
             <a class="center-block" href='http://frontenddev.org/' target="_blank">
               <p class=''><i>FED社区</i></p>
             </a>
@@ -127,8 +116,7 @@
       </div>
     </footer>
 
-    <script src="/bower_components/system.js/dist/system.js"></script>
-    <script src='/config.js' onload="System.import('/src/js/index.js')" ></script>
+    <!-- <script src="/bower_components/es6-promise/es6-promise.auto.min.js"></script> -->
 
   </body>
 </html>
