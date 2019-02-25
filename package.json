@@ -32,6 +32,10 @@
   },
   "scripts": {
     "start": "node console.log('start')",
+<<<<<<< HEAD
+    "test": "jspm bundle ./src/js/index.js index.min.js --minify"
+    ,"server": "gulp serve"
+=======
     "test": "jspm bundle ./src/js/index.js index.min.js --minify",
     "serve": "http-server . -p 9090 -verbose",
     "dude": "http-server . -p 9090 -verbose -S -C ~/github/server.pem -K ~/github/privkey.pem"
@@ -44,5 +48,6 @@
     "vue": "^2.3.4",
     "vue-router": "^2.3.0",
     "vuex": "^2.2.1"
+>>>>>>> master
   }
 }
