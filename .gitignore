@@ -1,4 +1,10 @@
+# public
+bower_components
 node_modules
+jspm_packages
 npm-debug.log
-/.vscode/
+
+# IDE cache
+.vscode
+.cache
 .brackets.json
