@@ -2,57 +2,52 @@
 var _paths= (function(){
   var libpaths= {
     avalon: {
-      dev: '/bower_components/avalon/dist/avalon.shim.min'
-      ,prd: '//cdn.staticfile.org/avalon.js/1.5.9/avalon.shim.min'
+      prd: '//cdn.bootcss.com/avalon.js/1.5.9/avalon.shim.min'
+      ,dev: '/bower_components/avalon/dist/avalon.shim.min'
     }
     ,mmRouter: {
-      dev: "/bower_components/mmRouter/mmRouter"
-      ,prd: "//cdn.staticfile.org/mmRouter/0.3/mmRouter"
+      prd: "//cdn.bootcss.com/mmRouter/0.3/mmRouter"
+      ,dev: "/bower_components/mmRouter/mmRouter"
     }
     ,mmHistory: {
-      dev: "/bower_components/mmRouter/mmHistory"
-      ,prd: '//cdn.staticfile.org/mmRouter/0.3/mmHistory'
+      prd: '//cdn.bootcss.com/mmRouter/0.3/mmHistory'
+      ,dev: "/bower_components/mmRouter/mmHistory"
     }
     ,mmState: {
-      dev: "/bower_components/mmRouter/mmState"
-      ,prd: "/bower_components/mmRouter/mmState"
+      prd: "/bower_components/mmRouter/mmState"
     }
     ,mmPromise: {
-      dev: "/bower_components/mmRouter/mmPromise"
-      ,prd: "/bower_components/mmRouter/mmPromise"
+      prd: "/bower_components/mmRouter/mmPromise"
     }
     ,qwest: {
-      dev: "/bower_components/qwest/qwest.min"
-      ,prd: '//cdn.staticfile.org/qwest/4.4.5/qwest.min'
+      prd: '//cdn.bootcss.com/qwest/4.4.5/qwest.min'
+      ,dev: "/bower_components/qwest/qwest.min"
     }
     ,mock: {
-      dev: "/bower_components/mockjs/dist/mock-min"
-      ,prd: "/bower_components/mockjs/dist/mock-min"
+      prd: "/bower_components/mockjs/dist/mock-min"
     }
     ,bsn: {
-      dev: '//cdn.staticfile.org/bootstrap.native/1.1.0/bootstrap-native.min'
+      prd: '//cdn.bootcss.com/bootstrap.native/1.1.0/bootstrap-native.min'
     }
     ,bs: {
-      dev: "/bower_components/bootstrap/bootstrap-3.3.6/dist/js/bootst  ,prdrap.min"
-      ,prd: '//cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min'
+      prd: '//cdn.bootcss.com/twitter-bootstrap/3.3.7/js/bootstrap.min'
     }
     ,jquery: {
-      dev: '/bower_components/jquery/dist/jquery.min'
-      ,prd: '//cdn.staticfile.org/jquery/1.12.4/jquery.min'
+      prd: '//cdn.bootcss.com/jquery/1.12.4/jquery.min'
     }
     ,mdl: {
-      dev: "/bower_components/material-design-lite/material.min"
-      ,prd: '//cdn.staticfile.org/material-design-lite/1.3.0/material.min'
+      prd: '//cdn.bootcss.com/material-design-lite/1.3.0/material.min'
+      ,dev: "/bower_components/material-design-lite/material.min"
     }
     ,vue: {
-      dev: '/bower_components/vue/dist/vue.min'
-      ,prd: '//cdn.staticfile.org/vue/2.2.1/vue.min'
+      prd: '//cdn.bootcss.com/vue/2.2.1/vue.min'
+      ,dev: '/bower_components/vue/dist/vue.min'
     }
   }
   function getPath(key){
     var res= {}
     for(var el in libpaths){
-      res[el]= libpaths[el][key]
+      res[el]= libpaths[el][key]|| libpaths[el]['prd']
     }
     return res
   }
@@ -64,7 +59,7 @@ var config= {
   ,baseUrl: '/'
   ,map: {
     '*': {
-      'css': '/bower_components/require-css/css.min.js'
+      'css': '//cdn.bootcss.com/require-css/0.1.10/css.min.js'
     }
   }
   ,paths: _paths
