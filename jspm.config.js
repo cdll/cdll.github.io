@@ -1,26 +1,35 @@
 
-System.config({
+const config= {
   baseUrl: "./"
   ,bundles: {
     "vueApp.min.js": [
       "admin/src/vueApp.js"
     ]
   }
-  ,transpiler: 'traceur'
+  // ,transpiler: 'traceur'
+  ,transpiler: 'babel'
   ,map: {
     traceur: 'https://system-unsafe-production.jspm.io/traceur'
+    // ,babel: 'https://cdn.bootcss.com/babel-polyfill/6.26.0/polyfill.min.js'
+    ,babel: 'https://system-unsafe-production.jspm.io/babel-core'
   }
   ,meta: {
   }
   ,paths: {
     mdl: "https://cdn.bootcss.com/material-design-lite/1.3.0/material.min.js"
     ,Mock: "https://cdn.bootcss.com/Mock.js/1.0.1-beta3/mock-min.js"
-    // ,qwest: "https://cdn.bootcss.com/qwest/4.4.6/qwest.min.js"
-    ,vue: "https://cdn.bootcss.com/vue/1.0.28/vue.min.js"
-    ,axios: "https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.min.js"
-    ,riot: "https://system-unsafe-production.jspm.io/riot@3"
-    ,riotc: "https://system-unsafe-production.jspm.io/riot@3/riot+compiler"
+    ,qwest: "https://cdn.bootcss.com/qwest/4.4.6/qwest.min.js"
+    ,vuejs: "https://cdn.bootcss.com/vue/1.0.28/vue.min.js"
+    ,vue: "https://cdn.bootcss.com/vue/2.6.6/vue.min.js"
+    ,axios: "https://cdn.bootcss.com/axios/0.18.0/axios.min.js"
+    ,riot: "https://cdn.bootcss.com/riot/3.13.2/riot.min.js"
+    ,riotc: "https://cdn.bootcss.com/riot/3.13.2/riot+compiler.min.js"
     ,swiper: 'https://cdn.bootcss.com/Swiper/3.4.2/js/swiper.min.js'
-    ,md5: 'npm:js-md5'
+    ,md5implement: 'https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.min.js'
+    ,apollo: 'https://system-unsafe-production.jspm.io/apollo'
   }
-})
+  ,packages: {
+  }
+}
+if(System&& System.config) System.config(config)
+else if(typeof exports=== 'object') module.exports= config

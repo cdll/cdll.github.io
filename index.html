@@ -15,9 +15,10 @@
     <link rel="stylesheet" type="text/css" href="/src/css/index.css">
 
     <title>C.D.Leon</title>
-    <script src="https://cdn.bootcss.com/systemjs/0.21.6/system.js"  onload="javascript: System.import('/jspm.config.js').then(function(config){
-      System.import('/src/js/index.js')}, function(err){console.warn(err)
-    })"></script>
+
+    <script src="//cdn.bootcss.com/systemjs/0.21.6/system.js" onload="javascript: var _this= this; System.import('/jspm.config.js').then(function(config){ System.import(_this.getAttribute('data-main')) });" data-main='/src/js/index.js'></script>
+    <!-- <script src="https://cdn.bootcss.com/systemjs/3.0.0/system.min.js" onload="javascript: var _this= this;System.import('/jspm.config.js').then(function(){ window.import= System.import;import(_this.getAttribute('data-main')) });" data-main='/src/js/index.js'></script> -->
+    <!-- <script src='https://cdn.bootcss.com/basket.js/0.5.2/basket.full.min.js' onload='javascript: window.import= basket.require;import(this.get)'></script> -->
   </head>
 
   <body class="mdl-layout mdl-layout--fixed-header">
@@ -67,18 +68,11 @@
       <div class="loading-spinner" riot-data-is="{opts.mainComp}"></div>
     </div>
     <!-- FOOTER  -->
-    <footer class="-footer-index">
+    <footer class="-footer-index" hidden>
       <div class="footer-container mdl-grid">
         <hr>
         <div class="mdl-cell mdl-cell--3-col">
-          <div class='row' data-is='friend-link' >
-            <!-- <h4>友情链接：</h4>
-            <virtual each='{el in friendlinks}'>
-              <a class='center-block' riot-href='{el.url}' target="_blank">
-                <button class='mdl-button mdl-color-text--blue-grey-50'><i>{ el.name }</i></button>
-              </a>
-            </virtual> -->
-          </div>
+          <div class='row' data-is='friend-link' ></div>
         </div>
         <div class="mdl-cell mdl-cell--3-col">
           <div class='row'>
