@@ -91,8 +91,10 @@ axios({
     url: res.data.repos_url
   })
   .then(res=>{
-    riot.mount('body', {
-      mainComp: 'github-repo'
+    riot.compile('/src/es/riot-app.tag', function(tag){
+      riot.mount('body', {
+        mainComp: 'github-repo'
+      })
     })
     riot.compile("src/es/github-repo.tag", function(tag){
       riot.mount("github-repo", {
