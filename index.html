@@ -16,14 +16,14 @@
 
     <title>C.D.Leon</title>
 
+    <script src="//cdn.bootcss.com/es6-shim/0.35.4/es6-shim.min.js"></script>
+
     <script src="//cdn.bootcss.com/systemjs/0.21.6/system.js" onload="javascript: var _this= this; System.import('/jspm.config.js').then(function(config){ System.import(_this.getAttribute('data-main')) });" data-main='/src/js/index.js'></script>
     <!-- <script src="https://cdn.bootcss.com/systemjs/3.0.0/system.min.js" onload="javascript: var _this= this;System.import('/jspm.config.js').then(function(){ window.import= System.import;import(_this.getAttribute('data-main')) });" data-main='/src/js/index.js'></script> -->
-    <!-- <script src='https://cdn.bootcss.com/basket.js/0.5.2/basket.full.min.js' onload='javascript: window.import= basket.require;import(this.get)'></script> -->
+    <!-- <script src='https://cdn.bootcss.com/basket.js/0.5.2/basket.full.min.js' data-main='src/index.js' onload='javascript: window.import= basket.require;import(this.getAttribute("data-main")+ (new Date).getTime());'></script> -->
   </head>
 
   <body class="mdl-layout mdl-layout--fixed-header" data-is='app'>
     <app/>
-
-    <script src="//cdn.bootcss.com/es6-shim/0.35.4/es6-shim.min.js"></script>
   </body>
 </html>
