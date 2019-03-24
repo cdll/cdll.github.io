@@ -29,9 +29,10 @@
 window.riot= require('riotc')
 
 // const Apollo= require('apollo')
-const axios= require('axios')
+window.axios= require('axios')
+axios.defaults.timeout= 5000
 
-let mdl= require('mdl')
+window.mdl= require('mdl')
 console.info(mdl)
 
 axios('https://api.github.com/users/cdll/repos')
@@ -75,6 +76,7 @@ riot.compile('src/es/friend-link.tag', function(tag){
 riot.tag('body', false, function(opts){
   console.warn(window.app= this)
   this.on('mount', res=>{
+    new mdl.MaterialMenu('header')
     this.update({
       isMounted: true
     })
