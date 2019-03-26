@@ -42,38 +42,11 @@ axios('https://api.github.com/users/cdll/repos')
   console.warn(err)
 })
 
-riot.tag('friend-link', false, function(opts){
-  this.update({
-    friendlinks: [
-      {
-        name: 'Stefory'
-        ,url: 'http://stefory.github.io'
-      }
-      ,{
-        name: 'Mindfarer'
-        ,url: 'http://farer.org'
-      }
-      ,{
-        name: '大菜FE'
-        ,url: 'http://icaife.github.io'
-      }
-      ,{
-        name: 'Slarker'
-        ,url: 'http://slarker.me'
-      }
-      ,{
-        name: '司徒正美'
-        ,url: 'http://www.cnblogs.com/rubylouvre'
-      }
-    ]
-  })
-})
-
 riot.compile('src/es/friend-link.tag', function(tag){
   riot.mount('friend-link', {})
 })
 
-riot.tag('body', false, function(opts){
+riot.compile('src/es/riot-app.tag', false, function(opts){
   console.warn(window.app= this)
   this.on('mount', res=>{
     new mdl.MaterialMenu('header')
@@ -81,6 +54,7 @@ riot.tag('body', false, function(opts){
       isMounted: true
     })
   })
+  riot.mount(body, 'riot-app', {})
 })
 axios({
   // url: "https://api.github.com/users/cdll/repos"

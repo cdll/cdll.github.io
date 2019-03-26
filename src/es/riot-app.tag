@@ -1,10 +1,10 @@
-<app>
+<app class="mdl-layout mdl-layout--fixed-header">
   <!-- HEADER -->
   <header class="mdl-layout__header mdl-layout__header--waterfall">
     <div class='mdl-layout__header-row'>
       <!-- MDL Spinner Component -->
       <div class="mdl-layout-title mdl-spinner mdl-js-spinner is-active_"></div>
-      <a class="mdl-navigation__link" href='/'>
+      <a class="mdl-navigation__link" href='javascript:;'>
         <span>C.D.LL</span>
       </a>
       <!-- Add spacer, to align navigation to the right -->
