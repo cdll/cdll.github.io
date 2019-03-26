@@ -24,7 +24,8 @@ var _paths= (function(){
       ,dev: "/bower_components/qwest/qwest.min"
     }
     ,mock: {
-      prd: "/bower_components/mockjs/dist/mock-min"
+      prd: "//cdn.bootcss.com/Mock.js/1.0.0/mock-min"
+      ,dev: "/bower_components/mockjs/dist/mock-min"
     }
     ,bsn: {
       prd: '//cdn.bootcss.com/bootstrap.native/1.1.0/bootstrap-native.min'
@@ -51,7 +52,7 @@ var _paths= (function(){
     }
     return res
   }
-  return location.href.match(/\.com|\.io/i)? getPath('prd'): getPath('dev')
+  return getPath('prd')//: getPath('dev')
 })()
 
 var config= {

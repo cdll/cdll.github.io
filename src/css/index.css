@@ -8,7 +8,7 @@ html, body{
   -webkit-overflow-scrolling: touch;
 }
 html *{
-  font-family: fantasy;//, cursive, serif!important;
+  font-family: monospace;
 }
 ::-webkit-scrollbar{
   width: 0;

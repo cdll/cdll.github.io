@@ -1,21 +1,19 @@
 
-import Vue from 'Vue'
-import Router from 'vue-router'
-
-Vue.use(Router)
-export default new Router({
+const routes= {
   mode: 'hash'
   ,base: __dirname
   ,routes: [
     {
       path: '/'
-      ,component: require('../pages/app.vue')
+      ,component: resolve=> System.import('pages/app.vue').then(resolve)
       ,children: [
         {
           path: 'default'
-          ,component: require('../pages/home.vue')
+          ,component: resolve=> System.import('pages/home.vue').then(resolve)
         }
       ]
     }
   ]
-})
+}
+
+if(typeof exports=== 'object') module.exports= routes

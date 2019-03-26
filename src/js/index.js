@@ -1,19 +1,3 @@
-'use strict'
-
-// const Mock= require('Mock')
-// console.info(Mock)
-// var data= Mock({
-//  'list|1-10': [
-//    {
-//      'id|+1': 1
-//    }
-//  ]
-// })
-// console.log(JSON.stringify(data))
-
-window.riot= require('riotc').default
-
-const axios= require('axios')
 
 // if(navigator.serviceWorker&& /https/i.test(location.protocol)){
 //   let sw_file= '/cdll.sw.js'
@@ -33,71 +17,49 @@ const axios= require('axios')
 //   })
 // }
 
-let mdl= require('mdl')
+// Promise.all([
+//   // import(System.getConfig().paths['vue'])
+//   import(System.getConfig().paths['axios']).then(res=>{
+//     console.info(res)
+//   })
+// ])
+// .then((res)=>{
+//   console.info(Vue)
+// })
+window.riot= require('riotc')
+
+// const Apollo= require('apollo')
+window.axios= require('axios')
+axios.defaults.timeout= 5000
+
+window.mdl= require('mdl')
 console.info(mdl)
 
-// let ajax= require('qwest')
-// ajax.get(
-//   'https://api.github.com/users/cdll/repos'
-//   ,{}
-//   ,{
-//     cache: true
-//   }
-// )
-// .then(function(xhr, res){
-//   console.info(res)
-// }, function(xhr, res, err){
-//   console.warn(err)
-// })
+axios('https://api.github.com/users/cdll/repos')
+.then(res=>{
+  console.info(res)
+}, err=>{
+  console.warn(err)
+})
 
-// riot.tag('friend-link', false, function(opts){
-//   this.update({
-//     friendlinks: [
-//       {
-//         name: 'Stefory'
-//         ,url: 'http://stefory.github.io'
-//       }
-//       ,{
-//         name: 'Mindfarer'
-//         ,url: 'http://farer.org'
-//       }
-//       ,{
-//         name: '大菜FE'
-//         ,url: 'http://icaife.github.io'
-//       }
-//       ,{
-//         name: 'Slarker'
-//         ,url: 'http://slarker.me'
-//       }
-//       ,{
-//         name: '司徒正美'
-//         ,url: 'http://www.cnblogs.com/rubylouvre'
-//       }
-//     ]
-//   })
-// })
-riot.compile('src/es/friend-link.html', function(tag){
+riot.compile('src/es/friend-link.tag', function(tag){
   riot.mount('friend-link', {})
 })
 
-riot.tag('body', false, function(opts){
+riot.compile('src/es/riot-app.tag', false, function(opts){
   console.warn(window.app= this)
   this.on('mount', res=>{
+    new mdl.MaterialMenu('header')
     this.update({
       isMounted: true
     })
   })
+  riot.mount(body, 'riot-app', {})
 })
 axios({
   // url: "https://api.github.com/users/cdll/repos"
   url: "https://api.github.com/users/cdll"
   // url: "/github.json"
-  // ,params: {}
-  // ,options: {
-  //   header: {
-  //     cache: false
-  //   }
-  // }
 })
 .then(res=>{
 //   console.info(res.data)
@@ -105,8 +67,10 @@ axios({
     url: res.data.repos_url
   })
   .then(res=>{
-    riot.mount('body', {
-      mainComp: 'github-repo'
+    riot.compile('/src/es/riot-app.tag', function(tag){
+      riot.mount('body', {
+        mainComp: 'github-repo'
+      })
     })
     riot.compile("src/es/github-repo.tag", function(tag){
       riot.mount("github-repo", {
@@ -123,7 +87,7 @@ axios({
       mainComp: 'bower-deps'
     })
     
-    riot.compile("src/es/bower-dep.html", function(tag){
+    riot.compile("src/es/bower-dep.tag", function(tag){
       riot.mount("bower-dep", {
         deps: res.data.dependencies
       })
@@ -131,12 +95,14 @@ axios({
   }, err=>console.warn(err))
 })
 
-// axios({
-//   method: 'get'
-//   ,url: `http://ip.taobao.com/service/getIpInfo.php?ip=${'115.156.238.114'}`
-//   ,headers: {
-//     mode: 'no-cors'
-//     ,cache: 'default'
-//     ,credentials: "include"
-//   }
-// })
+/*
+axios({
+  method: 'get'
+  ,url: `http://ip.taobao.com/service/getIpInfo.php?ip=${'115.156.238.114'}`
+  ,headers: {
+    mode: 'no-cors'
+    ,cache: 'default'
+    ,credentials: "include"
+  }
+})
+*/

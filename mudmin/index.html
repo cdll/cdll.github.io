@@ -4,19 +4,24 @@
   <head>
     <meta charset="utf-8">
     <meta name='viewport' content="width=device-width,user-scalable=0,initial-scale=1.0,maximum-scale=1.0" />
+    <base href='/mudmin/'>
     <title>Muse Admin</title>
 
     <!--<link rel="stylesheet" href='://cdn.bootcss.com/material-design-lite/1.3.0/material.min.css' />-->
     <!--<link rel="stylesheet" href='://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css' />-->
     <link rel="stylesheet" href="//cdn.bootcss.com/material-design-icons/3.0.1/iconfont/material-icons.css">
+    <link rel="stylesheet" href='https://system-unsafe-production.jspm.io/npm:muse-ui@3.0.2/dist/muse-ui.css'>
 
   </head>
 
   <body class="">
     <div class="" id="app">
-      <router-view></router-view>
+      <mu-linear-progress></mu-linear-progress>
     </div>
-
-    <script src="app.js"></script>
   </body>
+
+  <script src="https://cdn.bootcss.com/systemjs/0.21.6/system.js" data-main='es/main.es.js' onload="javascript:
+    System.import('/jspm.config.js').then(System.import(this.getAttribute('data-main')));
+  "></script>
+  <!-- <script src="app.js"></script> -->
 </html>

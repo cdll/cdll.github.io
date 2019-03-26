@@ -1,5 +1,5 @@
 
-require(['/src/js/require.config.js'], function(config){
+require(['/require.config.js'], function(config){
   require.config(config)
 
   require([

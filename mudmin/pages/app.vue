@@ -18,8 +18,7 @@
 </template>
 
 <script >
-
-  export default {
+  module.exports= {
     data(){
       return {
         data: {name: 'mudmin'}

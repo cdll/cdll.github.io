@@ -8,7 +8,7 @@
     <base href="/admin/" >
 
     <style>
-      @import "/bower_components/material-design-lite/material.min.css";
+      @import "//cdn.bootcss.com/material-design-lite/material.min.css";
       [v-cloak]{
         visibility: hidden;
       }
@@ -50,7 +50,7 @@
     <div class="main-view" ng-view="" vue-if=0></div>
 <!--    <router-view></router-view>-->
 
-    <script src="/bower_components/system.js/dist/system.js" onload="System.import('/config.js').then(System.import('./src/vueApp.js?'+(new Date()).getTime()))" ></script>
+    <script src="//cdn.bootcss.com/systemjs/0.21.6/system.js" onload="javascript: System.import('/config.js').then(System.import('./src/vueApp.js?'+(new Date()).getTime()))" ></script>
 
   </body>
 </html>
