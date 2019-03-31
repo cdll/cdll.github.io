@@ -35,65 +35,39 @@ axios.defaults.timeout= 5000
 window.mdl= require('mdl')
 console.info(mdl)
 
-axios('https://api.github.com/users/cdll/repos')
-.then(res=>{
-  console.info(res)
-}, err=>{
-  console.warn(err)
-})
-
-riot.compile('src/es/friend-link.tag', function(tag){
-  riot.mount('friend-link', {})
-})
-
-riot.compile('src/es/riot-app.tag', false, function(opts){
-  console.warn(window.app= this)
-  this.on('mount', res=>{
+riot.compile('/src/es/riot-app.tag', function(tag){
+  window.app= riot.mount('body', {
+    mainComp: 'github-repo'
+  })[0]
+  app.on('mount', function(opts){
+    console.info(opts)
     new mdl.MaterialMenu('header')
     this.update({
       isMounted: true
     })
   })
-  riot.mount(body, 'riot-app', {})
-})
-axios({
-  // url: "https://api.github.com/users/cdll/repos"
-  url: "https://api.github.com/users/cdll"
-  // url: "/github.json"
-})
-.then(res=>{
-//   console.info(res.data)
   axios({
-    url: res.data.repos_url
+    url: "https://api.github.com/users/cdll"
   })
   .then(res=>{
-    riot.compile('/src/es/riot-app.tag', function(tag){
-      riot.mount('body', {
-        mainComp: 'github-repo'
+    //   console.info(res.data)
+    axios({
+      // url: "https://api.github.com/users/cdll/repos"
+      url: '/github-repo.json'|| res.data.repos_url
+    })
+    .then(res=>{
+      riot.compile("src/es/github-repo.tag", function(tag){
+        riot.mount("github-repo", {
+          repos: res.data
+        })
       })
     })
-    riot.compile("src/es/github-repo.tag", function(tag){
-      riot.mount("github-repo", {
-        repos: res.data
-      })
-    })
+  }, err=> console.warn(err) )
+  riot.compile('src/es/friend-link.tag', function(tag){
+    riot.mount('friend-link', {})
   })
-}, err=>{
-  axios({
-    url: "/bower.json"
-  })
-  .then(res=>{
-    riot.mount('body', {
-      mainComp: 'bower-deps'
-    })
-    
-    riot.compile("src/es/bower-dep.tag", function(tag){
-      riot.mount("bower-dep", {
-        deps: res.data.dependencies
-      })
-    })
-  }, err=>console.warn(err))
 })
+
 
 /*
 axios({

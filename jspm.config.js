@@ -32,5 +32,8 @@ const config= {
   ,packages: {
   }
 }
-if(System&& System.config) return Promise.resolve(System.config(config))
+if(System&& System.config){
+  System.config(config)
+  return config
+}
 else if(typeof exports=== 'object') module.exports= config
