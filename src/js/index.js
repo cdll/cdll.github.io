@@ -17,54 +17,53 @@
 //   })
 // }
 
-// Promise.all([
-//   // import(System.getConfig().paths['vue'])
-//   import(System.getConfig().paths['axios']).then(res=>{
-//     console.info(res)
-//   })
-// ])
-// .then((res)=>{
-//   console.info(Vue)
-// })
-window.riot= require('riotc')
-
 // const Apollo= require('apollo')
-window.axios= require('axios')
-axios.defaults.timeout= 5000
-
-window.mdl= require('mdl')
-console.info(mdl)
-
-riot.compile('/src/es/riot-app.tag', function(tag){
-  window.app= riot.mount('body', {
-    mainComp: 'github-repo'
-  })[0]
-  app.on('mount', function(opts){
-    console.info(opts)
-    new mdl.MaterialMenu('header')
-    this.update({
-      isMounted: true
-    })
-  })
-  axios({
-    url: "https://api.github.com/users/cdll"
-  })
-  .then(res=>{
-    //   console.info(res.data)
-    axios({
-      // url: "https://api.github.com/users/cdll/repos"
-      url: '/github-repo.json'|| res.data.repos_url
-    })
+Promise.all([
+  imports('riotc')
+  ,imports('axios')
+  ,imports('mdl')
     .then(res=>{
-      riot.compile("src/es/github-repo.tag", function(tag){
-        riot.mount("github-repo", {
-          repos: res.data
-        })
+      console.info(res)
+    })
+])
+.then((res)=>{
+  console.info(res)
+  axios.defaults.timeout= 5000
+  
+  window.mdl= MDL
+  console.info(mdl)
+  
+  riot.compile('/src/es/riot-app.tag', function(tag){
+    window.app= riot.mount('body', {
+      mainComp: 'github-repo'
+    })[0]
+    app.on('mount', function(opts){
+      console.info(opts)
+      new mdl.MaterialMenu('header')
+      this.update({
+        isMounted: true
       })
     })
-  }, err=> console.warn(err) )
-  riot.compile('src/es/friend-link.tag', function(tag){
-    riot.mount('friend-link', {})
+    axios({
+      url: "https://api.github.com/users/cdll"
+    })
+    .then(res=>{
+      //   console.info(res.data)
+      axios({
+        // url: "https://api.github.com/users/cdll/repos"
+        url: '/github-repo.json'|| res.data.repos_url
+      })
+      .then(res=>{
+        riot.compile("src/es/github-repo.tag", function(tag){
+          riot.mount("github-repo", {
+            repos: res.data
+          })
+        })
+      })
+    }, err=> console.warn(err) )
+    riot.compile('src/es/friend-link.tag', function(tag){
+      riot.mount('friend-link', {})
+    })
   })
 })
 

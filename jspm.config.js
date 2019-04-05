@@ -1,5 +1,5 @@
 
-const config= {
+var config= {
   baseUrl: "."
   ,bundles: {
     "vueApp.min.js": [
@@ -32,8 +32,7 @@ const config= {
   ,packages: {
   }
 }
-if(System&& System.config){
+if(window.System&& System.config){
   System.config(config)
-  return config
 }
 else if(typeof exports=== 'object') module.exports= config
