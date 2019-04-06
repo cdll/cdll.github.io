@@ -18,13 +18,14 @@
 
     <script src="//cdn.bootcss.com/es6-shim/0.35.4/es6-shim.min.js"></script>
 
-    <!-- <script src="//cdn.bootcss.com/systemjs/0.21.6/system.js" onload="javascript:
+    <!-- <script src="//cdn.bootcss.com/systemjs/0.21.6/system.js" data-main='/src/js/index.js' onload="javascript:
       var main= this.getAttribute('data-main');
       System.import('/jspm.config.js')
       .then(function(){
-        System.import(main);
+        window.imports= System.import
+        System.import(main)
       });
-    " data-main='/src/js/index.js'></script> -->
+    "></script> -->
     <script src='https://cdn.bootcss.com/basket.js/0.5.2/basket.full.min.js' data-main='/src/js/index.js' onload='javascript: 
       var main= this.getAttribute("data-main")
       basket.require({
@@ -43,14 +44,14 @@
             ,skipCache: !0
           })
         }
-        imports(main)
+        return imports(main)
       }, function(err){
         basket.clear()
       })
     '></script>
   </head>
 
-  <body class="" data-is='app'>
-    <App/>
+  <body class="mdl-progress mdl-js-progress mdl-progress__indeterminate" data-is='app'>
+    <App class=''/>
   </body>
 </html>

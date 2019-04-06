@@ -17,21 +17,22 @@
 //   })
 // }
 
-// const Apollo= require('apollo')
 Promise.all([
   imports('riotc')
   ,imports('axios')
+  // .then(res=>{
+    //   console.info(res)
+    // })
   ,imports('mdl')
-    .then(res=>{
-      console.info(res)
-    })
+  // ,imports('apollo')
 ])
 .then((res)=>{
   console.info(res)
   axios.defaults.timeout= 5000
   
-  window.mdl= MDL
-  console.info(mdl)
+  window.MDL= {
+    MaterialMenu
+  }
   
   riot.compile('/src/es/riot-app.tag', function(tag){
     window.app= riot.mount('body', {
@@ -66,7 +67,6 @@ Promise.all([
     })
   })
 })
-
 
 /*
 axios({
