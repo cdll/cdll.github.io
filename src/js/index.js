@@ -55,11 +55,13 @@ Promise.all([
         url: '/github-repo.json'|| res.data.repos_url
       })
       .then(res=>{
-        riot.compile("src/es/github-repo.tag", function(tag){
-          riot.mount("github-repo", {
-            repos: res.data
+        setTimeout(function(){
+          riot.compile("src/es/github-repo.tag", function(tag){
+            riot.mount("github-repo", {
+              repos: res.data
+            })
           })
-        })
+        }, 300)
       })
     }, err=> console.warn(err) )
     riot.compile('src/es/friend-link.tag', function(tag){

@@ -35,23 +35,23 @@
         console.info(config)
         window.imports= function(url){
           console.info(url)
-          if(config.paths[url]) return basket.require({
+          if(typeof url== "string"&& config.paths[url]) return basket.require({
             url: config.paths[url]
-            ,skipCache: !0
+            ,expire: 24
           })
-          else return basket.require({
+          else return basket.require(typeof url== "object"? url: {
             url: url
-            ,skipCache: !0
+            ,expire: 24
           })
         }
-        return imports(main)
+        return imports({url: main, skipCache: !0})
       }, function(err){
         basket.clear()
       })
     '></script>
   </head>
 
-  <body class="mdl-progress mdl-js-progress mdl-progress__indeterminate" data-is='app'>
+  <body class="" data-is='app'>
     <App class=''/>
   </body>
 </html>

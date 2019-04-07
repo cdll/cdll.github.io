@@ -3,13 +3,13 @@
   <header class="mdl-layout__header mdl-layout__header--waterfall">
     <div class='mdl-layout__header-row'>
       <!-- MDL Spinner Component -->
-      <div class="mdl-layout-title mdl-spinner mdl-js-spinner is-active_"></div>
+      <div class="mdl-layout-title"></div>
       <a class="mdl-navigation__link" href='javascript:;'>
         <span>C.D.LL</span>
       </a>
       <!-- Add spacer, to align navigation to the right -->
       <div class="mdl-layout-spacer"></div>
-      <nav class="mdl-navigation">
+      <nav class="mdl-navigation" hidden>
         <a class='mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--blue-grey-50' href="/"><i class="fa fa-home"></i>Home</a>
         <a class='mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--blue-grey-50' href="/"><i class="fa fa-pencil"></i>Dailys</a>
         <a class='mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--blue-grey-50' href="/portfolio"><i class="fa fa-twitch"></i>Portfolios</a>
@@ -42,7 +42,11 @@
   </header>
 
   <div class="mdl-layout__content clear">
-    <div class="loading-spinner" riot-data-is="{opts.mainComp}"></div>
+    <div class="" riot-data-is="{opts.mainComp}">
+      <center class=''>
+        <loading-spinner class='mdl-spinner mdl-js-spinner is-active' style='margin: 33.333% auto auto;'></loading-spinner>
+      </center>
+    </div>
   </div>
   <!-- FOOTER  -->
   <footer class="-footer-index" hidden>
