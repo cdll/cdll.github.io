@@ -1,10 +1,4 @@
 <app class="mdl-layout mdl-layout--fixed-header">
-  <style>
-    :host{
-      background: red;
-    }
-  </style>
-
   <!-- HEADER -->
   <header class="mdl-layout__header mdl-layout__header--waterfall">
     <div class='mdl-layout__header-row'>
@@ -98,13 +92,4 @@
       <div class="clear"></div>
     </div>
   </footer>
-
-  <script>
-    export default {
-      state: {}
-      ,onMounted(eve){
-        console.info(445, eve)
-      }
-    }
-  </script>
 </app>

@@ -24,8 +24,7 @@ var config= {
     ,'vue-router': "https://cdn.bootcss.com/vue-router/3.0.2/vue-router.min.js"
     ,axios: "https://cdn.bootcss.com/axios/0.18.0/axios.min.js"
     ,riot: "https://cdn.bootcss.com/riot/3.13.2/riot.min.js"
-    // ,riotc: "https://cdn.bootcss.com/riot/3.13.2/riot+compiler.min.js"
-    ,riotc: "https://cdn.bootcss.com/riot/4.3.1/riot+compiler.min.js"
+    ,riotc: "https://cdn.bootcss.com/riot/3.13.2/riot+compiler.min.js"
     ,swiper: 'https://cdn.bootcss.com/Swiper/3.4.2/js/swiper.min.js'
     ,md5implement: 'https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.min.js'
     ,apollo: 'https://system-unsafe-production.jspm.io/apollo'

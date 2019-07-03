@@ -19,9 +19,6 @@
 
 Promise.all([
   imports('riotc')
-  // .then(res=>{
-  //   debugger
-  // })
   ,imports('axios')
   // .then(res=>{
     //   console.info(res)
@@ -37,21 +34,17 @@ Promise.all([
     MaterialMenu
   }
   
-  riot.compileFromUrl('/src/es/riot-app.tag')
-  .then(function(tag){
-    console.info(tag)
-    window.app= riot.component(tag)(document.querySelector('[data-is=app]'), {
+  riot.compile('/src/es/riot-app.tag', function(tag){
+    window.app= riot.mount('body', {
       mainComp: 'github-repo'
-    })//[0]
-    console.info(app)
-    riot.mount('[data-is=app]', app)
-    // app.on('mount', function(opts){
-    //   console.info(opts)
-    //   new mdl.MaterialMenu('header')
-    //   this.update({
-    //     isMounted: true
-    //   })
-    // })
+    })[0]
+    app.on('mount', function(opts){
+      console.info(opts)
+      new mdl.MaterialMenu('header')
+      this.update({
+        isMounted: true
+      })
+    })
     axios({
       url: "https://api.github.com/users/cdll"
     })
@@ -62,20 +55,18 @@ Promise.all([
         url: '/github-repo.json'|| res.data.repos_url
       })
       .then(res=>{
-        // setTimeout(function(){
-        //   riot.compile("src/es/github-repo.tag", function(tag){
-        //     riot.mount("github-repo", {
-        //       repos: res.data
-        //     })
-        //   })
-        // }, 300)
+        setTimeout(function(){
+          riot.compile("src/es/github-repo.tag", function(tag){
+            riot.mount("github-repo", {
+              repos: res.data
+            })
+          })
+        }, 300)
       })
     }, err=> console.warn(err) )
-    // riot.compile('src/es/friend-link.tag', function(tag){
-    //   riot.mount('friend-link', {})
-    // })
-  }, err=>{
-    console.warn(err)
+    riot.compile('src/es/friend-link.tag', function(tag){
+      riot.mount('friend-link', {})
+    })
   })
 })
 
