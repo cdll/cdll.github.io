@@ -8,7 +8,7 @@
     <base href="/admin/" >
 
     <style>
-      @import "//cdn.bootcss.com/material-design-lite/material.min.css";
+      @import "//cdn.bootcss.com/material-design-lite/1.3.0/material.min.css";
       [v-cloak]{
         visibility: hidden;
       }
@@ -16,41 +16,58 @@
     </style>
   </head>
 
-  <body class="mdl-layout" ng-cloak vue-cloak>
-  <!--  <div ng-view="header"></div>-->
+  <body class="mdl-layout">
+    <app class="mdl-layout"
+      ng-cloak
+      v-cloak
+    >
+      <!--  <div ng-view="header"></div>-->
 
-    <header class="mdl-layout__header- mdl-layout__header--scroll- mdl-color--primary">
-      <div class="mdl-layout--large-screen-only mdl-layout__header-row" hidden->
-        <!-- MDL Spinner Component -->
-  <!--      <a class=" mdl-spinner mdl-js-spinner is-active"></a>-->
-        <mdl-spinner :active="active"></mdl-spinner>
-        <h3>Admin</h3>
-      </div>
-      <div class="vue-nav mdl-layout__bar -mdl-js-ripple-effect mdl-color--primary-dark clearfix">
-        <a class="mdl-layout__tab"
-           v-for='nav in navbarList'
-           track-by='$index'
-           vue-link='{path: nav.url}'
-           v-bind:href='"/admin/#"+nav.url'
-           ng-repeat='nav in navbarList track by $index'
-           ng-href="{{'/admin/#'+nav.url}}"
-           ng-class='{"is-active": $index===currentNav, hide: $index!==0}'>
-          <span class=''>{{nav.name}}</span>
-          <span class="mdl-layout__tab-ripple-container mdl-js-ripple-effect">
-            <span class="mdl-ripple"></span>
-          </span>
-        </a>
-        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-shadow--4dp mdl-color--accent" hidden>
-          <i class="material-icons">add</i>
-          <span class="visuallyhidden">Add</span>
-        </button>
-      </div>
-    </header>
+      <header class="mdl-layout__header- mdl-layout__header--scroll- mdl-color--primary">
+        <div class="mdl-layout--large-screen-only mdl-layout__header-row" hidden_>
+          <!-- MDL Spinner Component -->
+          <!-- <a class=" mdl-spinner mdl-js-spinner is-active"></a> -->
+          <mdl-spinner :active="active"></mdl-spinner>
+          <h3>Admin</h3>
+        </div>
+        <div class="vue-nav mdl-layout__bar -mdl-js-ripple-effect mdl-color--primary-dark clearfix">
+          <a class="mdl-layout__tab"
+            v-for='nav in navbarList'
+            track-by='$index'
+            vue-link='{path: nav.url}'
+            v-bind:href='"/admin/#"+nav.url'
+            ng-repeat='nav in navbarList track by $index'
+            ng-href="{{'/admin/#'+nav.url}}"
+            ng-class='{"is-active": $index===currentNav, hide: $index!==0}'
+          >
+            <span class=''
+              v-text='nav.name'
+              ng-html='nav.name'
+            ></span>
+            <span class="mdl-layout__tab-ripple-container mdl-js-ripple-effect">
+              <span class="mdl-ripple"></span>
+            </span>
+          </a>
+          <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-shadow--4dp mdl-color--accent" hidden>
+            <i class="material-icons">add</i>
+            <span class="visuallyhidden">Add</span>
+          </button>
+        </div>
+      </header>
 
-    <div class="main-view" ng-view="" vue-if=0></div>
-<!--    <router-view></router-view>-->
+      <main class="main-view" ng-view="" vue-if=0>
+        <!-- <router-view></router-view> -->
+      </main>
+    </app>
 
-    <script src="//cdn.bootcss.com/systemjs/0.21.6/system.js" onload="javascript: System.import('/config.js').then(System.import('./src/vueApp.js?'+(new Date()).getTime()))" ></script>
+    <script src="//cdn.bootcss.com/systemjs/0.21.6/system.js"
+      onload="javascript:
+        System.import('../jspm.config.js')
+        .then(function() {
+          System.import('./src/vue/app.js?'+(new Date()).getTime())
+        })
+      "
+    ></script>
 
   </body>
 </html>

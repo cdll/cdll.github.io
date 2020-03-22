@@ -1,19 +1,21 @@
 System.config({
-    "baseUrl": "./",
-    "bundles": {
-        "vueApp.min.js": [
-            "admin/src/vueApp.js",
-            "vue"
-        ]
-    },
-    "map": {
-    },
-    "meta": {
-        "Mock": "/bower_components/mockjs/dist/mock-min.js"
-    },
-    "paths": {
-        "mdl": "/bower_components/material-design-lite/material.min.js",
-        "qwest": "/bower_components/qwest/qwest.min.js",
-        "vue": "./bower_components/vue/dist/vue.min.js"
-    }
+  "baseUrl": "./",
+  "bundles": {
+    // "vueApp.bundle.js": [
+    //   "admin/src/vue/app.js",
+    //   "vue"
+    // ]
+  },
+  "map": {
+  },
+  "meta": {
+    "Mock": "//cdn.bootcss.com/mockjs/1.0.0/mock-min.js"
+  },
+  "paths": {
+    "mdl": "//cdn.bootcss.com/material-design-lite/1.3.0/material.min.js",
+    "qwest": "//cdn.bootcss.com/qwest/4.5.0/qwest.min.js",
+    "vue": "//cdn.bootcss.com/vue/2.6.8/vue.min.js",
+    'vue-router': "https://cdn.bootcss.com/vue-router/3.0.2/vue-router.min.js",
+    'vue-mdl': 'https://system-unsafe-production.jspm.io/vue-mdl'
+  }
 });
