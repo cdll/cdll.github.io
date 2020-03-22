@@ -4,37 +4,84 @@
     <div class='mdl-layout__header-row'>
       <!-- MDL Spinner Component -->
       <div class="mdl-layout-title"></div>
-      <a class="mdl-navigation__link" href='javascript:;'>
+      <a class="mdl-navigation__link"
+        href='javascript:;'
+      >
         <span>C.D.LL</span>
       </a>
       <!-- Add spacer, to align navigation to the right -->
       <div class="mdl-layout-spacer"></div>
       <nav class="mdl-navigation" hidden>
-        <a class='mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--blue-grey-50' href="/"><i class="fa fa-home"></i>Home</a>
-        <a class='mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--blue-grey-50' href="/"><i class="fa fa-pencil"></i>Dailys</a>
-        <a class='mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--blue-grey-50' href="/portfolio"><i class="fa fa-twitch"></i>Portfolios</a>
-        <a class='mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--blue-grey-50' href="/darlingshow/index.html"><i class="fa fa-female"></i>Liliane</a>
+        <a class='mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--blue-grey-50'
+          href="/"
+        >
+          <i class="fa fa-home"></i>Home
+        </a>
+        <a class='mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--blue-grey-50'
+          href="/"
+        >
+          <i class="fa fa-pencil"></i>Dailys
+        </a>
+        <a class='mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--blue-grey-50'
+          href="/portfolio"
+        >
+          <i class="fa fa-twitch"></i>Portfolios
+        </a>
+        <a class='mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--blue-grey-50'
+          href="/darlingshow/index.html"
+        >
+          <i class="fa fa-female"></i>Liliane
+        </a>
       </nav>
       <button class="mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect demo-menu-lower-right">
         <a class="mdl-navigation__link">
           <i class="fa fa-ellipsis-v"></i>
         </a>
         <span class="mdl-button__ripple-container">
-          <span class="mdl-ripple is-animating" style="width: 92.5097px; height: 92.5097px; transform: translate(-50%, -50%) translate(13px, 12px);"></span>
+          <span class="mdl-ripple is-animating"
+            style="width: 92.5097px; height: 92.5097px; transform: translate(-50%, -50%) translate(13px, 12px);"
+          ></span>
         </span>
       </button>
-      <div class="mdl-menu__container -is-visible" style="right: 40px; top: 48px; width: 127.703px; height: 208px;">
-        <div class="mdl-menu__outline mdl-menu--bottom-right" style="width: 127.703px; height: 208px;"></div>
-        <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect mdl-js-ripple-effect--ignore-events" for="more-button" data-upgraded=",MaterialMenu,MaterialRipple" style="clip: rect(0px 127.703px 208px 0px);">
-          <li class="mdl-menu__item mdl-js-ripple-effect" tabindex="-1" data-upgraded=",MaterialRipple" style="transition-delay: 0.00923077s;">
+      <div class="mdl-menu__container -is-visible"
+        style="right: 40px; top: 48px; width: 127.703px; height: 208px;"
+      >
+        <div class="mdl-menu__outline mdl-menu--bottom-right"
+          style="width: 127.703px; height: 208px;"
+        ></div>
+        <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect mdl-js-ripple-effect--ignore-events"
+          for="more-button"
+          data-upgraded=",MaterialMenu,MaterialRipple"
+          style="clip: rect(0px 127.703px 208px 0px);"
+        >
+          <li class="mdl-menu__item mdl-js-ripple-effect"
+            tabindex="-1"
+            data-upgraded=",MaterialRipple"
+            style="transition-delay: 0.00923077s;"
+          >
           </li>
-          <li class="mdl-menu__item mdl-js-ripple-effect" tabindex="-1" data-upgraded=",MaterialRipple" style="transition-delay: 0.0646154s;">
+          <li class="mdl-menu__item mdl-js-ripple-effect"
+            tabindex="-1"
+            data-upgraded=",MaterialRipple"
+            style="transition-delay: 0.0646154s;"
+          >
             <a class='mdl-navigation__link' href="#"><i class="fa fa-question"></i>What'sMore</a>
           </li>
-          <li disabled="" class="mdl-menu__item mdl-js-ripple-effect" tabindex="-1" data-upgraded=",MaterialRipple" style="transition-delay: 0.12s;">
-            <a class='mdl-navigation__link' href="index_bk.html">here 's the original index page...</a>
+          <li class="mdl-menu__item mdl-js-ripple-effect"
+            tabindex="-1"
+            data-upgraded=",MaterialRipple"
+            style="transition-delay: 0.12s;"
+            disabled
+          >
+            <a class='mdl-navigation__link'
+              href="index_bk.html"
+            >here 's the original index page...</a>
           </li>
-          <li class="mdl-menu__item mdl-js-ripple-effect" tabindex="-1" data-upgraded=",MaterialRipple" style="transition-delay: 0.175385s;">
+          <li class="mdl-menu__item mdl-js-ripple-effect"
+            tabindex="-1"
+            data-upgraded=",MaterialRipple"
+            style="transition-delay: 0.175385s;"
+          >
           </li>
         </ul>
       </div>
@@ -42,9 +89,13 @@
   </header>
 
   <div class="mdl-layout__content clear">
-    <div class="" riot-data-is="{opts.mainComp}">
+    <div class=""
+      riot-data-is="{opts.mainComp}"
+    >
       <center class=''>
-        <loading-spinner class='mdl-spinner mdl-js-spinner is-active' style='margin: 33.333% auto auto;'></loading-spinner>
+        <loading-spinner class='mdl-spinner mdl-js-spinner is-active'
+          style='margin: 33.333% auto auto;'
+        ></loading-spinner>
       </center>
     </div>
   </div>
@@ -53,7 +104,9 @@
     <div class="footer-container mdl-grid">
       <hr>
       <div class="mdl-cell mdl-cell--3-col">
-        <div class='row' data-is='friend-link' ></div>
+        <div class='row'
+          data-is='friend-link'
+        ></div>
       </div>
       <div class="mdl-cell mdl-cell--3-col">
         <div class='row'>
