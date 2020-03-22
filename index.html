@@ -1,5 +1,5 @@
 
-<!DOCTYPE html author='cdll@20140819' detail='https://api.github.com/users/cdll/repos'>
+<!DOCTYPE html author='cdll' cts='20140819' detail='https://api.github.com/users/cdll/repos'>
 <html class="mdl-layout__container_">
 
   <head>
@@ -10,48 +10,56 @@
     <!--    而#!其实是google的 _escaped_fragment_ 爬抓规则， 方便我们的AJAX应用也能被爬虫收录。当然，我们还需要在head标签内添加一个meta标签：-->
     <meta name="fragment" content="!" />
 
-    <link rel="shortcut icon" href="/img/cdbg_1010.png" mce_href="/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="./img/cdbg_1010.png" mce_href="/favicon.ico" type="image/x-icon">
 
-    <link rel="stylesheet" type="text/css" href="/src/css/index.css">
+    <link rel="stylesheet" type="text/css" href="./src/css/index.css">
 
     <title>C.D.Leon</title>
 
     <script src="//cdn.bootcss.com/es6-shim/0.35.4/es6-shim.min.js"></script>
-
-    <!-- <script src="//cdn.bootcss.com/systemjs/0.21.6/system.js" data-main='/src/js/index.js' onload="javascript:
-      var main= this.getAttribute('data-main');
-      System.import('/jspm.config.js')
-      .then(function(){
-        window.imports= System.import
-        System.import(main)
-      });
-    "></script> -->
-    <script src='https://cdn.bootcss.com/basket.js/0.5.2/basket.full.min.js' data-main='/src/js/index.js' onload='javascript: 
-      var main= this.getAttribute("data-main")
-      basket.require({
-        url: "/jspm.config.js", expire: 0, skipCache: true
-      })
-      .then(function(res){
-        console.info(config)
-        window.imports= function(url){
-          console.info(url)
-          if(typeof url== "string"&& config.paths[url]) return basket.require({
-            url: config.paths[url]
-            ,expire: 24
-          })
-          else return basket.require(typeof url== "object"? url: {
-            url: url
-            ,expire: 24
-          })
-        }
-        return imports({url: main, skipCache: !0})
-      }, function(err){
-        basket.clear()
-      })
-    '></script>
   </head>
 
   <body class="" data-is='app'>
-    <App class=''/>
+    <main class=''></main>
+
+
+    <!-- <script src="//cdn.bootcss.com/systemjs/0.21.6/system.js"
+      data-main='/src/js/index.js'
+      onload="javascript:
+        var main= this.getAttribute('data-main')
+        System.import('/jspm.config.js')
+        .then(function(){
+          window.imports= System.import
+          System.import(main)
+        });
+    "></script> -->
+    <script src='https://cdn.bootcss.com/basket.js/0.5.2/basket.full.min.js'
+      data-main='./src/js/index.js'
+      onload='javascrip:
+        var main= this.getAttribute("data-main")
+        basket.require({
+          url: "/jspm.config.js"
+          ,expire: 0
+          ,skipCache: true
+        })
+        .then(function(res){
+          console.info(config)
+          window.imports= function(url){
+            console.info(url)
+            if(typeof url== "string"&& config.paths[url]) return basket.require({
+              url: config.paths[url]
+              ,expire: 24
+            })
+            else return basket.require(typeof url== "object"? url: {
+              url: url
+              ,expire: 24
+            })
+          }
+          return imports({url: main, skipCache: !0})
+        }, function(err){
+          basket.clear()
+        })
+      '
+    ></script>
   </body>
 </html>

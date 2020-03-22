@@ -1,8 +1,8 @@
 
-var angular= require("/bower_components/angular/angular.min.js")
-var ngRoute= require("/bower_components/angular-route/angular-route.min.js")
-var mdl= require('/bower_components/material-design-lite/material.min.js')
-var ngMdl= require("/bower_components/ng-mdl/dist/ng-mdl.min.js")
+var angular= require("//cdn.bootcss.com/angular/angular.min.js")
+var ngRoute= require("//cdn.bootcss.com/angular-route/angular-route.min.js")
+var mdl= require('//cdn.bootcss.com/material-design-lite/material.min.js')
+var ngMdl= require("//cdn.bootcss.com/ng-mdl/dist/ng-mdl.min.js")
 //  console.info(ngMdl)
 var admin= angular.module('admin', [
   'ngRoute'
