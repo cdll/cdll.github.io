@@ -20,8 +20,9 @@ var config= {
     ,Mock: "https://cdn.bootcss.com/Mock.js/1.0.1-beta3/mock-min.js"
     ,qwest: "https://cdn.bootcss.com/qwest/4.4.6/qwest.min.js"
     ,vuejs: "https://cdn.bootcss.com/vue/1.0.28/vue.min.js"
-    ,vue: "https://cdn.bootcss.com/vue/2.6.10/vue.min.js"
+    ,vue: "https://cdn.bootcss.com/vue/2.6.8/vue.min.js"
     ,'vue-router': "https://cdn.bootcss.com/vue-router/3.0.2/vue-router.min.js"
+    ,'vue-mdl': 'https://system-unsafe-production.jspm.io/vue-mdl'
     ,axios: "https://cdn.bootcss.com/axios/0.18.0/axios.min.js"
     ,riot: "https://cdn.bootcss.com/riot/3.13.2/riot.min.js"
     ,riotc: "https://cdn.bootcss.com/riot/3.13.2/riot+compiler.min.js"
@@ -32,7 +33,7 @@ var config= {
   ,packages: {
   }
 }
-if(window.System&& System.config){
-  System.config(config)
+if(window.System&& window.System.config){
+  window.System.config(config)
 }
 else if(typeof exports=== 'object') module.exports= config
