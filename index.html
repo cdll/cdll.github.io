@@ -1,7 +1,10 @@
 
-<!DOCTYPE html author='cdll' cts='20140819' detail='https://api.github.com/users/cdll/repos'>
-<html class="mdl-layout__container_">
-
+<!DOCTYPE html>
+<html class="mdl-layout__container_"
+  author='cdll'
+  cts='20140819'
+  detail='https://api.github.com/users/cdll/repos'
+>
   <head>
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
@@ -22,7 +25,6 @@
   <body class="" data-is='app'>
     <main class=''></main>
 
-
     <!-- <script src="//cdn.bootcss.com/systemjs/0.21.6/system.js"
       data-main='/src/js/index.js'
       onload="javascript:
@@ -40,22 +42,27 @@
         basket.require({
           url: "/jspm.config.js"
           ,expire: 0
-          ,skipCache: true
+          ,skipCache: 0
         })
         .then(function(res){
-          console.info(config)
+          console.info({config})
           window.imports= function(url){
-            console.info(url)
-            if(typeof url== "string"&& config.paths[url]) return basket.require({
-              url: config.paths[url]
-              ,expire: 24
-            })
+            console.info({url})
+            if(typeof url== "string"&& config.paths[url]) {
+              return basket.require({
+                url: config.paths[url]
+                ,expire: 24
+              })
+            }
             else return basket.require(typeof url== "object"? url: {
               url: url
               ,expire: 24
             })
           }
-          return imports({url: main, skipCache: !0})
+          return imports({
+            url: main
+            ,skipCache: !0
+          })
         }, function(err){
           basket.clear()
         })

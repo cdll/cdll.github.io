@@ -20,13 +20,15 @@ if(navigator.serviceWorker&& /https/i.test(location.protocol)){
 Promise.all([
   imports('riotc')
   ,imports('axios')
-  .then(()=> {
-    axios.defaults.timeout= 5000
-    return axios
-  })
+  // .then((modu)=> {
+  //   console.info({modu})
+  //   console.info({axios})
+  //   axios.defaults.timeout= 5000
+  //   return axios
+  // })
   // .then(res=>{
-    //   console.info(res)
-    // })
+  //   console.info(res)
+  // })
   ,imports('mdl')
   .then((mod) => {
     console.info({mod})

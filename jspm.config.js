@@ -33,7 +33,7 @@ var config= {
   ,packages: {
   }
 }
-if(window.System&& System.config){
-  System.config(config)
+if(window.System&& window.System.config){
+  window.System.config(config)
 }
 else if(typeof exports=== 'object') module.exports= config
