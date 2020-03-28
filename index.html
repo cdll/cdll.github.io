@@ -41,27 +41,38 @@
         var main= this.getAttribute("data-main")
         basket.require({
           url: "/jspm.config.js"
-          ,expire: 0
-          ,skipCache: 0
+          // ,expire: 10
+          ,skipCache: true
         })
         .then(function(res){
           console.info({config})
           window.imports= function(url){
-            console.info({url})
+            // console.info({url})
             if(typeof url== "string"&& config.paths[url]) {
               return basket.require({
                 url: config.paths[url]
-                ,expire: 24
+                // ,expire: 24
+                ,skipCache: true
               })
             }
-            else return basket.require(typeof url== "object"? url: {
-              url: url
-              ,expire: 24
-            })
+            else {
+              // url.skipCache = true
+              if(typeof url== "object"){
+                console.info({url})
+                return basket.require(url)
+              }
+              else{
+                return basket.require({
+                  url: url
+                  // ,expire: 24
+                  ,skipCache: true
+                })
+              }
+            }
           }
           return imports({
             url: main
-            ,skipCache: !0
+            ,skipCache: true
           })
         }, function(err){
           basket.clear()
