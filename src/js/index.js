@@ -1,34 +1,34 @@
 
-if(navigator.serviceWorker&& /https/i.test(location.protocol)){
-  let sw_file= '/cdll.sw.js'
-  axios(`${sw_file}?${new Date().getTime()}`)
-  .then(res=> {
-    const md5= require('md5')
-    let service_version= md5(res.data)
+// if(navigator.serviceWorker&& /https/i.test(location.protocol)){
+//   let sw_file= '/cdll.sw.js'
+//   axios(`${sw_file}?${new Date().getTime()}`)
+//   .then(res=> {
+//     const md5= require('md5')
+//     let service_version= md5(res.data)
 
-    navigator.serviceWorker.getRegistration()
-    .then(res=> {
-      if(res) res.onupdatefound= function(){
-        res.unregister()
-        console.warn('~cdll.sw.js unregisted~')
-      }
-      else navigator.serviceWorker.register(`${sw_file}?v=${service_version}`)
-    })
-  })
-}
+//     navigator.serviceWorker.getRegistration()
+//     .then(res=> {
+//       if(res) res.onupdatefound= function(){
+//         res.unregister()
+//         console.warn('~cdll.sw.js unregisted~')
+//       }
+//       else navigator.serviceWorker.register(`${sw_file}?v=${service_version}`)
+//     })
+//   })
+// }
 
 Promise.all([
   imports('riotc')
   ,imports('axios')
-  // .then((modu)=> {
-  //   console.info({modu})
-  //   console.info({axios})
-  //   axios.defaults.timeout= 5000
-  //   return axios
-  // })
-  // .then(res=>{
-  //   console.info(res)
-  // })
+  .then((modu)=> {
+    console.info({modu})
+    console.info({axios})
+    axios.defaults.timeout= 5000
+    return axios
+  })
+  .then(res=>{
+    console.info(res)
+  })
   ,imports('mdl')
   .then((mod) => {
     console.info({mod})
