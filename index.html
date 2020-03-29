@@ -22,11 +22,15 @@
     <script src="//cdn.bootcss.com/es6-shim/0.35.4/es6-shim.min.js"></script>
   </head>
 
-  <body class="" data-is='app'>
-    <main class=''></main>
+  <body class=""
+    data-is='app'
+  >
+    <main class='' />
 
+    <script>
+      var dataMain= '/src/js/index.js'
+    </script>
     <!-- <script src="//cdn.bootcss.com/systemjs/0.21.6/system.js"
-      data-main='/src/js/index.js'
       onload="javascript:
         var main= this.getAttribute('data-main')
         System.import('/jspm.config.js')
@@ -36,45 +40,42 @@
         });
     "></script> -->
     <script src='https://cdn.bootcss.com/basket.js/0.5.2/basket.full.min.js'
-      data-main='./src/js/index.js'
-      onload='javascrip:
+      onload='javascript:
         var main= this.getAttribute("data-main")
-        basket.require({
+        var expire= 24
+        var bequire= basket.require
+        bequire({
           url: "/jspm.config.js"
-          // ,expire: 10
+          // ,expire: 0
           ,skipCache: true
         })
         .then(function(res){
-          console.info({config})
+          console.info({config}, config.paths)
+          //function: global thenable imports method
           window.imports= function(url){
             // console.info({url})
-            if(typeof url== "string"&& config.paths[url]) {
-              return basket.require({
-                url: config.paths[url]
-                // ,expire: 24
-                ,skipCache: true
+            if(typeof url=== "object"){
+              return bequire(url)
+            }
+            else if(typeof url=== "string"){
+              console.info(233, config.paths[url])
+              if(config.paths[url])
+                url= config.paths[url]
+              return bequire({
+                url
+                ,expire
+                // ,skipCache: false
               })
             }
-            else {
-              // url.skipCache = true
-              if(typeof url== "object"){
-                console.info({url})
-                return basket.require(url)
-              }
-              else{
-                return basket.require({
-                  url: url
-                  // ,expire: 24
-                  ,skipCache: true
-                })
-              }
-            }
+            else console.warn(typeof url)
           }
+          // event: main
           return imports({
-            url: main
+            url: dataMain
             ,skipCache: true
           })
-        }, function(err){
+        })
+        .catch(function(err){
           basket.clear()
         })
       '
