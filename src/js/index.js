@@ -1,4 +1,5 @@
 
+// ue: register serviceWorker
 if(
   navigator.serviceWorker
   && /https/i.test(location.protocol)
@@ -9,21 +10,24 @@ if(
   // .then((res)=> res.text())
   // .then((res)=> {
   //   const md5= imports('md5')
-  //   .then((mod)=> {
-  //     console.info({mod}, {res})
-  //     let service_version= md5(res.data)
-
-      navigator.serviceWorker.getRegistration()
-      .then((res)=> {
-        if(res) {
-          res.onupdatefound= function(){
-            res.unregister()
-            console.warn('~cdll.sw.js unregisted~')
-          }
+  //   return md5
+  // })
+  // .then((mod)=> {
+  //   console.info({mod}, {res})
+  //   let service_version= md5(res.data)
+  //   return service_version
+  // })
+  // .then((service_version)=> {
+    navigator.serviceWorker.getRegistration()
+    .then((res)=> {
+      if(res) {
+        res.onupdatefound= function(){
+          res.unregister()
+          console.warn('~cdll.sw.js unregisted~')
         }
-        else navigator.serviceWorker.register(`${sw_file}?v=${service_version}`)
-      })
-  //   })
+      }
+      else navigator.serviceWorker.register(`${sw_file}?v=${service_version}`)
+    })
   // })
 }
 
