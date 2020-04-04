@@ -1,32 +1,44 @@
 
-if(navigator.serviceWorker&& /https/i.test(location.protocol)){
-  let sw_file= '/cdll.sw.js'
-  axios(`${sw_file}?${new Date().getTime()}`)
-  .then(res=> {
-    const md5= require('md5')
-    let service_version= md5(res.data)
-
+// ue: register serviceWorker
+if(
+  navigator.serviceWorker
+  && /https/i.test(location.protocol)
+){
+  const service_version= (new Date).getTime()
+  const sw_file= '/cdll.sw.js'
+  // window.fetch(`${sw_file}?${service_version}`)
+  // .then((res)=> res.text())
+  // .then((res)=> {
+  //   const md5= imports('md5')
+  //   return md5
+  // })
+  // .then((mod)=> {
+  //   console.info({mod}, {res})
+  //   let service_version= md5(res.data)
+  //   return service_version
+  // })
+  // .then((service_version)=> {
     navigator.serviceWorker.getRegistration()
-    .then(res=> {
-      if(res) res.onupdatefound= function(){
-        res.unregister()
-        console.warn('~cdll.sw.js unregisted~')
+    .then((res)=> {
+      if(res) {
+        res.onupdatefound= function(){
+          res.unregister()
+          console.warn('~cdll.sw.js unregisted~')
+        }
       }
       else navigator.serviceWorker.register(`${sw_file}?v=${service_version}`)
     })
-  })
+  // })
 }
 
 Promise.all([
   imports('riotc')
   ,imports('axios')
-  .then(()=> {
-    axios.defaults.timeout= 5000
+  .then((mod)=> {
+    // console.info({axios})
+    axios.defaults.timeout= 6666
     return axios
   })
-  // .then(res=>{
-    //   console.info(res)
-    // })
   ,imports('mdl')
   .then((mod) => {
     console.info({mod})
@@ -54,7 +66,7 @@ Promise.all([
     axios({
       url: "https://api.github.com/users/cdll"
     })
-    .catch(()=> ({
+    .catch((err)=> ({
       data: {}
     }))
     .then((res)=> {
@@ -62,7 +74,7 @@ Promise.all([
       return axios({
         url: "https://api.github.com/users/cdll/repos"
       })
-      .catch(()=> axios({
+      .catch((err)=> axios({
         url: './api/github-repo.json'
       }))
       .then((res)=> {
@@ -77,16 +89,14 @@ Promise.all([
       riot.mount('friend-link', {})
     })
   })
-})
 
-/*
-axios({
-  method: 'get'
-  ,url: `http://ip.taobao.com/service/getIpInfo.php?ip=${'115.156.238.114'}`
-  ,headers: {
-    mode: 'no-cors'
-    ,cache: 'default'
-    ,credentials: "include"
-  }
+  // axios({
+  //   method: 'get'
+  //   ,url: `http://ip.taobao.com/service/getIpInfo.php?ip=${'115.156.238.114'}`
+  //   ,headers: {
+  //     mode: 'no-cors'
+  //     ,cache: 'default'
+  //     ,credentials: "include"
+  //   }
+  // })
 })
-*/
