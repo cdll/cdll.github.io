@@ -51,19 +51,31 @@ Promise.all([
 ])
 .then((ress)=>{
   console.info({ress})
-
-  riot.compile('/src/es/riot-app.tag', function(tag){
-    window.app= riot.mount('body', {
-      mainComp: 'github-repo'
-    })[0]
-    app.on('mount', function(opts){
-      console.info(opts)
-      new MDL.MaterialMenu('header')
-      this.update({
-        isMounted: true
+  // component: app
+  const compilingApp= new Promise((resolve)=> {
+    riot.compile('/src/es/riot-app.tag', function(tag){
+      window.app= riot.mount('main', {
+        mainComp: 'github-repo'
+      })[0]
+      app.on('mount', function(opts){
+        console.info({opts})
+        new MDL.MaterialMenu('header')
+        this.update({
+          isMounted: true
+        })
+        riot.compile('src/es/friend-link.tag', function(tag){
+          riot.mount('friend-link', {})
+        })
+      })
+      riot.compile("src/es/github-repo.tag", function(tag){
+        resolve(window.app)
       })
     })
-    axios({
+  })
+  // ajax:
+  const pendingRepos= Promise.resolve()
+  .then(()=> {
+    return axios({
       url: "https://api.github.com/users/cdll"
     })
     .catch((err)=> ({
@@ -77,16 +89,18 @@ Promise.all([
       .catch((err)=> axios({
         url: './api/github-repo.json'
       }))
-      .then((res)=> {
-        riot.compile("src/es/github-repo.tag", function(tag){
-          riot.mount("github-repo", {
-            repos: res.data
-          })
-        })
-      })
-    }, (err)=> console.warn(err) )
-    riot.compile('src/es/friend-link.tag', function(tag){
-      riot.mount('friend-link', {})
+    })
+  })
+  // main:
+  Promise.all([
+    compilingApp
+    ,pendingRepos
+  ])
+  .then((ress)=> {
+    console.info({ress})
+    const res= ress[1]
+    riot.mount("github-repo", {
+      repos: res.data
     })
   })
 
