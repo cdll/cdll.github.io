@@ -56,19 +56,19 @@ Promise.all([
     riot.compile('/src/es/riot-app.tag', function(tag){
       window.app= riot.mount('main', {
         mainComp: 'github-repo'
+        ,onMount (data) {
+          console.info({data})
+          new MDL.MaterialMenu('header')
+          this.update({
+            isMounted: true
+          })
+        }
       })[0]
-      app.on('mount', function(opts){
-        console.info({opts})
-        new MDL.MaterialMenu('header')
-        this.update({
-          isMounted: true
-        })
-        riot.compile('src/es/friend-link.tag', function(tag){
-          riot.mount('friend-link', {})
-        })
-      })
-      riot.compile("src/es/github-repo.tag", function(tag){
+      riot.compile("/src/es/github-repo.tag", function(tag){
         resolve(window.app)
+      })
+      riot.compile('/src/es/friend-link.tag', function(tag){
+        riot.mount('friend-link', {})
       })
     })
   })
