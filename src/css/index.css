@@ -1,4 +1,5 @@
-@import "https://cdn.bootcss.com/material-design-lite/1.3.0/material.min.css";
+/* @import "https://cdn.bootcss.com/material-design-lite/1.3.0/material.min.css"; */
+@import 'https://unpkg.com/material-design-lite@1.3.0/dist/material.cyan-teal.min.css';
 /* @import "https://cdn.bootcss.com/Swiper/3.4.2/css/swiper.min.css"; */
 
 html, body{
@@ -19,10 +20,11 @@ html *{
   width: 0;
 }
 
-main[cloak] *{
+[cloak] *{
   display: none;
 }
-main[cloak]::before{
+[cloak]::before,
+[cloak]::after{
   display: block;content: '';
   width: 5vmin;
   height: 5vmin;
@@ -33,45 +35,13 @@ main[cloak]::before{
   position: absolute;
   top: 50%;
   left: 50%;
-  animation: rotating 1s ease infinite;
+  animation: rotating 2s ease-in-out infinite;
 }
 @keyframes rotating{
   to{
-    transform: rotate(360deg);
+    transform: rotate(720deg);
   }
   50%{
     border-color: lightseagreen lightgray lightgray;
-  }
-}
-
-.index-sec{
-  background-color: lightseagreen;
-  background: linear-gradient(120deg, lightseagreen, #159957);
-  background: -webkit-linear-gradient(330deg, #20B2A9, #159957);
-}
-.navbar{
-  margin: 0;
-  padding: 0;
-  border: 0;
-  border-radius: 0;
-}
-
-.footer-index{
-  _height: 100%;
-  min-height: 100%;
-  position: relative;
-}
-.footer-container{
-  /* bottom: 0; */
-  position: absolute;
-  width: 100%;
-  background-color: lightsteelblue;
-  /* background: linear-gradient(lightseagreen,transparent);
-  background: -webkit-linear-gradient(lightseagreen, transparent); */
-}
-
-@media(min-width: 768px){
-  .index-sec, .footer-index{
-    margin: 0 auto;
   }
 }

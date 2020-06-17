@@ -14,11 +14,21 @@
     <meta name="fragment" content="!" />
 
     <link rel="shortcut icon" href="./img/cdbg_1010.png" mce_href="/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" type="text/css" href="./src/css/index.css">
+
+    <script async src="https://polyfill.io/v3/polyfill.min.js?features=es5,es6,es7&flags=gated"></script>
+
+    <link rel="stylesheet"
+      type="text/css"
+      href="./src/css/index.css"
+    >
+    <link rel="stylesheet"
+      type="text/css"
+      media="screen and (prefers-color-scheme: dark)"
+      href="./src/css/index.dark.css"
+    >
 
     <title>C.D.Leon</title>
 
-    <script async src="https://polyfill.io/v3/polyfill.min.js?features=es5,es6,es7&flags=gated"></script>
   </head>
 
   <body class="">
@@ -43,45 +53,46 @@
   "></script> -->
   <!-- <script src='https://system-unsafe-production.jspm.io/npm:single-spa@5.3.1/lib/umd/single-spa.min.js'></script> -->
 
-  <script src='https://cdn.bootcss.com/basket.js/0.5.2/basket.full.min.js'
-    onload='javascript:
-      // var dataMain= this.getAttribute("data-main")
-      var expire= 24
-      var bequire= basket.require
-      bequire({
-        url: "/jspm.config.js"
-        // ,expire: 0
-        ,skipCache: true
-      })
-      .then(function(res){
-        console.info({config}, config.paths)
-        //function: global thenable imports method
-        window.imports= function(url){
-          // console.info({url})
-          if(typeof url=== "object"){
-            return bequire(url)
-          }
-          else if(typeof url=== "string"){
-            if(config.paths[url])
-              url= config.paths[url]
-            return bequire({
-              url
-              ,expire
-              // ,skipCache: false
-            })
-          }
-          else console.warn(typeof url)
-        }
-        // event: main
-        return imports({
-          url: dataMain
+    <script src='https://unpkg.com/basket.js@0.5.2/dist/basket.full.min.js'
+      onload='javascript:
+        var main= this.getAttribute("data-main")
+        var expire= 24
+        var bequire= basket.require
+        bequire({
+          url: "/jspm.config.js"
+          // url: "/package.json"
+          ,expire: 0
           ,skipCache: true
         })
-      })
-      .catch(function(err){
-        basket.clear()
-      })
-    '
-    data-main=''
-  ></script>
+        .then(function(res){
+          console.info({res}, {config}, config.paths)
+          //function: global thenable imports method
+          window.imports= function(url){
+            // console.info({url})
+            if(typeof url=== "object"){
+              return bequire(url)
+            }
+            else if(typeof url=== "string"){
+              if(config.paths[url])
+                url= config.paths[url]
+              return bequire({
+                url
+                ,expire
+                // ,skipCache: false
+              })
+            }
+            else console.warn(typeof url)
+          }
+          // event: main
+          return imports({
+            url: dataMain
+            ,skipCache: true
+          })
+        })
+        .catch(function(err){
+          basket.clear()
+        })
+      '
+      data-main=''
+    ></script>
 </html>

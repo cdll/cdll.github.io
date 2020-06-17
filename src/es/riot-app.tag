@@ -103,46 +103,89 @@
   <footer class="-footer-index" hidden>
     <div class="footer-container mdl-grid">
       <hr>
-      <div class="mdl-cell mdl-cell--3-col">
+      <div class="mdl-cell mdl-cell--6-col">
         <div class='row'
           data-is='friend-link'
         ></div>
       </div>
-      <div class="mdl-cell mdl-cell--3-col">
+      <div class="mdl-cell mdl-cell--6-col">
         <div class='row'>
           <h4>我在这里：</h4>
-          <a href='http://plus.google.com/cd234350150'><i class="fa fa-google-plus-square fa-lg"></i></a>
-          <a href='http://weibo.com/234350150'><i class="fa fa-weibo  fa-lg"></i></a>
-          <a href='http://user.qzone.qq.com/234350150/' target="_blank"><i class="fa fa-qq fa-lg"></i></a>
-          <a href='http://user.qzone.qq.com/234350150/' target="_blank"><i class="fa fa-renren fa-lg"></i></a>
-          <a href=''><i class="fa fa-wechat fa-lg"></i></a>
-          <a href='https://github.com/cdll'><i class="fa fa-github fa-lg"></i></a>
-          <a href='http://steamcommunity.com/id/cdell/'><i class="fa fa-steam-square fa-lg"></i></a>
-          <!--<br>-->
+          <a href='http://plus.google.com/cd234350150'>
+            <i class="fa fa-google-plus-square fa-lg"></i>
+          </a>
+          <a href='http://weibo.com/234350150'>
+            <i class="fa fa-weibo  fa-lg"></i>
+          </a>
+          <a href='http://user.qzone.qq.com/234350150/' target="_blank">
+            <i class="fa fa-qq fa-lg"></i>
+          </a>
+          <a href='http://user.qzone.qq.com/234350150/' target="_blank">
+            <i class="fa fa-renren fa-lg"></i>
+          </a>
+          <a href=''>
+            <i class="fa fa-wechat fa-lg"></i>
+          </a>
+          <a href='https://github.com/cdll'>
+            <i class="fa fa-github fa-lg"></i>
+          </a>
+          <a href='http://steamcommunity.com/id/cdell/'>
+            <i class="fa fa-steam-square fa-lg"></i>
+          </a>
           <i class="fa fa-qrcode fa-lg"></i>
         </div>
       </div>
-      <div class="mdl-cell mdl-cell--3-col">
+      <div class="mdl-cell mdl-cell--6-col">
         <div class='row'>
           <h4>友情社区：</h4>
 
-          <!-- <a class="center-block" href='https://cnodejs.org/' target="_blank">
+          <a class="center-block" href='https://cnodejs.org/' target="_blank"
+            hidden
+          >
             <p class=''><i>Nodejs中文社区</i></p>
-          </a> -->
+          </a>
 
           <a class="center-block" href='http://frontenddev.org/' target="_blank">
             <p class=''><i>FED社区</i></p>
           </a>
         </div>
       </div>
-      <div class="mdl-cell mdl-cell--3-col">
+      <div class="mdl-cell mdl-cell--6-col">
         <div class='row'>
           <h4>快速联系：</h4>
-          <a href='tel:18521534116'><i class="fa fa-phone fa-lg"></i></a>
-          <a href='mailto:234350150@qq.com'><i class="fa fa-envelope fa-lg"></i></a>
+          <a href='tel:18521534116'>
+            <i class="fa fa-phone fa-lg"></i>
+          </a>
+          <a href='mailto:234350150@qq.com'>
+            <i class="fa fa-envelope fa-lg"></i>
+          </a>
         </div>
       </div>
       <div class="clear"></div>
     </div>
   </footer>
+
+  <script>
+    this.on('mount', function() {
+      console.info({event}, this.opts)
+      // if(typeof this.opts.onMount=== 'function') this.opts.onMount(this.opts)
+    })
+  </script>
+
+  <style>
+    .footer-index{
+      _height: 100%;
+      min-height: 100%;
+      position: relative;
+    }
+
+    .footer-container{
+      /* bottom: 0; */
+      /* position: absolute; */
+      width: 100%;
+      background-color: lightsteelblue;
+      /* background: linear-gradient(lightseagreen,transparent);
+      background: -webkit-linear-gradient(lightseagreen, transparent); */
+    }
+  </style>
 </app>

@@ -1,10 +1,10 @@
 {
   "scripts": {
-    "preinstall": "npx only-allow yarn",
-    "start": "node console.log('start')",
+    "preinstall": "npx only-allow pnpm",
+    "start": "npm run serve",
     "test": "jspm bundle ./src/js/index.js index.min.js --minify",
     "server": "gulp serve",
-    "serve": "serve . -p 9090"
+    "serve": "npx serve . -p 9090"
   },
   "dependencies": {
     "axios": "^0.19.2",
@@ -16,27 +16,9 @@
     "vuex": "^2.2.1"
   },
   "devDependencies": {
-    "babel-preset-es2015": "^6.24.0",
-    "browser-sync": "^2.15.0",
-    "coffeescript": "^1.12.4",
-    "del": "^2.2.2",
-    "gulp": "^4.0.2",
-    "gulp-jspm-build": "0.0.15",
-    "gulp-plumber": "^1.1.0",
-    "gulp-rollup": "^2.11.0",
-    "gulp-uglify": "^2.0.0",
-    "gulp-vueify": "0.0.3",
-    "incremental-dom": "^0.3.0",
-    "keycode": "^2.1.8",
-    "postcss": "^5.2.16",
-    "pug": "^2.0.3",
-    "rollup-plugin-css-only": "^0.2.0",
-    "rollup-plugin-postcss": "^0.2.0",
-    "rollup-plugin-vue2": "^0.8.0",
-    "rollup-stream": "^1.19.0",
-    "serve": "^11.3.0",
-    "vinyl-buffer": "^1.0.0",
-    "vinyl-source-stream": "^1.1.0",
-    "vue-template-compiler": "^2.2.5"
+    "browser-sync": "^2.15.0"
+  },
+  "peerDependences": {
+    "serve": "^11.3.0"
   }
 }

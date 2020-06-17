@@ -8,7 +8,9 @@
   <h4>友情链接：</h4>
   <virtual each='{el in friendlinks}'>
     <a class='center-block' riot-href='{el.url}' target="_blank">
-      <button class='mdl-button mdl-color-text--blue-grey-50'><i>{ el.name }</i></button>
+      <button class='mdl-button mdl-color-text--blue-grey-50'>
+        <i>{ el.name }</i>
+      </button>
     </a>
   </virtual>
 
