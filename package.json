@@ -8,17 +8,16 @@
   },
   "dependencies": {
     "axios": "^0.19.2",
-    "mdi": "^1.8.36",
-    "muse-ui": "^3.0.2",
     "riot": "^3.13.2",
+    "serve": "^11.3.2",
     "vue": "2.6.8",
     "vue-router": "^2.3.0",
     "vuex": "^2.2.1"
   },
   "devDependencies": {
-    "browser-sync": "^2.15.0"
-  },
-  "peerDependences": {
+    "browser-sync": "^2.15.0",
+    "parcel-bundler": "^1.12.4",
     "serve": "^11.3.0"
-  }
+  },
+  "peerDependences": {}
 }
