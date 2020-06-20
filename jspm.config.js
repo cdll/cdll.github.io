@@ -28,6 +28,7 @@ var config = {
     ,swiper: 'https://cdn.bootcss.com/Swiper/3.4.2/js/swiper.min.js'
     ,md5: 'https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.min.js'
     ,apollo: 'https://system-unsafe-production.jspm.io/apollo'
+    ,apolloSDK: 'https://unpkg.com/browse/apollo-client@2.6.10/bundle.umd.js'
   }
   ,packages: {
   }

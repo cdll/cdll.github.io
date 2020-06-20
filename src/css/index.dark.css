@@ -1,5 +1,5 @@
 @media screen and (prefers-color-scheme: dark){
   html{
-    filter: invert(1) hue-rotate(180deg) grayscale(30%);
+    filter: invert(1) hue-rotate(135deg) grayscale(.1);
   }
 }
