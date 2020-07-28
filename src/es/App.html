@@ -6,7 +6,6 @@
 
   <div class="mdl-layout__content clear">
     <section class=""
-      _riot-data-is='github-repo'
       data-is='blog-list'
     >
       <!-- <center class=''>
@@ -20,6 +19,7 @@
   <app-footer class=''></app-footer>
 
   <script>
+    // component: header
     riot.compile('/src/es/AppHeader.html', (tag) => {
       riot.mount('app-header')
     })

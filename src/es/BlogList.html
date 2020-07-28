@@ -17,13 +17,19 @@
       </div>
       <div class="mdl-card__actions mdl-card--border">
         <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
-          riot-href='{el.html_url}'
+          riot-onclick='{pageTo}'
         >View</a>
       </div>
     </div>
   </div>
 
   <script>
+    this.pageTo= ({item})=> {
+      console.info({
+        item
+      })
+      route(`/post.html?id=${item.el.number}`)
+    }
     this.on('mount', () => {
       console.info(this.__.tagName, {opts})
     })

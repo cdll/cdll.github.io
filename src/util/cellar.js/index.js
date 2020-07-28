@@ -1,3 +1,4 @@
+// https://unpkg.com/basket.js@0.5.2/dist/basket.full.min.js
 /*global document, XMLHttpRequest, localStorage, cellar, Promise*/
 ;(function (window, document) {
   'use strict'
@@ -206,6 +207,11 @@
   }
 
   function require () {
+    if (typeof arguments[0] === 'string') {
+      arguments[0] = {
+        url: arguments[0]
+      }
+    }
     for (var a = 0, l = arguments.length; a < l; a++) {
       arguments[a].execute = arguments[a].execute !== false
 
