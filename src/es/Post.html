@@ -1,0 +1,38 @@
+<post class="mdl-layout mdl-layout--fixed-header">
+  <!-- HEADER -->
+  <header class=''
+    data-is='app-header'
+  />
+
+  <div class="mdl-layout__content clear">
+    <section class=""
+      cdata-is='post-detail'
+    >
+      <center>
+        <h1>加载失败啦：<a riot-href='{"https://github.com/cdll/blog/issues/"+ route$.query.id}'>{route$.query.id}</a></h1>
+      </center>
+    </section>
+  </div>
+
+  <script>
+    // component: header
+    riot.compile('/src/es/AppHeader.html', (tag) => {
+      riot.mount('app-header')
+      this.update({
+        isMounted: true
+      })
+    })
+    this.route$= {
+      query: route.query()
+    }
+    this.on('mount', () => {
+      console.info(this.route$)
+      getPostDetail(this.route$.query.id)
+      .then((res)=> {
+        console.info({
+          res
+        })
+      })
+    })
+  </script>
+</post>

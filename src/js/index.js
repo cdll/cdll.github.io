@@ -1,4 +1,3 @@
-
 // ue: register serviceWorker
 if (
   navigator.serviceWorker
@@ -33,11 +32,9 @@ if (
 
 Promise.all([
   imports('riotc')
-  , imports('./src/util/api.js')
-    .then((api) => {
-      return api
-    })
-  , imports('mdl')
+  ,imports('riotRoute')
+  ,imports('./src/util/api.js')
+  ,imports('mdl')
     .then((globalMDL) => {
       window.MDL = {
         MaterialMenu
@@ -46,9 +43,35 @@ Promise.all([
     })
 ])
   .then((ress) => {
-    console.info({ ...ress })
-    // component: app
-    riot.compile('/src/es/App.html', function (tag) {
-      window.app = riot.mount('main', {})[0]
+    console.info({
+      ...ress
     })
+    route.base('/')
+    route('/index.html..', (group, id, action) => {
+      // component: app
+      riot.compile('/src/es/App.html', function (tag) {
+        window.app = riot.mount('main', 'app', {})[0]
+      })
+    })
+    route('/', (group, id, action) => {
+      route('/index.html', null, true)
+    })
+    route('/post.html..', (group, id, action) => {
+      const query = route.query()
+      console.info({
+        query,
+        group, id, action
+      })
+      riot.compile('/src/es/Post.html', function (tag) {
+        window.post = riot.mount('main', 'post', {})[0]
+      })
+    })
+    route((to, action, params) => {
+      console.info({
+        to
+        ,action
+        ,params
+      })
+    })
+    route.start(true)
   })

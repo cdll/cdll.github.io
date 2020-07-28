@@ -75,8 +75,15 @@ function getIPinfo (){
   })
 }
 
+function getPostDetail (num) {
+  return _fetch({
+    url: `https://api.github.com/repos/cdll/blog/issues/${num}/comments`
+  })
+}
+
 var apis= {
-  getBlogList
+  getBlogList,
+  getPostDetail
 }
 
 ;(function (global, factory) {
