@@ -1,24 +1,26 @@
 /**
- * @name: Ajax
- * @argument: method, url, data, success, type
- * @return: json, script
- * @author: cdll
+ * @function Ajax
+ * @param {String} method 请求的类型；GET 或 POST
+ * @param {String} url 请求的URL
+ * @param {Boolean} async true(异步)或 false(同步)
+ * @param {String} data
+ * @param {String} type
+ * @callback {Function} success
+ * @return {Promise}
+ * @resolve json, script
+ * @author cdll
  */
 function Ajax(method, url, data, success, type){
   if(type){
     if(type== 'script'){
       loadJS(url, success)
     }
-    return
+    return false
   }
-  //创建一个兼容的XMLHttpRequest对象
+  // 创建一个兼容的XMLHttpRequest对象, 向服务器发送请求
   var xhr = window.XMLHttpRequest
     ? new XMLHttpRequest()
     : new ActiveXObject('Microsoft.XMLHTTP')
-  //向服务器发送请求
-  //method：请求的类型；GET 或 POST
-  //url：请求的URL
-  //async：true(异步)或 false(同步)
   if(method.toUpperCase() == "GET" && data){
     url += "?" + data
   }
@@ -40,7 +42,6 @@ function Ajax(method, url, data, success, type){
   //存储函数（或函数名），每当 readyState 属性改变时，就会调用该函数
   xhr.onreadystatechange = function(){
     /**
-     *
      * 0: 请求未初始化
      * 1: 服务器连接已建立
      * 2: 请求已接收
@@ -49,11 +50,10 @@ function Ajax(method, url, data, success, type){
      */
     if(xhr.readyState == 4){
       if(xhr.status == 200){
-        success && success(xhr.responseText)
+        typeof success === 'function' && success(xhr.responseText)
       }
       else{
         console.warn(xhr.status, JSON.parse(xhr.responseText))
-        //				console.error("(T.T)//不好意思，服务器出了点小问题，请重新刷新一下" + xhr.status)
       }
     }
   }
@@ -62,15 +62,15 @@ function Ajax(method, url, data, success, type){
     script.type = 'text/javascript'
     if (script.readyState) {
       script.onreadystatechange = function() {
-        if (script.readyState == 'loaded' || script.readyState == 'complete') {
+        if ((/^(loaded|complete)$/ig).test(script.readyState)) {
           script.onreadystatechange = null
-          callback && callback()
+          typeof callback === 'function' && callback()
         }
       }
     }
     else{
       script.onload = function() {
-        callback && callback()
+        typeof callback === 'function' && callback()
       }
     }
     script.src = url
