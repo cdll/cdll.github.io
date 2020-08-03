@@ -1,0 +1,34 @@
+[
+  {
+    "url": "https://api.github.com/repos/cdll/blog/issues/comments/213220195",
+    "html_url": "https://github.com/cdll/blog/issues/5#issuecomment-213220195",
+    "issue_url": "https://api.github.com/repos/cdll/blog/issues/5",
+    "id": 213220195,
+    "node_id": "MDEyOklzc3VlQ29tbWVudDIxMzIyMDE5NQ==",
+    "user": {
+      "login": "cdll",
+      "id": 8576686,
+      "node_id": "MDQ6VXNlcjg1NzY2ODY=",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/8576686?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cdll",
+      "html_url": "https://github.com/cdll",
+      "followers_url": "https://api.github.com/users/cdll/followers",
+      "following_url": "https://api.github.com/users/cdll/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cdll/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cdll/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cdll/subscriptions",
+      "organizations_url": "https://api.github.com/users/cdll/orgs",
+      "repos_url": "https://api.github.com/users/cdll/repos",
+      "events_url": "https://api.github.com/users/cdll/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cdll/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "created_at": "2016-04-22T02:52:47Z",
+    "updated_at": "2016-04-22T03:08:03Z",
+    "author_association": "OWNER",
+    "body": "前天在处理一个旧项目的bug，发现原来这样做的方式不好。query对象如果在页面进入就初始化好了对于pjax项目不友好，于是昨天在火车上改成了一个方法，在需要的时候调用该方法是更好更准确的，同时也优化了query键值对中“＝空”、“无＝”的情况。代码如下：\n\n``` javascript\n(function(){//创建闭包，定义声明完成后自动销毁无用值\n  //fn: parse the location.search into url queries\n  var _query= function(prop){//定义解析方法\n    var search= location.search.substr(1)//获得剔除“?”的search字串\n    var query= {}//声明query对象\n    search.split('&').forEach(function(str, index){//针对“&”符号进行键值对分组\n      var k= str.split('=')[0]//获取键名\n      var v= str.match('=')?//获取键值\n        decodeURIComponent(str.split('=')[1])//有等号值时直接获取键值（等号后面没有值时默认为空字符串）\n        :\n        nul//没有等号时置null，js中null本意为'此处不应该有值'\n      query[k]= v//更新query对象\n    })\n    if(prop===''|| prop===undefined){//无参数调用query方法时\n      return query//返回完整的query对象\n    }\n    else{\n      return query[prop]//返回方法请求的query对象子成员\n    }\n  }\n  location.__proto__.query= _query//将query方法挂载在location对象下\n)()\n```\n",
+    "performed_via_github_app": null
+  }
+]

@@ -23,15 +23,15 @@
     riot.compile('/src/es/AppHeader.html', (tag) => {
       riot.mount('app-header')
     })
-    // component:
-    const compilingBlogList = new Promise((resolve) => {
-      riot.compile("/src/es/BlogList.html", (tag) => {
-        const tagName = (new Function(`return ${tag}`))()
-        resolve(tagName)
-      })
-    })
     // hook:
     this.on('mount', () => {
+      // component:
+      const compilingBlogList = new Promise((resolve) => {
+        riot.compile("/src/es/BlogList.html", (tag) => {
+          const tagName = (new Function(`return ${tag}`))()
+          resolve(tagName)
+        })
+      })
       // console.info('APP:', this.opts)
       // new MDL.MaterialMenu('header')
       riot.compile('/src/es/FriendLink.html', (tag) => {

@@ -77,12 +77,25 @@ function getIPinfo (){
 
 function getPostDetail (num) {
   return _fetch({
-    url: `https://api.github.com/repos/cdll/blog/issues/${num}/comments`
+    url: `https://api.githubs.com/repos/cdll/blog/issues/${num}`
+  })
+  .catch(err=> {
+    return _fetch(`/api/post_detail-${num}.json`)
+  })
+}
+
+function getPostReplies (num) {
+  return _fetch({
+    url: `https://api.githubs.com/repos/cdll/blog/issues/${num}/comments`
+  })
+  .catch(err => {
+    return _fetch(`/api/post_reply-${num}.json`)
   })
 }
 
 var apis= {
   getBlogList,
+  getPostReplies,
   getPostDetail
 }
 
