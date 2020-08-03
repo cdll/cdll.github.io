@@ -18,8 +18,8 @@ cellar({
         if (config.paths[url]) url = config.paths[url]
         return cellar({
           url
-          , expire
-          // ,skipCache: true
+          // ,expire
+          ,skipCache: true
         })
       }
       else console.warn(typeof url)
@@ -27,7 +27,7 @@ cellar({
     // event: main
     return imports({
       url: dataMain
-      , skipCache: true
+      ,skipCache: true
     })
   })
   .catch(function (err) {
