@@ -17,7 +17,7 @@ html{
   font-family: sans-serif;
 }
 html *{
-  font-family: inherit;
+  font-family: fantasy, Georgia, sans-serif;
 }
 ::-webkit-scrollbar{
   width: 0;
