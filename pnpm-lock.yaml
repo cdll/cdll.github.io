@@ -1,5 +1,5 @@
 dependencies:
-  axios: registry.npm.taobao.org/axios/0.19.2
+  axios: registry.npm.taobao.org/axios/0.21.1
   riot: registry.npm.taobao.org/riot/3.13.2
   serve: registry.npm.taobao.org/serve/11.3.2
   vue: registry.npm.taobao.org/vue/2.6.8
@@ -298,16 +298,16 @@ packages:
       registry: https://r.npm.taobao.org/
       tarball: https://registry.npm.taobao.org/atob/download/atob-2.1.2.tgz
     version: 2.1.2
-  registry.npm.taobao.org/axios/0.19.2:
+  registry.npm.taobao.org/axios/0.21.1:
     dependencies:
-      follow-redirects: registry.npm.taobao.org/follow-redirects/1.5.10
+      follow-redirects: registry.npm.taobao.org/follow-redirects/1.13.3
     dev: false
     name: axios
     resolution:
-      integrity: sha1-PqNsXYgY0NX4qKl6bTa4bNwAyyc=
+      integrity: sha1-IlY0gZYvTWvemnbVFu8OXTwJsrg=
       registry: https://r.npm.taobao.org/
-      tarball: https://registry.npm.taobao.org/axios/download/axios-0.19.2.tgz
-    version: 0.19.2
+      tarball: https://registry.npm.taobao.org/axios/download/axios-0.21.1.tgz
+    version: 0.21.1
   registry.npm.taobao.org/axios/0.21.1_debug@4.3.1:
     dependencies:
       follow-redirects: registry.npm.taobao.org/follow-redirects/1.13.3_debug@4.3.1
@@ -1002,6 +1002,7 @@ packages:
   registry.npm.taobao.org/debug/3.1.0:
     dependencies:
       ms: registry.npm.taobao.org/ms/2.0.0
+    dev: true
     name: debug
     resolution:
       integrity: sha1-W7WgZyYotkFJVmuhaBnmFRjGcmE=
@@ -1509,6 +1510,16 @@ packages:
       registry: https://r.npm.taobao.org/
       tarball: https://registry.npm.taobao.org/find-up/download/find-up-4.1.0.tgz
     version: 4.1.0
+  registry.npm.taobao.org/follow-redirects/1.13.3:
+    dev: false
+    engines:
+      node: '>=4.0'
+    name: follow-redirects
+    resolution:
+      integrity: sha1-5VmK1QF0wbxOhyMB6CrCzZf5Amc=
+      registry: https://r.npm.taobao.org/
+      tarball: https://registry.npm.taobao.org/follow-redirects/download/follow-redirects-1.13.3.tgz
+    version: 1.13.3
   registry.npm.taobao.org/follow-redirects/1.13.3_debug@4.3.1:
     dependencies:
       debug: registry.npm.taobao.org/debug/4.3.1
@@ -1527,18 +1538,6 @@ packages:
       registry: https://r.npm.taobao.org/
       tarball: https://registry.npm.taobao.org/follow-redirects/download/follow-redirects-1.13.3.tgz
     version: 1.13.3
-  registry.npm.taobao.org/follow-redirects/1.5.10:
-    dependencies:
-      debug: registry.npm.taobao.org/debug/3.1.0
-    dev: false
-    engines:
-      node: '>=4.0'
-    name: follow-redirects
-    resolution:
-      integrity: sha1-e3qfmuov3/NnhqlP9kPtB/T/Xio=
-      registry: https://r.npm.taobao.org/
-      tarball: https://registry.npm.taobao.org/follow-redirects/download/follow-redirects-1.5.10.tgz
-    version: 1.5.10
   registry.npm.taobao.org/for-in/1.0.2:
     dev: false
     engines:
@@ -4352,7 +4351,7 @@ packages:
       tarball: https://registry.npm.taobao.org/yeast/download/yeast-0.1.2.tgz
     version: 0.1.2
 specifiers:
-  axios: 0.19.2
+  axios: '0.21'
   browser-sync: ^2.26.14
   riot: ^3.13.2
   serve: ^11.3.2
