@@ -48,7 +48,7 @@ Promise.all([
     })
     route.base('/')
     route('/index.html..', (group, id, action) => {
-      // component: app
+      // component: App
       riot.compile('/src/es/App.html', function (tag) {
         window.app = riot.mount('main', 'app', {})[0]
       })
