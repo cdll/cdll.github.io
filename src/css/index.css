@@ -35,7 +35,7 @@ html *{
   height: 5vmin;
   margin: -3vmin auto auto -3vmin;
   border-radius: 999pt;
-  border: .2em solid lightgray;
+  border: .2em solid transparent;
   border-top-color: lightseagreen;
   position: absolute;
   top: 50%;
