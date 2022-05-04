@@ -22,12 +22,13 @@ var config = {
     ,vue: "https://cdn.bootcss.com/vue/2.6.8/vue.min.js"
     ,'vue-router': "https://cdn.bootcss.com/vue-router/3.0.2/vue-router.min.js"
     ,'vue-mdl': 'https://system-unsafe-production.jspm.io/vue-mdl'
-    ,axios: "https://cdn.bootcss.com/axios/0.18.0/axios.min.js"
+    ,axios: "https://unpkg.com/axios@0.18.1/dist//axios.min.js"
     ,riot: "https://unpkg.com/riot@3/riot.min.js"
     ,riotc: "https://unpkg.com/riot@3/riot+compiler.min.js"
     ,riotRoute: "https://unpkg.com/riot-route@3/dist/route.min.js"
-    ,swiper: 'https://cdn.bootcss.com/Swiper/3.4.2/js/swiper.min.js'
+    ,swiper: 'https://unpkg.com/swiper@3.4.2/dist/js/swiper.min.js'
     ,md5: 'https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.min.js'
+    ,md5: 'https://unpkg.com/md5@2.3.0/dist/md5.min.js'
     ,apollo: 'https://system-unsafe-production.jspm.io/apollo'
     ,apolloSDK: 'https://unpkg.com/browse/apollo-client@2.6.10/bundle.umd.js'
   }
