@@ -1,5 +1,76 @@
 [
   {
+    "url": "https://api.github.com/repos/cdll/blog/issues/17",
+    "repository_url": "https://api.github.com/repos/cdll/blog",
+    "labels_url": "https://api.github.com/repos/cdll/blog/issues/17/labels{/name}",
+    "comments_url": "https://api.github.com/repos/cdll/blog/issues/17/comments",
+    "events_url": "https://api.github.com/repos/cdll/blog/issues/17/events",
+    "html_url": "https://github.com/cdll/blog/issues/17",
+    "id": 1138628702,
+    "node_id": "I_kwDOAzSXgM5D3hhe",
+    "number": 17,
+    "title": "给你的Nodejs应用增加运行内存",
+    "user": {
+      "login": "cdll",
+      "id": 8576686,
+      "node_id": "MDQ6VXNlcjg1NzY2ODY=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8576686?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cdll",
+      "html_url": "https://github.com/cdll",
+      "followers_url": "https://api.github.com/users/cdll/followers",
+      "following_url": "https://api.github.com/users/cdll/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cdll/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cdll/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cdll/subscriptions",
+      "organizations_url": "https://api.github.com/users/cdll/orgs",
+      "repos_url": "https://api.github.com/users/cdll/repos",
+      "events_url": "https://api.github.com/users/cdll/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cdll/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "labels": [
+      {
+        "id": 340770802,
+        "node_id": "MDU6TGFiZWwzNDA3NzA4MDI=",
+        "url": "https://api.github.com/repos/cdll/blog/labels/[%E5%8E%9F%E5%88%9B]",
+        "name": "[原创]",
+        "color": "2cadf0",
+        "default": false,
+        "description": null
+      }
+    ],
+    "state": "open",
+    "locked": false,
+    "assignee": null,
+    "assignees": [
+
+    ],
+    "milestone": null,
+    "comments": 0,
+    "created_at": "2022-02-15T12:31:31Z",
+    "updated_at": "2022-02-15T12:31:31Z",
+    "closed_at": null,
+    "author_association": "OWNER",
+    "active_lock_reason": null,
+    "body": "前段时间捣鼓微应用时, 遇到了多个`pnpm script`<i>(特别是在容器中)</i>并发导致内存不够而跑不下去的问题, 查找了下相关问题发现是在64位系统中`Nodejs`默认分配了只有不到2GB的运行内存, 找了很多解决方案, 出现了很多形如\r\n```shell\r\nNODE_OPTIONS=--max_old_space_size=8192\r\n\r\nNODE_OPTIONS=--max-old-space-size=8192\r\n```\r\n的设置方法, 试下来我都混乱了, 结果也都没能配置成功. \r\n\r\n于是跑到`nodejs@12`官方文档上[查了下](https://nodejs.org/dist/latest-v12.x/docs/api/cli.html#cli_node_options_options), 正确写法应该是\r\n```shell\r\nNODE_OPTIONS --max-old-space-size=<MEMORY_SIZE>\r\n```\r\n其中`MEMORY_SIZE`的单位是`MB`, 所以对于内存不足的`pnpm SCRIPTNAME`命令使用\r\n```shell\r\ncross-env NODE_OPTIONS=--max-old-space-size=4096 pnpm SCRIPTNAME\r\n```\r\n就可以为`Nodejs`分配4GB内存以执行`SCRIPTNAME`了. Bingo!",
+    "reactions": {
+      "url": "https://api.github.com/repos/cdll/blog/issues/17/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "timeline_url": "https://api.github.com/repos/cdll/blog/issues/17/timeline",
+    "performed_via_github_app": null
+  },
+  {
     "url": "https://api.github.com/repos/cdll/blog/issues/16",
     "repository_url": "https://api.github.com/repos/cdll/blog",
     "labels_url": "https://api.github.com/repos/cdll/blog/issues/16/labels{/name}",
@@ -44,7 +115,9 @@
     "state": "open",
     "locked": false,
     "assignee": null,
-    "assignees": [],
+    "assignees": [
+
+    ],
     "milestone": null,
     "comments": 0,
     "created_at": "2020-11-12T14:09:53Z",
@@ -53,6 +126,19 @@
     "author_association": "OWNER",
     "active_lock_reason": null,
     "body": "## 随机数\r\n\r\n随机数是统计学领域的一个重要概念，对于游戏来说同样意义非凡，用好随机数，可以使你的游戏更真实、更人性、富有魅力。\r\n\r\n举例子来说：一个打靶游戏，子弹每次都命中准心所示位置是不科学的，加上抖动误差，会使真实感更加强烈；再如，抽奖大转盘程序，每当转盘停止转动时，指针恰好都指向奖品图片的正中点，人们会觉得这个转盘很不自然，指向一个随机位置效果要好得多。\r\n\r\n学过 JavaScript 的人都知道，使用随机数很简单，只要一个 ·Math.random()· 就可以获得一个大于等于 0 小于 1 的浮点数。从一个集合中随机选择对象时，使用浮点数离散化后的结果作为选择集的索引：\r\n```js\r\nvar objects = [...];\r\nvar randomIndex = Math.floor( objects.length * Math.random() ); \r\nvar object = objects[ randomIndex ];\r\n```\r\n\r\n## 随机数的分布规律\r\n\r\n前面代码中 `Math.random()` 和 `randomIndex` 的取值，在「[概率分布](https://zh.wikipedia.org/wiki/%E6%A6%82%E7%8E%87%E5%88%86%E5%B8%83)」理论中属于「连续型分布」和「离散型分布」，分布用来描述随机变量的概率性质。其中，不论是连续型还是离散型，均匀分布都是最最常用的分布类型（没有之一）。在大转盘的例子中，决定转盘「停在哪个奖品上」和「停到该奖品的哪个位置」，都可以采用均匀分布。\r\n\r\n均匀分布的特点是：所有基本事件的可能性相等，以下是 100 万次 `Math.random()` 实验的取值发生次数直方图：\r\n![image](https://img.alicdn.com/tps/TB1NKjyKFXXXXXqXpXXXXXXXXXX-360-280.png)\r\n>可以看出，即便是伪随机数，它的分布仍然是均匀到无可挑剔，如果样本数足够大，上面直方图将呈现出一条直线。\r\n\r\n再考虑一下打靶游戏的例子，假设对命中准心所示位置做了「均匀分布」的抖动误差，来看看 2000 次实验之后的样子：\r\n![image](https://img.alicdn.com/tps/TB1xKYEKFXXXXbwXXXXXXXXXXXX-296-316.png)\r\n\r\n如此均匀肯定不符合现实，人们会认为这杆枪的准心实在糟糕极了，而实际上，我们期望在大多数的情况下，子弹总是能命中准心所示位置，换句话说：正中准心的概率最高，随着误差距离的增大，概率减小。\r\n\r\n这时我们需要优化一下随机函数，让吐出的值更多的接近于 0 而疏远于 1，一个简单的做法就是，引入第二个随机量与之相乘，实验 2000 次的结果如下：\r\n![image](https://img.alicdn.com/tps/TB1w2fqKFXXXXbXXFXXXXXXXXXX-296-316.png)\r\n\r\n更多个随机数，效果更甚（想想屋檐下鸟巢正下方地板上的鸟屎堆）：\r\n![image](https://img.alicdn.com/tps/TB1XWflKFXXXXc.XFXXXXXXXXXX-296-316.png)\r\n\r\n>以上的实验，可 [移步这里](https://codepen.io/taobaofed/full/yeyBJq/?count=9999) 查看。\r\n\r\n我们再来看看，这三种情况随机数的直方图（每图样本数 100 万次）：\r\n![image](https://img.alicdn.com/tps/TB1gdPCKFXXXXaUXXXXXXXXXXXX-1080-280.png)\r\n\r\n关于不均匀的随机，历史上有多位名人总结了多种分布规律，离散型的诸如 [二项分布](https://zh.wikipedia.org/wiki/%E4%BA%8C%E9%A0%85%E5%88%86%E4%BD%88)、[几何分布](https://zh.wikipedia.org/wiki/%E5%B9%BE%E4%BD%95%E5%88%86%E4%BD%88)、[超几何分布](https://zh.wikipedia.org/wiki/%E8%B6%85%E5%87%A0%E4%BD%95%E5%88%86%E5%B8%83) 等，连续型的有 [指数分布](https://zh.wikipedia.org/wiki/%E6%8C%87%E6%95%B0%E5%88%86%E5%B8%83)、[伽马分布](https://zh.wikipedia.org/wiki/%CE%93%E5%87%BD%E6%95%B0) 和 [正态分布](https://zh.wikipedia.org/wiki/%E6%AD%A3%E6%80%81%E5%88%86%E5%B8%83) 等等，这些我也没有深入研究过，所以只能点点名，感兴趣的可自行琢磨。\r\n\r\n## 产生符合指定概率模型的随机数\r\n就像我们做动效一样，缓动算子可以令动画更加动感，应用合适的概率分布也能让页面/游戏更有表现力。与缓动动效不同的是，概率分布需要足够大的样本集才能体现出效果，在 codepen 上经常看到的各种粒子（烟花、火焰、炫光、烟雾、飘絮等）都离不开概率分布。\r\n\r\n上面描述的场景似乎华而不实，而抽奖需求就有用得多了，在抽奖活动的所有奖品中，Macbook 怎可能和移动电源均匀分布？为每种奖品配置不同的概率是任何一款抽奖平台的基本功能。\r\n\r\n假设某次抽奖活动，奖品概率设置如下：\r\n\r\n- 登山包：0.01\r\n- 旅行箱：0.03\r\n​- 移动电源：0.06\r\n- 不中奖（也看成是一种奖品）：0.9\r\n即，期望 1000 次抽奖中，约 10 次命中登山包，约 30 次命中旅行箱，约 60 次命中移动电源，约 900 次不中奖。\r\n\r\n基本思路：设计一个 `updateRandom()` 函数，返回一个大于等于 0 小于 1 的浮点数，将 0 到 1 之间等分成四段，每一段对应一个奖品，根据函数的返回值来决定命中哪个奖品。那么 `updateRandom()` 函数的返回值需要满足：\r\n\r\n- 返回值期间 [0, 0.25)，概率 0.01\r\n- 返回值期间 [0.25, 0.5)，概率 0.03\r\n- 返回值期间 [0.5, 0.75)，概率 0.06\r\n- 返回值期间 [0.75, 1)，概率 0.9\r\nJavaScript 实现：\r\n```js\r\nfunction updateRandom() {\r\n  var p = Math.random(), n = Math.random() / 4;\r\n\r\n  if( p < 0.01 )\r\n    return 0 + n;\r\n\r\n  if( p < 0.04 )\r\n    return 0.25 + n;\r\n\r\n  if( p < 0.1 )\r\n    return 0.5 + n;\r\n\r\n  if( p < 1 )\r\n    return 0.75 + n;\r\n}\r\n```\r\n使用的时候，依然可以继续采取最熟悉的方式：\r\n```js\r\nvar objects = [ '登山包', '旅行箱', '移动电源', '不中奖' ];\r\nvar randomIndex = Math.floor( objects.length * updateRandom() ); \r\nvar object = objects[ randomIndex ];\r\n```\r\n100 万次 `updateRandom()` 实验的取值直方图如下：\r\n![image](https://img.alicdn.com/tps/TB1e5DhKFXXXXayXVXXXXXXXXXX-360-280.png)\r\n\r\n## 概率的可配置化\r\n上一段代码演示了如何生成符合指定概率模型的随机浮点数，它的缺限在于模型的数据硬编码在函数体内，维护起来有困难。\r\n\r\n如果设计一个工厂函数，根据输入的权重数据来动态创建随机函数，会给实际应用中带来很大便利。\r\n\r\nJavaScript 实现：\r\n```js\r\nfunction randomInProbability( weights ){\r\n  if( arguments.length > 1 ){\r\n    weights = [].slice.call( arguments );\r\n  }\r\n\r\n  var total, current = 0, parts = [],\r\n      i = 0, l = weights.length;\r\n\r\n  // reduce 方法的简单兼容\r\n  total = weights.reduce ? weights.reduce( function( a, b ){\r\n    return a + b;\r\n  } ) : eval( weights.join( '+' ) );\r\n\r\n  for( ; i < l; i ++ ){\r\n    current += weights[ i ];\r\n    parts.push( 'if( p < ', current / total, ' ) return ', i / l, ' + n;' );\r\n  }\r\n\r\n  return Function( 'var p = Math.random(), n = Math.random() / ' + l + ';' + parts.join( '' ) );\r\n}\r\n```\r\n这样一来，就可以很方便得到任意概率模型的随机函数了，还是上面的例子，创建一个 `updateRandom() `函数很简单：\r\n```js\r\nvar updateRandom = randomInProbability( 0.01, 0.03, 0.06, .09 );\r\n```\r\n接下来，我们来玩个花样：\r\n```js\r\nvar model = [];\r\n\r\nfor( var i = 0; i < 100; i ++ ){\r\n  model.push( 2 + sin( PI * 2 * i / 50 ) );\r\n}\r\n\r\nvar randomInSin = randomInProbability( model );\r\n```\r\n来看看函数 `randomInSin() `100 万次取值直方图长什么样：\r\n![image](https://img.alicdn.com/tps/TB13fzdKFXXXXcUXVXXXXXXXXXX-360-280.png)\r\n一点小把戏，抛砖引玉，怎么样，是不是觉得离实现酷炫效果更进一步了？最后，进入[这里查看](http://codepen.io/taobaofed/full/VeYZvL/?spm=taofed.bloginfo.blog.9.98e25ac8phX24L&count=1000000)所有的实验。\r\n\r\n[原文地址](http://taobaofed.org/blog/2015/12/07/some-thing-about-random/)",
+    "reactions": {
+      "url": "https://api.github.com/repos/cdll/blog/issues/16/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "timeline_url": "https://api.github.com/repos/cdll/blog/issues/16/timeline",
     "performed_via_github_app": null
   },
   {
@@ -100,7 +186,9 @@
     "state": "open",
     "locked": false,
     "assignee": null,
-    "assignees": [],
+    "assignees": [
+
+    ],
     "milestone": null,
     "comments": 1,
     "created_at": "2020-08-05T15:03:19Z",
@@ -109,6 +197,19 @@
     "author_association": "OWNER",
     "active_lock_reason": null,
     "body": "最近要更新`flutter`的SDK， 受墙的影响，拉[github](github.com/flutter/flutter)很慢，突然想起腾讯有个[npm的源](https://mirrors.cloud.tencent.com/)， 就想去看下有没有支持[flutter的源](https://mirrors.cloud.tencent.com/flutter/)。结果发现貌似腾讯的源镜像已经停留在4月16号同步不了了：\r\n|软件源(镜像) | 最近更新 | 同步状态 | 帮助|\r\n|:-:|:-:|:-:|:-:|\r\n|flutter | 2020-04-16 11:10:12 | 🔄 同步中|\r\n\r\n\r\n另外又想起来开源中国的码云上[gitee](gitee.com)也有不少[开源软件的镜像仓库](https://gitee.com/organizations/mirrors/projects)，遂去搜了下， 发现竟然有，虽然不一定是实时更新的， 但是还是每日同步的，于是把本地的flutter的git仓库源改到了码云这边：\r\n```sh\r\n[core]\r\n        repositoryformatversion = 0\r\n        filemode = true\r\n        bare = false\r\n        logallrefupdates = true\r\n        ignorecase = true\r\n        precomposeunicode = true\r\n[remote \"origin\"]\r\n        # url = https://github.com/flutter/flutter.git\r\n        url= https://gitee.com/mirrors/Flutter.git\r\n        fetch = +refs/heads/*:refs/remotes/origin/*\r\n[branch \"stable\"]\r\n        remote = origin\r\n        merge = refs/heads/stable\r\n```\r\n很快就pull了下来， 然后进行`flutter doctor`操作就好。",
+    "reactions": {
+      "url": "https://api.github.com/repos/cdll/blog/issues/15/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "timeline_url": "https://api.github.com/repos/cdll/blog/issues/15/timeline",
     "performed_via_github_app": null
   },
   {
@@ -156,7 +257,9 @@
     "state": "open",
     "locked": false,
     "assignee": null,
-    "assignees": [],
+    "assignees": [
+
+    ],
     "milestone": null,
     "comments": 0,
     "created_at": "2019-09-17T06:06:37Z",
@@ -165,6 +268,19 @@
     "author_association": "OWNER",
     "active_lock_reason": null,
     "body": "## 原生浏览器\r\n1, iOS中的Safari(mobile)浏览器中播放视频默认会拉起全屏播放, 带有原生全屏视频播放器的所有默认可用控件(除了配置了有``x-webkit-airplay=\"allow\"``属性会有将视频进行隔空投屏播放的按钮), 可以使用``webkit-playsinline=\"true\", playsinline=\"true\"``属性设置video视频保持在页面中原定位置进行页内播放. 但是该video节点是与native端的webview层级一样高的, 这种情况要注意会有页面其他元素(``浮在可视区域内``、``绝对定位与video节点交叉/重叠的容器`` 等)被遮挡的情况\r\n\r\n2, Android中的webview一般默认就是使用页内播放的, 大多数也可以使用``webkit-playsinline=\"true\", playsinline=\"true\"``属性设置video视频保持在页面中原定位置进行页内播放. \r\n\r\n3, iOS中的Safari(iPad)浏览器默认也是使用页内播放的, 某些iOS 9.x版本的iPad Safari会无视video节点的``control``属性默认加上一个native(不存在于DOM树上)的视频播放按钮, 且该播放按钮也是与webview的native层级一样高的. \r\n\r\n## 微信浏览器\r\n1, iOS微信中的webview表现基本是与原生Safari的表现一致的, 默认(没有设置``webkit-playsinline=\"true\", playsinline=\"true\"``属性的话)也是拉起视频全屏播放, 带有原生视频全屏播放器的所有默认控件, 也支持自定义``x-webkit-airplay=\"allow\"``属性显示隔空投屏播放按钮的支持. \r\n\r\n2, Android微信中的webview默认则是全屏播放视频的, Android微信的webview是腾讯自定义的X5内核, 无视``webkit-playsinline=\"true\", playsinline=\"true\"``属性的设置. 通过仅设置``x5-playsinline``属性可以使video在页内播放, 但播放器的层级还是与webview的native层级一样高的, 此时``x5-video-player-type``属性值(貌似)默认为``h5-page``, 如果设置了``x5-video-player-type=\"h5\"``的属性则视频播放会拉起同层全屏的播放器; 通过设置``x5-video-player-type=\"h5\"``属性可以使video实现同层播放, 播放器会是全屏的但层级在页面内, 可以设定其他节点、盒模型层级高于视频播放器使其在视频播放器的上层进行展示; 通过仅设置``x5-video-player-type=\"h5-page\"``属性可以使video实现页内同层播放, 播放器层级在页面内, 可以设定其他节点、盒模型层级高于视频播放器使其在视频播放器的上层进行展示. \r\n>总结下来基本是: \r\n>>``x5-playsinline``与``x5-playsinline, x5-video-player-type=\"h5-page\"``时video都是在页内播放, 区别在于前者不是页内同层的且带有微信原生video播放器的controlBar, \r\n>>而``x5-video-player-type=\"h5\"``与``x5-video-player-type=\"h5\", x5-playsinline``视频播放效果都是拉起全屏同层的播放器, \r\n>>而仅有``x5-video-player-type=\"h5-page\"``属性的video控件则会使用页内同层的播放器. \r\n>\r\n\r\n## demos \r\n\r\n````html\r\n<!-- feature: 实现Android端、iOS端都在页内同层播放的视频 -->\r\n<html>\r\n  <video class=\"any\"\r\n    src=\"any\"\r\n    playsinline=\"true\"\r\n    webkit-playsinline=\"true\"\r\n    x5-video-player-type=\"h5-page\"\r\n    style=\"\r\n      display: inline-block;\r\n      position: relative;\r\n    \"\r\n  />\r\n</html>\r\n````\r\n\r\n````html\r\n<!-- feature: 实现Android端、iOS端模拟全屏播放的视频 -->\r\n<html>\r\n  <video class=\"any\"\r\n    src=\"any\"\r\n    playsinline=\"true\"\r\n    webkit-playsinline=\"true\"\r\n    x5-video-player-type=\"h5-page\"\r\n    style=\"\r\n      display: block;\r\n      position: fixed;\r\n      top: 0;bottom: 0;\r\n      left: 0;right: 0;\r\n      object-fit: cover;\r\n    \"\r\n  />\r\n</html>\r\n````\r\n\r\n````html\r\n<!-- feature: 实现Android端、iOS端调用原生(全屏)播放器的视频 -->\r\n<video class=\"any\" src=\"any\" />\r\n````\r\n",
+    "reactions": {
+      "url": "https://api.github.com/repos/cdll/blog/issues/14/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "timeline_url": "https://api.github.com/repos/cdll/blog/issues/14/timeline",
     "performed_via_github_app": null
   },
   {
@@ -212,7 +328,9 @@
     "state": "open",
     "locked": false,
     "assignee": null,
-    "assignees": [],
+    "assignees": [
+
+    ],
     "milestone": null,
     "comments": 0,
     "created_at": "2019-04-03T12:34:16Z",
@@ -221,6 +339,19 @@
     "author_association": "OWNER",
     "active_lock_reason": null,
     "body": "内滚动布局在iOS上会有滚动不流畅的issue, 通用的解决方法就是在滚动布局容器上添加 ``-webkit-overflow-scroll: touch;`` 使Safari webview调用原生滚动模式来优化. \r\n\r\n其次, 对于设置了 ``-webkit-overflow-scroll: touch;`` 样式的内滚动容器在系统版本iOS11及以上的设备上就会出现滚动过程中抬手(touchend)后续滚动 ``随机元素消失`` 、 ``脱离文档流元素漂移`` 的issue, 这里面就是显示层渲染的问题了, 搜索了好久, [终于找到](https://stackoverflow.com/questions/9801687/using-webkit-overflow-scrolling-touch-hides-content-while-scrolling-dragging), 想起web端可以使用 ``transform: translateZ(0);`` 使得元素被强行使用GPU加速去渲染, GPU加速可以使元素保持在内存中, 所以对于设置了 ``-webkit-overflow-scroll: touch;`` 样式的容器我们对其相关子元素设置 ``transform: translateZ(0);`` 就可以保证在滚动抬手后续的滚动中保持元素正常渲染, 只是这样的话, 会消耗更多的内存. \r\n",
+    "reactions": {
+      "url": "https://api.github.com/repos/cdll/blog/issues/13/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "timeline_url": "https://api.github.com/repos/cdll/blog/issues/13/timeline",
     "performed_via_github_app": null
   },
   {
@@ -268,7 +399,9 @@
     "state": "open",
     "locked": false,
     "assignee": null,
-    "assignees": [],
+    "assignees": [
+
+    ],
     "milestone": null,
     "comments": 1,
     "created_at": "2017-02-25T13:47:07Z",
@@ -277,6 +410,19 @@
     "author_association": "OWNER",
     "active_lock_reason": null,
     "body": "这两天在玩Fusetools，要做android端preview／build的时候发现还是缺好多依赖，然后想起以前耍Android时候的Android SDK，就想找找有没有国内的加速方案，使用关键词“加速 android sdk manager”找到了几个，其中比较全的：\r\n-  [Android SDK下载速度慢无法更新？使用国内镜像站加速！](https://blog.kuoruan.com/24.html)\r\n-  腾讯的加速源（方案）：[The user guide for this mirror--Powered by Tencent Bugly](http://android-mirror.bugly.qq.com:8080/include/usage.html)\r\n\r\n赶脚效果还不错，有兴趣、有需要的童鞋可以看看～",
+    "reactions": {
+      "url": "https://api.github.com/repos/cdll/blog/issues/12/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "timeline_url": "https://api.github.com/repos/cdll/blog/issues/12/timeline",
     "performed_via_github_app": null
   },
   {
@@ -324,7 +470,9 @@
     "state": "open",
     "locked": false,
     "assignee": null,
-    "assignees": [],
+    "assignees": [
+
+    ],
     "milestone": null,
     "comments": 0,
     "created_at": "2016-04-29T05:44:59Z",
@@ -333,6 +481,19 @@
     "author_association": "OWNER",
     "active_lock_reason": null,
     "body": "1，使用Angular.toJson()方法代替JSON.stringify()方法；\n2，在做repeat的列表中声明trackBy后缀。\n[问题参考地址](https://stackoverflow.com/questions/18826320/what-is-the-hashkey-added-to-my-json-stringify-result/23656919#23656919)\n\n```\nAngular adds this to keep track of your changes, so it knows when it needs to update the DOM.\n\nIf you use angular.toJson(obj) instead of JSON.stringify(obj) then Angular will strip out these internal-use values for you.\n\nAlso, if you change your repeat expression to use the track by {uniqueProperty} suffix, Angular won't have to add $$hashKey at all. For example\n\n <ul>\n    <li ng-repeat=\"link in navLinks track by link.href\">\n        <a ng-href=\"link.href\">{{link.title}}</a>\n    </li>\n</ul>\nJust always remember you need the \"link.\" part of the expression - I always tend to forget that. Just track by href will surely not work.\n```\n",
+    "reactions": {
+      "url": "https://api.github.com/repos/cdll/blog/issues/11/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "timeline_url": "https://api.github.com/repos/cdll/blog/issues/11/timeline",
     "performed_via_github_app": null
   },
   {
@@ -380,7 +541,9 @@
     "state": "open",
     "locked": false,
     "assignee": null,
-    "assignees": [],
+    "assignees": [
+
+    ],
     "milestone": null,
     "comments": 0,
     "created_at": "2016-03-26T15:58:30Z",
@@ -389,6 +552,19 @@
     "author_association": "OWNER",
     "active_lock_reason": null,
     "body": "今天使用bower工具安装了很多libs，造成一次push需要push很多东西，最后git push报错，报错的主要信息如下：\n\n```\nerror: RPC failed; result=55, HTTP code = 200\nfatal: The remote end hung up unexpectedly\n```\n\n通过关键词查到了解决方案，可以设置一下git的提交buffer，设置大一些，命令如下：\n\n```\ngit config http.postBuffer 524288000\n```\n\n[原文地址](http://blog.csdn.net/u012973744/article/details/18814397)\n",
+    "reactions": {
+      "url": "https://api.github.com/repos/cdll/blog/issues/10/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "timeline_url": "https://api.github.com/repos/cdll/blog/issues/10/timeline",
     "performed_via_github_app": null
   },
   {
@@ -436,7 +612,9 @@
     "state": "open",
     "locked": false,
     "assignee": null,
-    "assignees": [],
+    "assignees": [
+
+    ],
     "milestone": null,
     "comments": 0,
     "created_at": "2016-03-13T10:12:13Z",
@@ -445,6 +623,19 @@
     "author_association": "OWNER",
     "active_lock_reason": null,
     "body": "最近要用less，学到一个使用less函数式自动生成css3动画的方法，这里做一下代码笔记。\n\n<pre>\n//less\n.keyframes(@name; @arguments) {\n  @-moz-keyframes @name { @arguments(); }\n  @-webkit-keyframes @name { @arguments(); }\n  @keyframes @name { @arguments(); }\n}\n\n.animation(@arguments) {\n  -webkit-animation: @arguments;\n  -moz-animation: @arguments;\n  animation: @arguments;\n}\n</pre>\n\n有了上面的less后，我们就可以使用选择器传入css3属性来生成该选择器的节点要应用的css3动画了\n\n<pre>\n/* example */\n//html\n&lt;div class=\"class1\"&gt;\n  This will flash!\n&lt;/div&gt;\n\n//less\n.class1 {\n  .keyframes(fade-in;{\n    0% { opacity: 0; }\n    100% { opacity: 1; }\n  });\n  .animation(fade-in 0.2s linear infinite alternate)\n}\n</pre>\n\n\n<a href='http://codepen.io/zvuc/pen/xvoys/' target='_blank'>源码地址</a>\n",
+    "reactions": {
+      "url": "https://api.github.com/repos/cdll/blog/issues/8/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "timeline_url": "https://api.github.com/repos/cdll/blog/issues/8/timeline",
     "performed_via_github_app": null
   },
   {
@@ -492,7 +683,9 @@
     "state": "open",
     "locked": false,
     "assignee": null,
-    "assignees": [],
+    "assignees": [
+
+    ],
     "milestone": null,
     "comments": 1,
     "created_at": "2016-03-13T10:10:28Z",
@@ -501,6 +694,19 @@
     "author_association": "OWNER",
     "active_lock_reason": null,
     "body": "代码如下：\n\n``` javascript\n//location.query prepared for amplitude log event\n;location.search.substr(1).split('&').forEach(function(el){\n  location.query= location.query|| {}\n  location.query[el.split('=')[0]]= el.split('=')[1]||el.split('=')[0]\n});\n```\n\n嗯，easy！后期抽空再做一下UMD兼容，欢迎留言相互交流~（待续）\n",
+    "reactions": {
+      "url": "https://api.github.com/repos/cdll/blog/issues/5/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "timeline_url": "https://api.github.com/repos/cdll/blog/issues/5/timeline",
     "performed_via_github_app": null
   },
   {
@@ -548,7 +754,9 @@
     "state": "open",
     "locked": false,
     "assignee": null,
-    "assignees": [],
+    "assignees": [
+
+    ],
     "milestone": null,
     "comments": 0,
     "created_at": "2016-03-13T10:08:07Z",
@@ -557,6 +765,19 @@
     "author_association": "OWNER",
     "active_lock_reason": null,
     "body": "虽说我一直在等待一个可以搭建ghost的机会，但是最近在搞团队github页，就想着操练一下hexo，废话不多说，直入主题。\n\n1、首先你得有个github账号（例如cdll），然后创建一个repository，命名为‘&lt;git_user_name&gt;.github.io’（例如cdll.github.io），repo创建成功后，进入其设置页（setting），页面滚到下方会有一个github-page生成工具（generator），continue后会让你设置初始化内容，下一步选择主题，然后点击publish page就好了~\n\n那么到了这一步，你就有了一个地址为 http://&lt;git_user_name&gt;.github.io 的博客页，是不是很赞~基于这个repo自己维护自己的gh-page博客也是可以的~\n\n2、我们今天要说的是靠hexo来管理这个gh-page博客。hexo基于nodejs，关于nodejs的安装这里我们就不赘述了，请自行谷歌之~\n\n3、安装好了nodejs之后，我们就可以安装hexo啦：\n\nnpm i -g hexo-cli（注意，是hexo-cli，<a title=\"hexo\" href=\"https://www.npmjs.com/package/hexo#installation\" target=\"_blank\">官方文档写了啊</a>）。\n\n受到长城防火墙影响的用户可以使用淘宝镜像：\n\nnpm i -g hexo-cli <span style=\"font-family: Consolas, Monaco, monospace; font-size: 12px; line-height: 18px;\">--registry=https://registry.npm.taobao.org</span>\n\n4、安装结束后通过直接执行hexo命令就可以检查我们的hexo是否安装完毕了。如有遇到hexo没反应的选手还请重试步骤3~\n\n5、接下来使用mkdir &lt;dir_name&gt;命令在个人文件夹下创建一个目录，例如：\n\nmkdir hexo。\n\n6、cd进入新建的（hexo）目录，使用hexo init命令初始化我们的工作目录，这一步其实就是导入了hexo的npm依赖关系package.json~\n\n7、通过init得到info通知后可以看到它提示我们‘执行npm install’命令来完成初始化工作，这里其实就是npm从导入的hexo依赖关系去自动安装好了依赖模块、生成了必要的目录结构~\n\n8、静候片刻后我们就得到了必要的目录及模块，以及各种配置信息~\n\n9、好了，到此为止我们就可以使用hexo new命令新建一个markdown文件开始写博文了，写完的博文可以通过hexo g命令转换成相应的html文件，自动扔到对应的分类子文件夹、自动套上了默认的（或是已经配置好的）主题样式~\n\nPS：关于hexo new时遇到的错误，请首先查看本文第三步，如若还不行还请自行<a title=\"github之\" href=\"https://github.com/hexojs/hexo/issues\" target=\"_blank\">github之</a>或<a title=\"sof之\" href=\"http://stackoverflow.com/questions/tagged/hexo\" target=\"_blank\">sof之</a>~\n\n10、然后后就在hexo目录中将&lt;git_user_name&gt;.github.io的repo通过git工具pull下来，这样在与source、themes同级的目录下还有了&lt;git_user_name&gt;.github.io目录~\n\n11、接下来就是在_config.yml配置文件中配置我们的repo地址进来了，这样可以方便我们在hexo d（deploy）时同步到github上~\n\nwell done，any question可以在下方留言给我~欢迎相互来群交流<a title=\"【WEB UX Club】\" href=\"http://jq.qq.com/?_wv=1027&amp;k=SzIo7B\" target=\"_blank\">【WEB UX Club】</a>。\n\n&nbsp;\n",
+    "reactions": {
+      "url": "https://api.github.com/repos/cdll/blog/issues/4/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "timeline_url": "https://api.github.com/repos/cdll/blog/issues/4/timeline",
     "performed_via_github_app": null
   },
   {
@@ -604,7 +825,9 @@
     "state": "open",
     "locked": false,
     "assignee": null,
-    "assignees": [],
+    "assignees": [
+
+    ],
     "milestone": null,
     "comments": 0,
     "created_at": "2016-03-13T10:07:20Z",
@@ -613,6 +836,19 @@
     "author_association": "OWNER",
     "active_lock_reason": null,
     "body": "<div>\n<div>\n<h1>AMD (中文版)</h1>\n<div>kuang edited this page <time datetime=\"2015-03-31T03:19:33Z\" is=\"relative-time\" title=\"Tue Mar 31 2015 11:19:33 GMT+0800 (中国标准时间)\">on Mar 31</time> · <a href=\"https://github.com/amdjs/amdjs-api/wiki/AMD-(%E4%B8%AD%E6%96%87%E7%89%88)/_history\">4 revisions</a></div>\n</div>\n\n</div>\n\n<div id=\"wiki-content\">\n<div>\n<div id=\"wiki-rightbar\">\n<div>\n<h5>Clone this wiki locally</h5>\n<div><input type=\"text\" value=\"https://github.com/amdjs/amdjs-api.wiki.git\" readonly=\"readonly\" /><button type=\"button\" data-copied-hint=\"Copied!\"></button></div>\n<a title=\"Save this wiki to your computer and use it in GitHub Desktop.\" href=\"https://windows.github.com/\"> Clone in Desktop</a></div>\n</div>\n\n<div id=\"wiki-body\">\n<div>\n\n<strong>本文是<a href=\"https://github.com/amdjs/amdjs-api/blob/master/AMD.md\">源仓库里的\"AMD\"文档</a>的一份拷贝，放在这里是用来维护历史链接。文中任何与源仓库里的文档不一致之处，以源仓库里的文档为准。</strong>\n\n异步模块定义规范（<strong>AMD</strong>）制定了定义模块的规则，这样模块和模块的依赖可以被异步加载。这和浏览器的异步加载模块的环境刚好适应（浏览器同步加载模块会导致性能、可用性、调试和跨域访问等问题）。\n\n此AMD与科技公司<a href=\"http://en.wikipedia.org/wiki/Advanced_Micro_Devices\">AMD</a> 及其制造的AMD处理器无关。\n<ul>\n    <li><a href=\"https://github.com/amdjs/amdjs-tests\">测试</a></li>\n    <li><a href=\"https://groups.google.com/group/amd-implement\">讨论</a></li>\n</ul>\n<h1>API说明</h1>\n<h2>define() 函数<a name=\"user-content-define\"></a></h2>\n本规范只定义了一个函数 \"define\"，它是全局变量。函数的描述为：\n<div>\n<pre>    define(id?, dependencies?, factory);</pre>\n</div>\n\n<h3>id<a name=\"user-content-define-id\"></a></h3>\n\n<h3>名字<a name=\"user-content-define-id\"></a></h3>\n\n第一个参数，id，是个字符串。它指的是定义中模块的名字，这个参数是可选的。如果没有提供该参数，模块的名字应该默认为模块加载器请求的指定脚本的名字。如果提供了该参数，模块名<strong>必须</strong>是“顶级”的和绝对的（不允许相对名字）。\n\n<h4>模块名的格式<a name=\"user-content-define-id-notes\"></a></h4>\n\n模块名用来唯一标识定义中模块，它们同样在依赖数组中使用。AMD的模块名规范是<a href=\"http://wiki.commonjs.org/wiki/Modules/1.1.1#Module_Identifiers\">CommonJS模块名规范</a>的超集。引用如下：\n\n<ul>\n    <li>模块名是由一个或多个单词以正斜杠为分隔符拼接成的字符串</li>\n    <li>单词须为驼峰形式，或者\".\"，\"..\"</li>\n    <li>模块名不允许文件扩展名的形式，如\".js\"</li>\n    <li>模块名可以为 \"相对的\" 或 \"顶级的\"。如果首字符为\".\"或\"..\"则为\"相对的\"模块名</li>\n    <li>顶级的模块名从根命名空间的概念模块解析</li>\n    <li>相对的模块名从 \"require\" 书写和调用的模块解析</li>\n</ul>\n\n上文引用的CommonJS模块id属性常被用于JavaScript模块。\n\n相对模块名解析示例：\n\n<ul>\n    <li>如果模块 <code>\"a/b/c\"</code> 请求 <code>\"../d\"</code>, 则解析为<code>\"a/d\"</code></li>\n    <li>如果模块 <code>\"a/b/c\"</code> 请求 <code>\"./e\"</code>, 则解析为<code>\"a/b/e\"</code></li>\n</ul>\n\n如果AMD的实现支持<a href=\"https://github.com/amdjs/amdjs-api/wiki/%E5%8A%A0%E8%BD%BD%E5%99%A8%E6%8F%92%E4%BB%B6%28Loader-Plugins%29\">加载器插件(Loader-Plugins)</a>,则\"!\"符号用于分隔加载器插件模块名和插件资源名。由于插件资源名可以非常自由地命名，大多数字符都允许在插件资源名使用。\n\n（译注：<a href=\"https://github.com/amdjs/amdjs-api/wiki/Loader-Plugins\">关于Loader-Plugins</a>）\n\n<h3>依赖<a name=\"user-content-define-dependencies\"></a></h3>\n\n第二个参数，dependencies，是个定义中模块所依赖模块的数组。依赖模块必须根据模块的工厂方法优先级执行，并且执行的结果应该按照依赖数组中的位置顺序以参数的形式传入（定义中模块的）工厂方法中。\n\n依赖的模块名如果是相对的，应该解析为相对定义中的模块。换句话来说，相对名解析为相对于模块的名字，并非相对于寻找该模块的名字的路径。\n\n本规范定义了三种特殊的依赖关键字。如果\"require\",\"exports\", 或 \"module\"出现在依赖列表中，参数应该按照CommonJS模块规范自由变量去解析。\n\n依赖参数是可选的，如果忽略此参数，它应该默认为[\"require\", \"exports\", \"module\"]。然而，如果工厂方法的形参个数小于3，加载器会选择以函数指定的参数个数调用工厂方法。\n\n<h3>工厂方法<a name=\"user-content-define-factory\"></a></h3>\n\n第三个参数，factory，为模块初始化要执行的函数或对象。如果为函数，它应该只被执行一次。如果是对象，此对象应该为模块的输出值。\n\n如果工厂方法返回一个值（对象，函数，或任意强制类型转换为true的值），应该为设置为模块的输出值。\n\n<h4>简单的 CommonJS 转换<a name=\"user-content-commonjs-wrap\"></a></h4>\n\n如果依赖性参数被忽略，模块加载器<strong>可以</strong>选择扫描工厂方法中的require语句以获得依赖性（字面量形为require(\"module-id\")）。第一个参数必须字面量为require从而使此机制正常工作。\n\n在某些情况下，因为脚本大小的限制或函数不支持toString方法（Opera Mobile是已知的不支持函数的toString方法），模块加载器可以选择扫描不扫描依赖性。\n\n如果有依赖参数，模块加载器<strong>不应该</strong>在工厂方法中扫描依赖性。\n\n<h2>define.amd 属性<a name=\"user-content-defineAmd\"></a></h2>\n\n为了清晰的标识全局函数（为浏览器加载script必须的）遵从AMD编程接口，任何全局函数<strong>应该</strong>有一个\"amd\"的属性，它的值为一个对象。这样可以防止与现有的定义了define函数但不遵从AMD编程接口的代码相冲突。\n\n当前，define.amd对象的属性没有包含在本规范中。实现本规范的作者，可以用它通知超出本规范编程接口基本实现的额外能力。\n\ndefine.amd的存在表明函数遵循本规范。如果有另外一个版本的编程接口，那么应该定义另外一个属性，如define.amd2，表明实现只遵循该版本的编程接口。\n\n一个如何定义同一个环境中允许多次加载同一个版本的模块的实现：\n\n<div>\n<pre>    define.amd = {\n      multiversion: true\n    };</pre>\n</div>\n\n最简短的定义：\n\n<div>\n<pre>    define.amd = {};</pre>\n</div>\n\n<h2>一次输出多个模块<a name=\"user-content-transporting\"></a></h2>\n\n在一个脚本中可以使用多次define调用。这些define调用的顺序<strong>不应该</strong>是重要的。早一些的模块定义中所指定的依赖，可以在同一脚本中晚一些定义。模块加载器负责延迟加载未解决的依赖，直到全部脚本加载完毕，防止没必要的请求。\n\n<h1>例子<a name=\"user-content-examples\"></a></h1>\n\n<h2>使用 require 和 exports</h2>\n\n创建一个名为\"alpha\"的模块，使用了require，exports，和名为\"beta\"的模块:\n\n<div>\n<pre>   define(\"alpha\", [\"require\", \"exports\", \"beta\"], function (require, exports, beta) {\n       exports.verb = function() {\n           return beta.verb();\n           //Or:\n           return require(\"beta\").verb();\n       }\n   });</pre>\n</div>\n\n一个返回对象的匿名模块：\n\n<div>\n<pre>   define([\"alpha\"], function (alpha) {\n       return {\n         verb: function(){\n           return alpha.verb() + 2;\n         }\n       };\n   });</pre>\n</div>\n\n一个没有依赖性的模块可以直接定义对象：\n\n<div>\n<pre>   define({\n     add: function(x, y){\n       return x + y;\n     }\n   });</pre>\n</div>\n\n一个使用了简单CommonJS转换的模块定义：\n\n<div>\n<pre>   define(function (require, exports, module) {\n     var a = require('a'),\n         b = require('b');\n\n     exports.action = function () {};\n   });</pre>\n</div>\n\n<h1>全局变量<a name=\"user-content-global\"></a></h1>\n\n本规范保留全局变量\"define\"以用来实现本规范。包额外信息异步定义编程接口是为将来的CommonJS API保留的。模块加载器<strong>不应</strong>在此函数添加额外的方法或属性。\n\n本规范保留全局变量\"require\"被模块加载器使用。模块加载器可以在合适的情况下自由地使用该全局变量。它可以使用这个变量或添加任何属性以完成模块加载器的特定功能。它同样也可以选择完全不使用\"require\"。\n\n<h1>使用注意<a name=\"user-content-usage\"></a></h1>\n\n为了使静态分析工具（如build工具）可以正常工作，推荐使用字面上形如的'define(...)'。\n\n<h1>与CommonJS的关系<a name=\"user-content-commonjs-relation\"></a></h1>\n\n一个关于本API的wiki开始在CommonJS wiki中创建了，作为中转的格式，模块中转。但是为了包含模块定义接口，随着时间而不断改变。在CommonJS列表中关于推荐本API作为模块定义API尚未达成一致。本API被转移到它自己的wiki和讨论组中。\n\nAMD可以作为CommonJS模块一个中转的版本只要CommonJS没有被用来同步的require调用。使用同步require调用的CommonJS代码可以被转换为使用回调风格的AMD模块加载器。\n\n</div>\n</div>\n</div>\n</div>\n",
+    "reactions": {
+      "url": "https://api.github.com/repos/cdll/blog/issues/3/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "timeline_url": "https://api.github.com/repos/cdll/blog/issues/3/timeline",
     "performed_via_github_app": null
   },
   {
@@ -660,7 +896,9 @@
     "state": "open",
     "locked": false,
     "assignee": null,
-    "assignees": [],
+    "assignees": [
+
+    ],
     "milestone": null,
     "comments": 0,
     "created_at": "2016-03-13T10:06:24Z",
@@ -669,6 +907,19 @@
     "author_association": "OWNER",
     "active_lock_reason": null,
     "body": "最近有这个需求，找了不少帖子感觉都没有说的很细的，亲自实战了一遍之后觉得有必要做个笔记，也供日后查阅、交流。\n\n首先我们先来看看百度官方的API文档：<a href=\"http://tongji.baidu.com/open/api/more?p=guide_trackEvent\" target=\"_blank\">猛戳我</a>。\n\n其实简单的步骤就是：\n\n<pre>\n1，页面引入百度统计JS-API（的脚本）；\n\n2，为要跟踪的标签添加onclick事件绑定百度统计的“<span style=\"font-family: Consolas, Monaco, monospace; font-size: 12px; line-height: 18px;\">_hmt.push</span>”事件；\n\n3，该push函数中可接受2+3个参数，其中前两个为必须参数，后三个为可选参数；\n\n4，页面上线，登陆百度统计后台查看统计数据（百度统计的时延和误差是个坑啊说多了都是泪啊自己看<a href=\"http://yingxiao.baidu.com/support/tongji/detail_2750.html\" target=\"_blank\">FAQ</a>和<a href=\"http://yingxiao.baidu.com/support/tongji/detail_2755.html?castk=LTE%3D\" target=\"_blank\">FAQ</a>吧）。\n</pre>\n\n先来说说5个参数：\n<code>(['_trackEvent', category, action, opt_label, opt_value])</code>\n_trackEvent这个一般我们都不动它，也布吉岛什么用的。\ncategory就是类型，在百度统计中心后台里我们可以看到有分成3块的\n\n<ul>\n    <li style=\"display: inline-block; padding: 0 20px; border: 1px solid #e4eefb; background-color: #fff;\"><a>类型</a></li>\n    <li style=\"display: inline-block; padding: 0 20px; border: 1px solid white; background-color: #e2edfb;\"><a>操作</a></li>\n    <li style=\"display: inline-block; padding: 0 20px; border: 1px solid white; background-color: #e2edfb;\"><a>标签</a></li>\n</ul>\n\n<img src=\"file:///C:\\Users\\cdll\\AppData\\Local\\Temp\\mx3759C.png\" alt=\"\" />\n<span style=\"font-family: Consolas, Monaco, monospace; font-size: 12px; line-height: 18px;\">其实对应的就是</span><span style=\"font-family: Consolas, Monaco, monospace; font-size: 12px; line-height: 18px;\">category，</span><span style=\"font-family: Consolas, Monaco, monospace; font-size: 12px; line-height: 18px;\">action以及opt_label，也就是我们可以分别根据这属性来查看数据。</span>\n\n那么需求就来了，现在需要针对不同的页面、页面中不同的按钮去添加事件跟踪，而我现在的页面是一个模板页，页面加载时使用ajax填充页面内容，于是我只能在ajax请求数据之后、json数据填充至dom文档之前，给对应的a链接（含有‘xxx.xxx.com’的href属性）添加onclick事件，这其中只需要我统一给category（或action或opt_label）赋不一样的值就好了，而这个值中最好同时带有独特的id和当天的时间，如下\n<code>$a.attr('onclick', \"<span style=\"font-family: Consolas, Monaco, monospace; font-size: 12px; line-height: 18px;\">(['_trackEvent','click_\"+urlparams.id+\"_btn\"+\"_\"+date.getFullYear()+(\"0\"+date.getMonth()).slice(-2)+(\"0\"+date.getDate()).slice(-2)+\", action, opt_label])\"</span>)</code>\n这样统计出来的数据就不会重叠导致在百度统计后台中区分不开。\n",
+    "reactions": {
+      "url": "https://api.github.com/repos/cdll/blog/issues/2/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "timeline_url": "https://api.github.com/repos/cdll/blog/issues/2/timeline",
     "performed_via_github_app": null
   },
   {
@@ -716,7 +967,9 @@
     "state": "open",
     "locked": false,
     "assignee": null,
-    "assignees": [],
+    "assignees": [
+
+    ],
     "milestone": null,
     "comments": 0,
     "created_at": "2016-03-13T10:05:09Z",
@@ -725,6 +978,19 @@
     "author_association": "OWNER",
     "active_lock_reason": null,
     "body": "最近做的一个web-im的东西，消息体内容传输使用的json，由于android对json和map的强兼容，一开始web版本和android版本互通没有问题，后来ios版本开始测试后发现了这个bug，原因就是我web端json传过去的是对象，而ios端默认解析android端的时候是解析son文本串的，于是我煞笔楞的在传json.msg时用toString方法转换了一下，结果im的sdk发送失败了。\n\n小组里讨论了一下换用了JSON对象的stringify方法转换了json.msg，最后成功了。然后找了一下这俩方法的比较，参考地址<a href=\"http://stackoverflow.com/questions/15834172/whats-the-difference-in-using-tostring-compared-to-json-stringify\">猛戳</a>。\n\n关键点：\n\n<a href=\"http://stackoverflow.com/users/995876/esailija\">Esailija</a>：\n\n<blockquote>Unless you have a custom object with custom <code>.toString</code> method returning <code>JSON.stringify</code> of that object, there is no <code>obj</code> that would give <code>obj.toString() == JSON.stringify(obj)</code>.\n\nWhen <code>obj</code> is an array like <code>[1,2,3]</code> then <code>.toString()</code> gives:\n<pre><code>\"1,2,3\"</code></pre>\nAnd <code>JSON.stringify</code>:\n<pre><code>\"[1,2,3]\"</code></pre>\nThese are close but not quite the same, the JSON serialized one has no ambiguity with commas and directly runs as Javascript or can be parsed as JSON.</blockquote>\n\n<a href=\"http://stackoverflow.com/users/1742869/jacob-george\">Jacob George</a>：\n\n<blockquote>for an object say\n<pre><code>obj = { a: 'a', '1': 1 }</code></pre>\n<code>obj.toString()</code> gives\n<pre><code>\"[object Object]\"</code></pre>\n<code>JSON.stringify(obj)</code> gives\n<pre><code>\"{\"1\":1,\"a\":\"a\"}\"</code></pre>\nFor <a href=\"http://es5.github.com/#x9.8\" rel=\"nofollow\">.toString()</a>, a default value is returned when the argument type is an object. <a href=\"http://msdn.microsoft.com/en-us/library/ie/cc836459%28v=vs.94%29.aspx\" rel=\"nofollow\">JSON.stringify</a> on the other hand returns JSON text, which can be converted back into a JSON object by using<a href=\"http://msdn.microsoft.com/en-us/library/ie/cc836466%28v=vs.94%29.aspx\" rel=\"nofollow\">JSON.parse</a></blockquote>\n\n底层原因我还没搞清楚，不过stringify和parse方法应该是互逆的，一个对象使用toString方法最后只能得到其类型，布吉岛为啥。还请高人指点：P\n",
+    "reactions": {
+      "url": "https://api.github.com/repos/cdll/blog/issues/1/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "timeline_url": "https://api.github.com/repos/cdll/blog/issues/1/timeline",
     "performed_via_github_app": null
   }
 ]
