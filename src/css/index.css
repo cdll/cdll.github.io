@@ -1,5 +1,5 @@
 @import 'https://unpkg.com/material-design-lite@1.3.0/dist/material.cyan-teal.min.css';
-@import url('/src/css/index.dark.css');
+@import "/src/css/index.dark.css" only screen and (prefers-color-scheme: dark);
 
 html, body{
   /* background:url(/img/cdbg_1010.png) repeat center;background-size: 15px; */
