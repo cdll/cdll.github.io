@@ -1,5 +1,5 @@
 
-setImmediate(() => {
+setTimeout(() => {
   (function() {
     var _mtac = {"performanceMonitor":1,"senseQuery":1};
     var mta = document.createElement("script");
@@ -10,7 +10,7 @@ setImmediate(() => {
     var s = document.getElementsByTagName("script")[0];
     s.parentNode.insertBefore(mta, s);
   })();
-  
+
   (function(c,l,a,r,i,t,y){
     c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
     t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
