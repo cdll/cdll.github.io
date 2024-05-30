@@ -1,19 +1,19 @@
 {
   "scripts": {
     "preinstall": "npx only-allow pnpm",
-    "dev": "npm run serve",
-    "start": "npm run serve",
+    "dev": "pnpm run serve",
+    "start": "pnpm run serve",
     "test": "jspm bundle ./src/js/index.js index.min.js --minify",
     "server": "gulp serve",
-    "serve": "npx browser-sync start --server . --port 9090"
+    "serve": "pnpx browser-sync start --server . --port 9090"
   },
   "dependencies": {
     "axios": "0.21",
-    "riot": "^3.13.2",
-    "serve": "^11.3.2",
+    "riot": "^3.13",
+    "serve": "^12.0",
     "vue": "2.6.8",
     "vue-router": "^3.0",
-    "vuex": "^2.5.0"
+    "vuex": "2.5.0"
   },
   "devDependencies": {
     "browser-sync": "^2.26.14",

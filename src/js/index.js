@@ -47,6 +47,16 @@ Promise.all([
       ...ress
     })
     route.base('/')
+    // component: header
+    riot.compile('/src/es/AppHeader.html', (tag) => {
+      riot.mount('app-header')
+      this.update({
+        isMounted: true
+      })
+      console.info({
+        ress,
+      }, '///')
+    })
     route('/index.html..', (group, id, action) => {
       // component: App
       riot.compile('/src/es/App.html', function (tag) {
@@ -54,6 +64,9 @@ Promise.all([
       })
     })
     route('/', (group, id, action) => {
+      console.info({
+        group,
+      }, '///')
       route('/index.html', null, true)
     })
     route('/post.html..', (group, id, action) => {
