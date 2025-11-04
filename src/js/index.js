@@ -48,10 +48,10 @@ Promise.all([
     })
     route.base('/')
     // component: header
-    riot.compile('/src/es/AppHeader.html', (tag) => {
+    riot.compile('/src/es/AppHeader.html', function (tag) {
       riot.mount('app-header')
-      this.update({
-        isMounted: true
+      riot.update({
+        isMounted: true,
       })
       console.info({
         ress,

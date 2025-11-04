@@ -24,12 +24,12 @@ var config = {
     ,vue: "https://cdn.bootcss.com/vue/2.6.8/vue.min.js"
     ,'vue-router': "https://cdn.bootcss.com/vue-router/3.0.2/vue-router.min.js"
     ,'vue-mdl': 'https://system-unsafe-production.jspm.io/vue-mdl'
-    ,axios: "https://unpkg.com/axios@0.18.1/dist//axios.min.js"
+    ,axios: "https://unpkg.com/axios@0.18.1/dist/axios.min.js"
     ,riot: "https://unpkg.com/riot@3/riot.min.js"
     ,riotc: "https://unpkg.com/riot@3/riot+compiler.min.js"
     ,riotRoute: "https://unpkg.com/riot-route@3/dist/route.min.js"
     ,swiper: 'https://cdn.bootcss.com/Swiper/3.4.2/js/swiper.min.js'
-    ,axios: "https://unpkg.com/axios@0.18.1/dist//axios.min.js"
+    ,axios: "https://unpkg.com/axios@0.18.1/dist/axios.min.js"
     ,riot: "https://unpkg.com/riot@3.13.2/riot.min.js"
     ,riotc: "https://unpkg.com/riot@3.13.2/riot+compiler.min.js"
     // ,riot: "https://ga.jspm.io/npm:riot@3.13.2/riot.min.js"
